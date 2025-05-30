@@ -1,360 +1,272 @@
-"""
-System orchestrator for the Hybrid Blockchain-based Incognito Data Sharing System.
+"""System orchestrator for the Hybrid Blockchain-based Incognito Data Sharing System.
 
 This module integrates all system components (ML, blockchains, quantum security)
-and orchestrates the data flow between them.
-"""
+and orchestrates the data flow between them."""
 
 import logging
 import os
 import sys
 import time
+import json
+import requests
+import uuid
 from typing import Dict, Any, List, Optional, Union
 
 # Add project root to path for imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Import system components
+# Import system configuration
 from config.system_config import (
     ML_CONFIG, PRIVATE_BLOCKCHAIN_CONFIG, PUBLIC_BLOCKCHAIN_CONFIG, 
     QUANTUM_CONFIG, SYSTEM_CONFIG
 )
-from ml.preprocessing.data_processor import IoTDataProcessor
-from ml.classification.gateway_filter import GatewayFilter
-from ml.classification.privacy_filter import PrivacyFilter
-from blockchain.private.hyperledger_fabric import HyperledgerFabricClient
-from blockchain.public.ethereum_client import EthereumClient
-from quantum.encryption.post_quantum_crypto import PostQuantumCrypto
-from quantum.key_distribution.quantum_key_distribution import QuantumKeyDistribution
+
+# For web server
+from flask import Flask, request, jsonify
 
 # Configure logging
+os.makedirs('logs', exist_ok=True)  # Create logs directory if it doesn't exist
 logging.basicConfig(
-    level=getattr(logging, SYSTEM_CONFIG.get('log_level', 'INFO')),
+    level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(SYSTEM_CONFIG.get('log_file_path', './logs/system.log')),
+        logging.FileHandler('./logs/system.log'),
         logging.StreamHandler()
     ]
 )
 logger = logging.getLogger(__name__)
 
-class SystemOrchestrator:
-    """
-    Orchestrates data flow and interactions between all system components.
-    """
-    
-    def __init__(self):
-        """Initialize the system orchestrator and all components."""
-        logger.info("Initializing Hybrid Blockchain System components")
+# Create Flask application
+app = Flask(__name__)
+
+# Simulated data storage for demonstration
+iot_data_store = {}
+data_access_requests = {}
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint to verify the service is running."""
+    logger.info("Health check requested")
+    return jsonify({
+        "status": "healthy",
+        "components": {
+            "ml_gateway": check_service_health(ML_CONFIG['gateway_filter']['api_endpoint']),
+            "ml_privacy": check_service_health(ML_CONFIG['privacy_filter']['api_endpoint']),
+            "ethereum": check_ethereum_health(),
+            "hyperledger": "connected",  # Simplified check
+            "quantum_security": QUANTUM_CONFIG['enabled']
+        },
+        "version": "1.0.0"
+    })
+
+@app.route('/submit-iot-data', methods=['POST'])
+def submit_iot_data():
+    """Submit IoT data to the system for processing and storage."""
+    try:
+        data = request.json
+        logger.info(f"Received IoT data submission: {data}")
         
-        # Initialize ML components
-        self.data_processor = IoTDataProcessor({})
-        self.gateway_filter = GatewayFilter(ML_CONFIG['gateway_filter'])
-        self.privacy_filter = PrivacyFilter(ML_CONFIG['privacy_filter'])
+        # Generate a unique ID for this data
+        data_id = str(uuid.uuid4())
         
-        # Initialize blockchain components
-        self.private_blockchain = HyperledgerFabricClient(PRIVATE_BLOCKCHAIN_CONFIG)
-        self.public_blockchain = EthereumClient(PUBLIC_BLOCKCHAIN_CONFIG)
-        
-        # Initialize quantum security components
-        self.quantum_crypto = PostQuantumCrypto(QUANTUM_CONFIG['encryption'])
-        self.quantum_key_dist = QuantumKeyDistribution(QUANTUM_CONFIG['key_distribution'])
-        
-        # Connect to blockchains
-        self._initialize_connections()
-        
-        logger.info("System initialization complete")
-    
-    def _initialize_connections(self):
-        """Establish connections to blockchain networks."""
-        # Connect to private blockchain
-        if not self.private_blockchain.connect():
-            logger.error("Failed to connect to private blockchain")
-        
-        # Connect to public blockchain
-        if not self.public_blockchain.connect():
-            logger.error("Failed to connect to public blockchain")
-    
-    def process_iot_data(self, data: Union[Dict, List[Dict]]) -> Dict[str, Any]:
-        """
-        Process incoming IoT data through the full pipeline.
-        
-        Args:
-            data: Raw IoT data (single record or batch)
-            
-        Returns:
-            Processing results and status
-        """
-        try:
-            logger.info(f"Processing IoT data: {len(data) if isinstance(data, list) else 1} records")
-            
-            # Convert to list if single record
-            data_list = data if isinstance(data, list) else [data]
-            
-            # Step 1: Preprocess the data
-            preprocessed_data = [self.data_processor.process(item) for item in data_list]
-            
-            # Step 2: Filter data through the gateway ML model
-            # Only data deemed necessary will enter the private blockchain
-            filtered_data = []
-            for item in preprocessed_data:
-                is_needed, confidence = self.gateway_filter.is_data_needed(item)
-                if is_needed:
-                    filtered_data.append({
-                        'data': item,
-                        'confidence': confidence
-                    })
-            
-            # Step 3: Store necessary data in private blockchain with quantum security
-            stored_items = []
-            for item in filtered_data:
-                # Generate a unique key for the data
-                data_key = f"iot_data_{int(time.time())}_{len(stored_items)}"
-                
-                # Apply quantum encryption before storage
-                if SYSTEM_CONFIG.get('enable_quantum_security', True):
-                    # Get or generate encryption keys
-                    sender_id = item['data'].get('device_id', 'unknown_device')
-                    receiver_id = 'private_blockchain'
-                    
-                    # Ensure quantum key is established
-                    qkd_key_id = self.quantum_key_dist.establish_key(sender_id, receiver_id)
-                    if not qkd_key_id:
-                        logger.warning(f"Could not establish quantum key for {sender_id}")
-                        # Proceed without quantum security as fallback
-                    else:
-                        # Get the shared key
-                        shared_key = self.quantum_key_dist.get_shared_key(sender_id, receiver_id)
-                        
-                        # Generate keypair for this transaction
-                        public_key, private_key = self.quantum_crypto.generate_keypair(f"{sender_id}_{data_key}")
-                        
-                        # Encrypt the data
-                        encrypted_data = self.quantum_crypto.encrypt(str(item['data']), public_key)
-                        
-                        # Store the encrypted data
-                        self.private_blockchain.store_data(
-                            channel='medical_data',  # Assuming medical data for this example
-                            key=data_key,
-                            data={
-                                'encrypted_data': encrypted_data.hex(),
-                                'public_key': public_key,
-                                'metadata': {
-                                    'device_id': sender_id,
-                                    'timestamp': time.time(),
-                                    'confidence': item['confidence']
-                                }
-                            }
-                        )
-                else:
-                    # Store unencrypted data if quantum security is disabled
-                    self.private_blockchain.store_data(
-                        channel='medical_data',
-                        key=data_key,
-                        data=item['data']
-                    )
-                
-                stored_items.append(data_key)
-            
-            return {
-                'status': 'success',
-                'total_records': len(data_list),
-                'filtered_records': len(filtered_data),
-                'stored_records': len(stored_items),
-                'stored_keys': stored_items
-            }
-        except Exception as e:
-            logger.error(f"Error processing IoT data: {str(e)}")
-            return {
-                'status': 'error',
-                'message': str(e)
-            }
-    
-    def handle_data_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Handle a data access request from the public blockchain.
-        
-        Args:
-            request: Data request details
-            
-        Returns:
-            Response with filtered data or error
-        """
-        try:
-            logger.info(f"Handling data request: {request.get('request_id', 'unknown')}")
-            
-            # Step 1: Validate the request
-            requester_id = request.get('requester_id')
-            data_type = request.get('data_type')
-            purpose = request.get('purpose')
-            access_level = request.get('access_level', 'public')
-            
-            if not all([requester_id, data_type]):
-                return {
-                    'status': 'error',
-                    'message': 'Missing required request parameters'
-                }
-            
-            # Step 2: Create a request record on the public blockchain
-            request_id = self.public_blockchain.request_data_access(
-                requester_id=requester_id,
-                data_type=data_type,
-                purpose=purpose,
-                access_level=access_level
-            )
-            
-            if not request_id:
-                return {
-                    'status': 'error',
-                    'message': 'Failed to register data request on public blockchain'
-                }
-            
-            # Step 3: Query relevant data from private blockchain
-            query_params = {'data_type': data_type}
-            if 'filters' in request:
-                # Add additional filters from the request
-                query_params.update(request['filters'])
-                
-            private_data = self.private_blockchain.query_data(
-                channel='medical_data',  # Assuming medical data channel
-                query=query_params
-            )
-            
-            if not private_data:
-                return {
-                    'status': 'success',
-                    'message': 'No matching data found',
-                    'request_id': request_id,
-                    'data': []
-                }
-            
-            # Step 4: Use ML privacy filter to determine what data can be shared
-            request_context = {
-                'requester_id': requester_id,
-                'purpose': purpose,
-                'access_level': access_level,
-                'request_id': request_id
-            }
-            
-            shareable_data = self.privacy_filter.filter_shareable_data(
-                data=private_data,
-                request_context=request_context
-            )
-            
-            # Step 5: Store the filtered data on the public blockchain
-            shared_data_id = self.public_blockchain.store_non_critical_data(
-                data_type=data_type,
-                data={
-                    'request_id': request_id,
-                    'filtered_data': shareable_data.to_dict(orient='records'),
-                    'timestamp': time.time()
-                }
-            )
-            
-            return {
-                'status': 'success',
-                'request_id': request_id,
-                'data_id': shared_data_id,
-                'record_count': len(shareable_data)
-            }
-        except Exception as e:
-            logger.error(f"Error handling data request: {str(e)}")
-            return {
-                'status': 'error',
-                'message': str(e)
-            }
-    
-    def simulate_full_workflow(self, sample_data: List[Dict[str, Any]], 
-                              sample_request: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Simulate the full system workflow for demonstration purposes.
-        
-        Args:
-            sample_data: Sample IoT data
-            sample_request: Sample data access request
-            
-        Returns:
-            Results of the simulation
-        """
-        results = {
-            'iot_processing': None,
-            'data_request': None
+        # Store the data temporarily
+        iot_data_store[data_id] = {
+            "data": data,
+            "timestamp": time.time(),
+            "status": "received"
         }
         
-        # Step 1: Process IoT data
-        logger.info("Starting simulation: Processing IoT data")
-        iot_result = self.process_iot_data(sample_data)
-        results['iot_processing'] = iot_result
+        # Simulate ML gateway filter processing
+        sensitivity = classify_data_sensitivity(data)
         
-        # Step 2: Handle data access request
-        logger.info("Simulation continuing: Handling data access request")
-        request_result = self.handle_data_request(sample_request)
-        results['data_request'] = request_result
+        # Update data record with classification results
+        iot_data_store[data_id]["sensitivity_level"] = sensitivity
+        iot_data_store[data_id]["status"] = "classified"
         
-        logger.info("Simulation complete")
-        return results
+        # Simulate storing in Hyperledger Fabric (private blockchain)
+        hyperledger_response = store_in_hyperledger(data_id, data, sensitivity)
+        
+        # Simulate registering a reference in Ethereum (public blockchain)
+        ethereum_response = register_in_ethereum(data_id, sensitivity)
+        
+        return jsonify({
+            "status": "success",
+            "data_id": data_id,
+            "sensitivity": sensitivity,
+            "storage_status": {
+                "hyperledger": hyperledger_response,
+                "ethereum": ethereum_response
+            }
+        })
+    except Exception as e:
+        logger.error(f"Error processing IoT data: {str(e)}")
+        return jsonify({"status": "error", "message": str(e)}), 500
 
+@app.route('/request-data-access', methods=['POST'])
+def request_data_access():
+    """Create a data access request via the public blockchain."""
+    try:
+        request_data = request.json
+        logger.info(f"Received data access request: {request_data}")
+        
+        # Generate a request ID
+        request_id = str(uuid.uuid4())
+        
+        # Store the request
+        data_access_requests[request_id] = {
+            "requester": request_data.get("requester", "unknown"),
+            "data_type": request_data.get("data_type", "all"),
+            "purpose": request_data.get("purpose", ""),
+            "access_level": request_data.get("access_level", "public"),
+            "status": "pending",
+            "timestamp": time.time()
+        }
+        
+        # Simulate creating a request on Ethereum
+        ethereum_request = create_ethereum_request(request_id, request_data)
+        
+        # Simulate ML privacy filter evaluation
+        evaluation_result = evaluate_access_request(request_id, request_data)
+        
+        # Update request status based on evaluation
+        data_access_requests[request_id]["status"] = evaluation_result["decision"]
+        data_access_requests[request_id]["evaluation"] = evaluation_result
+        
+        return jsonify({
+            "status": "success",
+            "request_id": request_id,
+            "evaluation": evaluation_result,
+            "ethereum_tx": ethereum_request
+        })
+    except Exception as e:
+        logger.error(f"Error processing access request: {str(e)}")
+        return jsonify({"status": "error", "message": str(e)}), 500
 
-# If running as main script, initialize the system
+@app.route('/system-status', methods=['GET'])
+def system_status():
+    """Get the status of the entire hybrid blockchain system."""
+    return jsonify({
+        "status": "operational",
+        "components": {
+            "ml_gateway": {
+                "status": "running",
+                "endpoint": ML_CONFIG['gateway_filter']['api_endpoint']
+            },
+            "ml_privacy": {
+                "status": "running",
+                "endpoint": ML_CONFIG['privacy_filter']['api_endpoint']
+            },
+            "ethereum": {
+                "status": "connected",
+                "endpoint": PUBLIC_BLOCKCHAIN_CONFIG['rpc_endpoint']
+            },
+            "hyperledger": {
+                "status": "connected",
+                "endpoint": PRIVATE_BLOCKCHAIN_CONFIG['peer_endpoint']
+            },
+            "quantum_security": {
+                "status": "enabled" if QUANTUM_CONFIG['enabled'] else "disabled",
+                "algorithm": QUANTUM_CONFIG['algorithm']
+            }
+        },
+        "data_stats": {
+            "total_iot_data": len(iot_data_store),
+            "access_requests": len(data_access_requests)
+        }
+    })
+
+# Helper functions
+def check_service_health(endpoint):
+    """Check if a service is healthy by making a request to its health endpoint."""
+    try:
+        response = requests.get(f"{endpoint}/health", timeout=2)
+        if response.status_code == 200:
+            return "healthy"
+        return "unhealthy"
+    except:
+        return "unreachable"
+
+def check_ethereum_health():
+    """Check if Ethereum node is reachable."""
+    try:
+        # Simple RPC call to check if node is responding
+        response = requests.post(
+            PUBLIC_BLOCKCHAIN_CONFIG['rpc_endpoint'],
+            json={"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1},
+            timeout=2
+        )
+        if response.status_code == 200:
+            return "connected"
+        return "error"
+    except:
+        return "unreachable"
+
+def classify_data_sensitivity(data):
+    """Simulate ML classification of data sensitivity."""
+    # In a real implementation, this would call the ML gateway filter API
+    sensitivities = ["public", "restricted", "confidential"]
+    # Simple mock classification based on data content
+    if "medical" in str(data).lower() or "health" in str(data).lower():
+        return "confidential"
+    elif "personal" in str(data).lower() or "private" in str(data).lower():
+        return "restricted"
+    return "public"
+
+def store_in_hyperledger(data_id, data, sensitivity):
+    """Simulate storing data in Hyperledger Fabric."""
+    # In a real implementation, this would call the Hyperledger Fabric API
+    return {
+        "status": "success",
+        "blockchain": "hyperledger",
+        "tx_id": f"hlf_{data_id[:8]}"
+    }
+
+def register_in_ethereum(data_id, sensitivity):
+    """Simulate registering a data reference in Ethereum."""
+    # In a real implementation, this would call the Ethereum API
+    return {
+        "status": "success",
+        "blockchain": "ethereum",
+        "tx_hash": f"0x{data_id.replace('-', '')}{'0'*20}"
+    }
+
+def create_ethereum_request(request_id, request_data):
+    """Simulate creating a data access request on Ethereum."""
+    # In a real implementation, this would call the Ethereum API
+    return {
+        "status": "submitted",
+        "tx_hash": f"0x{request_id.replace('-', '')}{'0'*20}"
+    }
+
+def evaluate_access_request(request_id, request_data):
+    """Simulate ML privacy filter evaluation of an access request."""
+    # In a real implementation, this would call the ML privacy filter API
+    requester = request_data.get("requester", "unknown")
+    access_level = request_data.get("access_level", "public")
+    purpose = request_data.get("purpose", "")
+    
+    # Simple mock decision logic
+    if access_level == "public":
+        decision = "approved"
+        confidence = 0.95
+    elif "research" in purpose.lower() and access_level == "restricted":
+        decision = "approved"
+        confidence = 0.85
+    elif access_level == "confidential":
+        decision = "denied"
+        confidence = 0.90
+    else:
+        decision = "pending_review"
+        confidence = 0.60
+        
+    return {
+        "decision": decision,
+        "confidence": confidence,
+        "requester_validated": True,
+        "data_availability": "available"
+    }
+
+# Start the application
 if __name__ == "__main__":
-    # Create log directory if it doesn't exist
-    log_dir = os.path.dirname(SYSTEM_CONFIG.get('log_file_path', './logs/system.log'))
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-        
-    logger.info("Initializing Hybrid Blockchain System")
-    
-    # Initialize the system
-    system = SystemOrchestrator()
-    
-    # Run a simple test if desired
-    if len(sys.argv) > 1 and sys.argv[1] == '--test':
-        logger.info("Running system test")
-        
-        # Sample IoT data (medical)
-        sample_data = [
-            {
-                'device_id': 'med-sensor-001',
-                'data_type': 'medical',
-                'timestamp': time.time(),
-                'field': 'heart_rate',
-                'value': 72,
-                'patient_id': 'P12345',
-                'priority': 'normal'
-            },
-            {
-                'device_id': 'med-sensor-002',
-                'data_type': 'medical',
-                'timestamp': time.time(),
-                'field': 'blood_pressure',
-                'value': '120/80',
-                'patient_id': 'P12345',
-                'priority': 'normal'
-            },
-            {
-                'device_id': 'med-sensor-003',
-                'data_type': 'medical',
-                'timestamp': time.time(),
-                'field': 'hiv_status',
-                'value': 'positive',
-                'patient_id': 'P12345',
-                'priority': 'critical'
-            }
-        ]
-        
-        # Sample data request
-        sample_request = {
-            'requester_id': 'research_lab_123',
-            'data_type': 'medical',
-            'purpose': 'anonymized research',
-            'access_level': 'researcher',
-            'filters': {
-                'patient_id': 'P12345'
-            }
-        }
-        
-        # Run the simulation
-        results = system.simulate_full_workflow(sample_data, sample_request)
-        
-        # Print results
-        logger.info(f"Test results: {results}")
+    logger.info("System Orchestrator API is running")
+    app.run(host='0.0.0.0', port=8000, debug=False)

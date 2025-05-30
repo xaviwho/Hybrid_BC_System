@@ -1,0 +1,14 @@
+FROM node:16-alpine
+
+WORKDIR /app
+
+# Install Ganache CLI
+RUN npm install -g ganache-cli@6.12.2
+
+# Create directory for data persistence
+RUN mkdir -p /data
+
+EXPOSE 8545
+
+# Command to run Ganache with deterministic addresses
+CMD ["ganache-cli", "--host", "0.0.0.0", "--port", "8545", "--deterministic", "--mnemonic", "hybrid blockchain system quantum security iot data sharing privacy control", "--networkId", "5777"]

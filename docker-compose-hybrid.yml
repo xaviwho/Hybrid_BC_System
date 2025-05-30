@@ -1,0 +1,145 @@
+version: '3.8'
+# Hybrid Blockchain-based Incognito Data Sharing with Quantum Computing
+# Uses existing Hyperledger Fabric network already running
+
+# Networks
+networks:
+  # Connect to the existing Hyperledger Fabric network
+  fabric_test:
+    external: true
+    name: fabric_test
+
+# Volumes
+volumes:
+  hyperledger_data:
+  ethereum_data:
+  ethereum_config:
+  ml_models:
+
+services:
+  #----------------------------------------------
+  # 1. HYPERLEDGER FABRIC (PRIVATE BLOCKCHAIN)
+  #----------------------------------------------
+  
+  # Using existing Hyperledger Fabric network
+  # Your existing containers are already running:
+  # - hybrid-cli
+  # - hybrid-orderer.example.com
+  # - hybrid-peer0.org1.example.com
+  # - hybrid-peer0.org2.example.com
+  
+  # Note: These containers will be used by referencing them on the same Docker network
+  
+  #----------------------------------------------
+  # 2. ETHEREUM (PUBLIC BLOCKCHAIN)
+  #----------------------------------------------
+  
+  # Ethereum node (Ganache for development)
+  ethereum-node:
+    container_name: ethereum-node
+    image: hybrid_bc_system-ethereum-node:latest
+    ports:
+      - "8545:8545"
+    volumes:
+      - ethereum_data:/data
+    networks:
+      - fabric_test
+    healthcheck:
+      test: ["CMD", "curl", "-X", "POST", "-H", "Content-Type: application/json", "--data", "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}", "http://localhost:8545"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  
+  # Ethereum contracts deployment
+  ethereum-deployer:
+    container_name: ethereum-deployer
+    image: hybrid_bc_system-ethereum-deployer:latest
+    volumes:
+      - ./blockchain/setup/ethereum:/app
+      - ethereum_config:/root/.config
+    command: >
+      bash -c "sleep 10 && \
+              mkdir -p /root/.config/truffle-nodejs && \
+              touch /root/.config/truffle-nodejs/config.json && \
+              chmod 777 /root/.config/truffle-nodejs/config.json && \
+              npm install && \
+              npx truffle migrate --network development --reset"
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - ANALYTICS_ENABLED=false
+    networks:
+      - fabric_test
+    depends_on:
+      - ethereum-node
+  
+  #----------------------------------------------
+  # 3. ML COMPONENTS WITH QUANTUM SECURITY
+  #----------------------------------------------
+  
+  # ML Gateway Filter (controls what data enters private blockchain)
+  ml-gateway:
+    container_name: ml-gateway
+    image: hybrid_bc_system-ml-gateway:latest
+    volumes:
+      - ./ml:/app
+      - ml_models:/app/models
+    command: python gateway_filter/predict.py
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONPATH=/app
+    networks:
+      - fabric_test
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  
+  # ML Privacy Filter (controls what data is shared when requested)
+  ml-privacy:
+    container_name: ml-privacy
+    image: hybrid_bc_system-ml-privacy:latest
+    volumes:
+      - ./ml:/app
+      - ml_models:/app/models
+    command: python privacy_filter/predict.py
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONPATH=/app
+    networks:
+      - fabric_test
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  
+  #----------------------------------------------
+  # 4. SYSTEM ORCHESTRATOR
+  #----------------------------------------------
+  
+  # System Orchestrator API (integrates all components)
+  system-orchestrator:
+    container_name: system-orchestrator
+    image: hybrid_bc_system-system-orchestrator:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+    environment:
+      - HYPERLEDGER_URL=http://hybrid-peer0.org1.example.com:7051
+      - ETHEREUM_URL=http://ethereum-node:8545
+      - ML_GATEWAY_URL=http://ml-gateway:5000
+      - ML_PRIVACY_URL=http://ml-privacy:5001
+      - QUANTUM_SECURITY_ENABLED=true
+    networks:
+      - fabric_test
+    depends_on:
+      - ethereum-deployer
+      - ml-gateway
+      - ml-privacy
+    command: python system_orchestrator.py

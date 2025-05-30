@@ -1,10 +1,18 @@
-const DataRequestContract = artifacts.require("DataRequestContract");
-const AccessControlContract = artifacts.require("AccessControlContract");
+const AccessToken = artifacts.require("AccessToken");
+const DataAccessRequest = artifacts.require("DataAccessRequest");
+const IoTDataRegistry = artifacts.require("IoTDataRegistry");
 
 module.exports = function(deployer) {
-  // Deploy the AccessControlContract first
-  deployer.deploy(AccessControlContract).then(() => {
-    // Then deploy the DataRequestContract
-    return deployer.deploy(DataRequestContract);
+  // Deploy AccessToken first
+  deployer.deploy(AccessToken).then(() => {
+    // Then deploy DataAccessRequest
+    return deployer.deploy(DataAccessRequest);
+  }).then(() => {
+    // Finally deploy IoTDataRegistry with the addresses of the other contracts
+    return deployer.deploy(
+      IoTDataRegistry, 
+      AccessToken.address, 
+      DataAccessRequest.address
+    );
   });
 };

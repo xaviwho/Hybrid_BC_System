@@ -1,0 +1,17 @@
+FROM node:16
+
+WORKDIR /app
+
+# Install Truffle globally
+RUN npm install -g truffle@5.7.0
+RUN npm install -g ganache-cli
+
+# Copy package files
+COPY package.json ./
+COPY package-lock.json* ./
+
+# Install dependencies
+RUN npm install
+
+# Keep the container running
+CMD ["tail", "-f", "/dev/null"]
