@@ -1,65 +1,37 @@
-/**
- * Truffle configuration for the Ethereum component of the 
- * Hybrid Blockchain-based Incognito Data Sharing system
- */
-
 module.exports = {
-  networks: {
-    // Development network (local)
-    development: {
-      host: "127.0.0.1",
-      port: 8545,
-      network_id: "*", // Match any network id
-    },
-    
-    // For connecting to Ganache UI
-    ganache: {
-      host: "127.0.0.1",
-      port: 7545,
-      network_id: "*",
-    },
-    
-    // Test network (Sepolia)
-    sepolia: {
-      provider: () => {
-        // You would need to add HDWalletProvider and API key here for deployment
-        // const HDWalletProvider = require('@truffle/hdwallet-provider');
-        // return new HDWalletProvider(process.env.MNEMONIC, `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`);
-      },
-      network_id: 11155111,
-      gas: 5500000,
-      confirmations: 2,
-      timeoutBlocks: 200,
-      skipDryRun: true,
-    },
-  },
+  /**
+   * This specifies the directory where Truffle will store your compiled contracts.
+   */
+  contracts_build_directory: "./build/contracts",
 
-  // Set default mocha options here, use special reporters, etc.
-  mocha: {
-    timeout: 100000
+  /**
+   * This specifies the directory where Truffle will look for your Solidity contracts.
+   */
+  contracts_directory: "./contracts",
+
+  /**
+   * Networks define how you connect to your ethereum client and let you set the
+   * defaults web3 uses to send transactions. You can configure different networks
+   * for development, testing, and production.
+   */
+  networks: {
+    development: {
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum client port
+      network_id: "*",       // Any network (default: none)
+    },
   },
 
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.17",
-      settings: {
+      version: "0.8.20",    // Fetch exact version from solc-bin
+      settings: {         // See the Solidity docs for optimizer and other settings
         optimizer: {
           enabled: true,
           runs: 200
         },
       }
     }
-  },
-  
-  // Plugins
-  plugins: [
-    'truffle-plugin-verify'
-  ],
-  
-  // API keys for verification
-  api_keys: {
-    // Add API keys for verification services like Etherscan
-    // etherscan: process.env.ETHERSCAN_API_KEY
   }
 };

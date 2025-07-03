@@ -1,0 +1,18 @@
+2025-07-01 05:27:52,330 - __main__ - INFO - System Orchestrator API is running
+2025-07-01 05:27:52,355 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.7:8000
+2025-07-01 05:27:52,356 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-01 05:30:54,944 - __main__ - INFO - System Orchestrator API is running
+2025-07-01 05:30:54,958 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.7:8000
+2025-07-01 05:30:54,962 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-01 06:02:48,366 - __main__ - INFO - System Orchestrator API is running
+2025-07-01 06:02:48,411 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.18.0.7:8000
+2025-07-01 06:02:48,412 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
