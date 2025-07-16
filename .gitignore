@@ -39,8 +39,9 @@ ENV/
 *.swp
 *.swo
 
-# OS generated files
+# OS generated# Misc
 .DS_Store
+Remove-Item
 .DS_Store?
 ._*
 .Spotlight-V100

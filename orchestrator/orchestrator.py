@@ -92,7 +92,7 @@ except KeyError:
 
 # Fabric Configuration
 FABRIC_CONN_PROFILE = os.path.join(os.path.dirname(__file__), 'connection-org1.json')
-FABRIC_CHANNEL_NAME = os.getenv('FABRIC_CHANNEL_NAME', 'hiot')
+FABRIC_CHANNEL_NAME = os.getenv('FABRIC_CHANNEL_NAME', 'medicalchannel')
 FABRIC_CHAINCODE_NAME = os.getenv('FABRIC_CHAINCODE_NAME', 'iot-data')
 FABRIC_USER_NAME = os.getenv('FABRIC_USER_NAME', 'user1')
 FABRIC_USER_ORG = os.getenv('FABRIC_USER_ORG', 'Org1')
