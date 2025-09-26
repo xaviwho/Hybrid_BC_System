@@ -36,7 +36,9 @@ services:
   # Ethereum node (Ganache for development)
   ethereum-node:
     container_name: ethereum-node
+    build: ./blockchain/setup/ethereum
     image: hybrid_bc_system-ethereum-node:latest
+    command: npx ganache --host 0.0.0.0
     pull_policy: never
     ports:
       - "8545:8545"
@@ -53,6 +55,7 @@ services:
   # Ethereum contracts deployment
   ethereum-deployer:
     container_name: ethereum-deployer
+    build: ./blockchain/setup/ethereum
     image: hybrid_bc_system-ethereum-deployer:latest
     pull_policy: never
     volumes:
@@ -80,6 +83,7 @@ services:
   # ML Gateway Filter (controls what data enters private blockchain)
   ml-gateway:
     container_name: ml-gateway
+    build: ./ml
     image: hybrid_bc_system-ml-gateway:latest
     pull_policy: never
     volumes:
@@ -102,6 +106,7 @@ services:
   # ML Privacy Filter (controls what data is shared when requested)
   ml-privacy:
     container_name: ml-privacy
+    build: ./ml
     image: hybrid_bc_system-ml-privacy:latest
     pull_policy: never
     volumes:
@@ -121,29 +126,3 @@ services:
       timeout: 10s
       retries: 5
   
-  #----------------------------------------------
-  # 4. SYSTEM ORCHESTRATOR
-  #----------------------------------------------
-  
-  # System Orchestrator API (integrates all components)
-  system-orchestrator:
-    container_name: system-orchestrator
-    image: hybrid_bc_system-system-orchestrator:latest
-    pull_policy: never
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./api:/app
-    environment:
-      - HYPERLEDGER_URL=http://hybrid-peer0.org1.example.com:7051
-      - ETHEREUM_URL=http://ethereum-node:8545
-      - ML_GATEWAY_URL=http://ml-gateway:5000
-      - ML_PRIVACY_URL=http://ml-privacy:5001
-      - QUANTUM_SECURITY_ENABLED=true
-    networks:
-      - fabric_test
-    depends_on:
-      - ethereum-deployer
-      - ml-gateway
-      - ml-privacy
-    command: python system_orchestrator.py

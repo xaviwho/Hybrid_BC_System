@@ -7,6 +7,7 @@ import os
 import json
 import joblib
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
 import numpy as np
 import sys
@@ -17,6 +18,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from privacy_filter.sensitivity_classifier import SensitivityClassifier
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Initialize the classifier
 classifier = None

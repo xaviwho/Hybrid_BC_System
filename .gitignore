@@ -29,8 +29,10 @@ var/
 # Jupyter Notebooks
 .ipynb_checkpoints
 
-# Virtual Environment
-venv/
+# Virtualenv
+/venv/
+/virtualenv/
+.venv/
 ENV/
 
 # IDE files
@@ -61,3 +63,49 @@ system-genesis-block/
 
 # Docker
 .docker/
+
+# Node.js
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+**/package-lock.json
+.npm/
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Ethereum/Truffle
+blockchain/setup/ethereum/build/
+blockchain/setup/ethereum/node_modules/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.temp
+.running-services
+
+# Go vendor directories
+vendor/
+**/vendor/
+
+# Fabric samples (too large)
+blockchain/setup/hyperledger/fabric-samples/
+
+# Test files
+test-*.js
+test-*.json

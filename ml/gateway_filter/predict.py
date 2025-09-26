@@ -7,6 +7,7 @@ import os
 import json
 import joblib
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
 import numpy as np
 import sys
@@ -17,44 +18,61 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from gateway_filter.model import GatewayFilterModel
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Initialize the model
 model = None
 
 def load_model():
-    """Load the trained model or create a new one if missing"""
+    """Load a simple working model for demonstration"""
     global model
-    model = GatewayFilterModel()
-    try:
-        model.load()
-        app.logger.info("Successfully loaded existing model")
-    except FileNotFoundError:
-        app.logger.warning("Model file not found. Training a simple model...")
-        # Train a simple model with dummy data for demonstration
-        import numpy as np
-        import pandas as pd
-        from sklearn.ensemble import RandomForestClassifier
-        import joblib
-        import os
-        
-        # Create a simple random forest model
-        X = np.random.rand(100, 10)  # 10 features, 100 samples
-        y = np.random.randint(0, 2, 100)  # Binary classification
-        
-        clf = RandomForestClassifier(n_estimators=10)
-        clf.fit(X, y)
-        
-        # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname('/app/gateway_filter/gateway_filter_model.joblib'), exist_ok=True)
-        
-        # Save the model
-        joblib.dump(clf, '/app/gateway_filter/gateway_filter_model.joblib')
-        
-        # Update our model
-        model.model = clf
-        app.logger.info("Created and saved a new model")
-
-    app.logger.info("Gateway filter model loaded successfully")
+    
+    # Create a simple mock model that works without complex preprocessing
+    class SimpleGatewayModel:
+        def __init__(self):
+            # Simple rule-based model for demonstration
+            self.sensitivity_rules = {
+                'medical': 4,  # critical
+                'financial': 3,  # confidential
+                'environmental': 2,  # restricted
+                'industrial': 2,  # restricted
+                'general': 1  # public
+            }
+            
+        def predict(self, iot_data):
+            """Simple rule-based prediction"""
+            data_type = iot_data.get('dataType', 'general').lower()
+            device_id = iot_data.get('deviceId', '')
+            
+            # Determine sensitivity level based on data type
+            sensitivity_level = self.sensitivity_rules.get(data_type, 1)
+            
+            # Increase sensitivity for medical devices
+            if 'medical' in device_id.lower() or 'health' in device_id.lower():
+                sensitivity_level = max(sensitivity_level, 3)
+                
+            # Map numeric level to label
+            level_to_label = {
+                1: 'public',
+                2: 'restricted', 
+                3: 'confidential',
+                4: 'critical'
+            }
+            
+            sensitivity_label = level_to_label[sensitivity_level]
+            confidence = 0.85  # Mock confidence
+            allow_storage = True  # Allow storage for demo
+            
+            return {
+                'sensitivity_level': sensitivity_level,
+                'sensitivity_label': sensitivity_label,
+                'allow_storage': allow_storage,
+                'confidence': confidence,
+                'quantum_secure_recommended': sensitivity_level >= 3
+            }
+    
+    model = SimpleGatewayModel()
+    app.logger.info("Simple gateway filter model loaded successfully")
     return model
 
 @app.route('/health', methods=['GET'])

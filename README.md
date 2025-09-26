@@ -1,25 +1,75 @@
-# Hybrid Blockchain-based Incognito Data Sharing with Quantum Computing
+# Hybrid Blockchain System for IoT Data Management
 
-A secure IoT data management system incorporating:
-- ML-based data filtering and classification
-- Hybrid blockchain architecture (private + public)
-- Quantum-secured communication
+##  Quick Start
 
+This system combines Hyperledger Fabric (private blockchain) and Ethereum (public blockchain) with ML-powered privacy filtering for secure IoT data management.
+
+### Start Everything with One Command:
+
+```bash
+# First time setup (install Fabric binaries)
+./install-fabric-binaries.sh
+
+# Start all services
+./start-system.sh
+
+# Check status
+./start-system.sh status
+
+# Stop all services
+./start-system.sh stop
+
+# Restart all services
+./start-system.sh restart
+```
 ## System Architecture
 
-This system is designed to securely manage IoT data with a focus on privacy and controlled sharing:
+### Components Started by `start-system.sh`:
 
-1. **IoT Data Collection**: Collects data from various IoT devices
-2. **ML Processing Layer**:
-   - Acts as initial gateway (filters what data enters private blockchain)
-   - Serves as privacy filter (determines what data can be shared when requested)
-3. **Private Blockchain**: Stores mission-critical/sensitive data
-4. **Public Blockchain**: Interface for requesting filtered data and storing non-critical information
-5. **Quantum Security Layer**: Protects data communication channels using quantum cryptography
+1. **Hyperledger Fabric** (Port 7051)
+   - Private blockchain for sensitive data
+   - Channel: `hiot`
+   - Includes CouchDB for state database
 
-## Use Case Example
+2. **Ethereum/Ganache** (Port 8545)
+   - Public blockchain for metadata
+   - Smart Contract: `IoTDataRegistry`
 
-Medical IoT devices collect patient data. The ML layer filters and stores sensitive medical data in the private blockchain. When external entities request data through the public blockchain, the ML layer evaluates which data elements are shareable and provides only non-critical information.
+3. **ML Services**
+   - **Gateway** (Port 5000): Initial data filtering
+   - **Privacy Filter** (Port 5001): Sensitivity analysis
+
+4. **Orchestrator** (Port 5002)
+   - Central coordination service
+   - Manages workflow between all components
+
+5. **Frontend** (Port 3000) - *Optional*
+   - Web interface (if frontend/ directory exists)
+
+## Test the System
+
+Once all services are running, test the complete workflow:
+
+```bash
+curl -X POST http://localhost:5002/ingest_data \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": "test_001",
+    "deviceId": "sensor_001",
+    "data": {
+      "temperature": 22.5,
+      "humidity": 65,
+      "location": "Lab A"
+    }
+  }'
+```
+
+## Workflow
+
+1. **Data Ingestion**: IoT device sends data to Orchestrator
+2. **ML Analysis**: Privacy Filter analyzes data sensitivity
+3. **Data Segregation**: Sensitive data → Hyperledger Fabric, Metadata → Ethereum
+4. **Access Control**: Public can query Ethereum for metadata, authorized users access Fabric
 
 ## Project Structure
 
