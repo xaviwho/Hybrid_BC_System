@@ -1,4 +1,12 @@
 #!/bin/bash
+set -e
+
+# Get the script's directory to ensure we can return to the project root
+PROJECT_ROOT=$(pwd)
+
+# Set the path to Fabric binaries
+FABRIC_SAMPLES_DIR="${PROJECT_ROOT}/blockchain/setup/hyperledger/fabric-samples"
+export PATH="${FABRIC_SAMPLES_DIR}/bin:$PATH"
 # Master control script for Hybrid Blockchain-based Incognito Data Sharing System
 # Uses existing Hyperledger Fabric network
 
@@ -21,51 +29,17 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-# Stop any running containers from previous attempts
-echo -e "${YELLOW}Cleaning up any previous deployments...${NC}"
-docker-compose -f docker-compose-hybrid.yml down &>/dev/null
+# Shut down and rebuild the Docker Compose services (Ethereum, ML, etc.)
+echo -e "${YELLOW}Cleaning up and rebuilding Docker Compose services...${NC}"
+docker-compose -f docker-compose-hybrid.yml down --volumes --remove-orphans
+docker-compose -f docker-compose-hybrid.yml build
 
-# Check if Hyperledger Fabric is already running
-echo -e "${YELLOW}Checking Hyperledger Fabric status...${NC}"
-if ! docker ps | grep -q "hybrid-peer0.org1.example.com"; then
-    echo -e "${YELLOW}Starting Hyperledger Fabric private blockchain...${NC}"
-    cd blockchain/setup/hyperledger/fabric-samples/hybrid-bc-network
-    export COMPOSE_PROJECT_NAME=hybridbc
-    ./network.sh up
-    ./network.sh createChannel -c hiot
-    ./network.sh deployCC -c hiot -ccn iot-data -ccp ../chaincode/iot-data/go/ -ccl go
-    cd ../../../../.. # Return to project root
-else
-    echo -e "${GREEN}Hyperledger Fabric is already running.${NC}"
-    
-    # Fix chaincode if needed
-    cd blockchain/setup/hyperledger/fabric-samples/chaincode/iot-data/go
-    if [ ! -f "go.sum" ]; then
-        echo -e "${YELLOW}Fixing chaincode dependencies...${NC}"
-        go mod tidy
-        go mod download github.com/hyperledger/fabric-contract-api-go
-    fi
-    cd ../../../../../../.. # Return to project root
-fi
-
-# Now start the rest of the system with Docker Compose
+# Now build and start the rest of the system with Docker Compose
+echo -e "${YELLOW}Building Ethereum and ML components...${NC}"
+docker-compose -f docker-compose-hybrid.yml build
 echo -e "${YELLOW}Starting Ethereum and ML components...${NC}"
 docker-compose -f docker-compose-hybrid.yml up -d
 
-# Wait for system initialization
-echo -e "${YELLOW}Waiting for all services to be ready...${NC}"
-for i in {1..15}; do
-    if docker ps | grep -q "system-orchestrator"; then
-        # Check if system orchestrator is running correctly
-        if docker logs system-orchestrator 2>&1 | grep -q "System Orchestrator API is running"; then
-            echo -e "${GREEN}System orchestrator is running!${NC}"
-            break
-        fi
-    fi
-    echo -n "."
-    sleep 2
-done
-echo ""
 
 # Display system status and access points
 echo -e "${GREEN}==========================================================${NC}"

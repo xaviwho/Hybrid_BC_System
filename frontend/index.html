@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Blockchain IoT Data Sharing System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Hybrid BC IoT</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#dashboard" class="nav-link active">Dashboard</a>
+                    <a href="#data-ingestion" class="nav-link">Data Ingestion</a>
+                    <a href="#privacy-controls" class="nav-link">Privacy Controls</a>
+                    <a href="#blockchain" class="nav-link">Blockchain</a>
+                    <a href="#system-status" class="nav-link">System Status</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2>System Dashboard</h2>
+                    <p>Real-time monitoring of hybrid blockchain Digital Twin data sharing system</p>
+                </div>
+
+                <!-- System Status Cards -->
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="status-info">
+                            <h3>Orchestrator</h3>
+                            <span class="status-badge" id="orchestrator-status">Checking...</span>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="status-info">
+                            <h3>ML Services</h3>
+                            <span class="status-badge" id="ml-status">Checking...</span>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="status-info">
+                            <h3>Hyperledger Fabric</h3>
+                            <span class="status-badge" id="fabric-status">Checking...</span>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div class="status-info">
+                            <h3>Ethereum</h3>
+                            <span class="status-badge" id="ethereum-status">Checking...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Flow Visualization -->
+                <div class="data-flow-container">
+                    <h3>Data Flow Architecture</h3>
+                    <div class="data-flow">
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <span>IoT Device</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <span>Orchestrator</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <span>ML Filter</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <span>Private Chain</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i class="fab fa-ethereum"></i>
+                            </div>
+                            <span>Public Chain</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-container">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list" id="activity-list">
+                        <div class="activity-item">
+                            <i class="fas fa-info-circle"></i>
+                            <span>System initialized and ready for data ingestion</span>
+                            <time id="init-time"></time>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Ingestion Section -->
+            <section id="data-ingestion" class="section">
+                <div class="section-header">
+                    <h2>Digital Twin Data Ingestion</h2>
+                    <p>Submit Digital Twin data for blockchain storage</p>
+                </div>
+
+                <div class="ingestion-container">
+                    <div class="ingestion-form">
+                        <h3>Submit Digital Twin Data</h3>
+                        <form id="data-form">
+                            <div class="form-group">
+                                <label for="device-id">Device ID</label>
+                                <input type="text" id="device-id" placeholder="e.g., sensor_001" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="e.g., device location" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="data-type">Data Type</label>
+                                <select id="data-type" required>
+                                    <option value="">Select data type</option>
+                                    <option value="medical">Digital Twin Data</option>
+                                    <option value="environmental">Environmental Data</option>
+                                    <option value="security">Security Data</option>
+                                    <option value="industrial">Industrial IoT Data</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="data-payload">Data Payload (JSON)</label>
+                                <textarea id="data-payload" rows="6" placeholder='{"data": "data", "privacyLevel": "privacyLevel", "data": "data"}' required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="privacy-level">Privacy Level</label>
+                                <select id="privacy-level" required>
+                                    <option value="high">High - Minimal public metadata</option>
+                                    <option value="medium">Medium - Balanced sharing</option>
+                                    <option value="low">Low - Maximum transparency</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload"></i>
+                                Submit Data
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="ingestion-preview">
+                        <h3>Data Processing Preview</h3>
+                        <div class="preview-content" id="preview-content">
+                            <p>Fill out the form to see how your data will be processed...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Results -->
+                <div class="results-container" id="results-container" style="display: none;">
+                    <h3>Submission Results</h3>
+                    <div class="results-content" id="results-content"></div>
+                </div>
+            </section>
+
+            <!-- Privacy Controls Section -->
+            <section id="privacy-controls" class="section">
+                <div class="section-header">
+                    <h2>Privacy Controls</h2>
+                    <p>Configure Digital Twin privacy filtering and data sharing policies</p>
+                </div>
+
+                <div class="privacy-grid">
+                    <div class="privacy-card">
+                        <h3>ML Gateway Filter</h3>
+                        <p>Controls what data enters the private blockchain</p>
+                        <div class="privacy-settings">
+                            <div class="setting-item">
+                                <label>Sensitivity Threshold</label>
+                                <input type="range" min="0" max="100" value="70" id="gateway-threshold">
+                                <span id="gateway-value">70%</span>
+                            </div>
+                            <div class="setting-item">
+                                <label>Auto-filtering</label>
+                                <input type="checkbox" id="gateway-auto" checked>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="testMLGateway()">Test Gateway</button>
+                    </div>
+
+                    <div class="privacy-card">
+                        <h3>ML Privacy Filter</h3>
+                        <p>Determines what metadata can be shared publicly</p>
+                        <div class="privacy-settings">
+                            <div class="setting-item">
+                                <label>Privacy Threshold</label>
+                                <input type="range" min="0" max="100" value="80" id="privacy-threshold">
+                                <span id="privacy-value">80%</span>
+                            </div>
+                            <div class="setting-item">
+                                <label>Anonymization</label>
+                                <input type="checkbox" id="privacy-anon" checked>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="testMLPrivacy()">Test Privacy Filter</button>
+                    </div>
+                </div>
+
+                <!-- Privacy Policy Configuration -->
+                <div class="policy-container">
+                    <h3>Data Sharing Policies</h3>
+                    <div class="policy-grid">
+                        <div class="policy-item">
+                            <h4>Medical Data</h4>
+                            <select class="policy-select">
+                                <option value="strict">Strict Privacy</option>
+                                <option value="moderate">Moderate Sharing</option>
+                                <option value="open">Open Research</option>
+                            </select>
+                        </div>
+                        <div class="policy-item">
+                            <h4>Environmental Data</h4>
+                            <select class="policy-select">
+                                <option value="strict">Strict Privacy</option>
+                                <option value="moderate" selected>Moderate Sharing</option>
+                                <option value="open">Open Research</option>
+                            </select>
+                        </div>
+                        <div class="policy-item">
+                            <h4>Industrial Data</h4>
+                            <select class="policy-select">
+                                <option value="strict" selected>Strict Privacy</option>
+                                <option value="moderate">Moderate Sharing</option>
+                                <option value="open">Open Research</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Blockchain Section -->
+            <section id="blockchain" class="section">
+                <div class="section-header">
+                    <h2>Blockchain Networks</h2>
+                    <p>Monitor private and public blockchain interactions</p>
+                </div>
+
+                <div class="blockchain-grid">
+                    <!-- Hyperledger Fabric -->
+                    <div class="blockchain-card">
+                        <div class="blockchain-header">
+                            <h3>Hyperledger Fabric (Private)</h3>
+                            <span class="blockchain-status" id="fabric-chain-status">Connected</span>
+                        </div>
+                        <div class="blockchain-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Channel</span>
+                                <span class="stat-value">DataChannel</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Peers</span>
+                                <span class="stat-value" id="fabric-peers">2</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Transactions</span>
+                                <span class="stat-value" id="fabric-txs">0</span>
+                            </div>
+                        </div>
+                        <div class="blockchain-actions">
+                            <button class="btn btn-outline" onclick="queryFabricData()">Query Data</button>
+                            <button class="btn btn-outline" onclick="viewFabricLogs()">View Logs</button>
+                        </div>
+                    </div>
+
+                    <!-- Ethereum -->
+                    <div class="blockchain-card">
+                        <div class="blockchain-header">
+                            <h3>Ethereum (Public)</h3>
+                            <span class="blockchain-status" id="ethereum-chain-status">Connected</span>
+                        </div>
+                        <div class="blockchain-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Block Number</span>
+                                <span class="stat-value" id="eth-block">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Gas Price</span>
+                                <span class="stat-value" id="eth-gas">20 Gwei</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Registrations</span>
+                                <span class="stat-value" id="eth-registrations">0</span>
+                            </div>
+                        </div>
+                        <div class="blockchain-actions">
+                            <button class="btn btn-outline" onclick="queryEthereumData()">Query Registry</button>
+                            <button class="btn btn-outline" onclick="viewEthereumLogs()">View Logs</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="transaction-container">
+                    <h3>Recent Transactions</h3>
+                    <div class="transaction-list" id="transaction-list">
+                        <div class="transaction-item">
+                            <div class="tx-info">
+                                <span class="tx-type">System Init</span>
+                                <span class="tx-time" id="tx-init-time"></span>
+                            </div>
+                            <span class="tx-status success">Success</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Status Section -->
+            <section id="system-status" class="section">
+                <div class="section-header">
+                    <h2>System Status</h2>
+                    <p>Comprehensive monitoring of all system components</p>
+                </div>
+
+                <div class="status-detailed">
+                    <div class="service-status">
+                        <h3>Service Health</h3>
+                        <div class="service-list" id="service-list">
+                            <!-- Services will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="system-metrics">
+                        <h3>System Metrics</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <span class="metric-label">Uptime</span>
+                                <span class="metric-value" id="system-uptime">--</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Data Processed</span>
+                                <span class="metric-value" id="data-processed">0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Privacy Filtered</span>
+                                <span class="metric-value" id="privacy-filtered">0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Blockchain Txs</span>
+                                <span class="metric-value" id="blockchain-txs">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Logs -->
+                <div class="logs-container">
+                    <h3>System Logs</h3>
+                    <div class="logs-content" id="logs-content">
+                        <div class="log-entry">
+                            <span class="log-time" id="log-init-time"></span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">Hybrid Blockchain Digital Twin System initialized successfully</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Hybrid Blockchain Digital Twin System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

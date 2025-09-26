@@ -1,0 +1,27 @@
+{
+  "name": "hybrid-blockchain-iot-frontend",
+  "version": "1.0.0",
+  "description": "Frontend interface for Hybrid Blockchain IoT Data Sharing System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "blockchain",
+    "iot",
+    "privacy",
+    "hyperledger",
+    "ethereum",
+    "machine-learning"
+  ],
+  "author": "Hybrid BC IoT System",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

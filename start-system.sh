@@ -124,7 +124,7 @@ elif [ "$ACTION" = "status" ]; then
     check_port 5000 && echo -e "${GREEN}✓ ML Gateway${NC}" || echo -e "${RED}✗ ML Gateway${NC}"
     check_port 5001 && echo -e "${GREEN}✓ ML Privacy${NC}" || echo -e "${RED}✗ ML Privacy${NC}"
     check_port 5002 && echo -e "${GREEN}✓ Orchestrator${NC}" || echo -e "${RED}✗ Orchestrator${NC}"
-    check_port 3000 && echo -e "${GREEN}✓ Frontend${NC}" || echo -e "${RED}✗ Frontend${NC}"
+    check_port 8080 && echo -e "${GREEN}✓ Frontend${NC}" || echo -e "${RED}✗ Frontend${NC}"
     exit 0
 fi
 
@@ -243,7 +243,7 @@ echo -e "${BLUE}======================${NC}"
 FRONTEND_PATH="${PROJECT_ROOT}/frontend"
 
 if [ -d "${FRONTEND_PATH}" ] && [ -f "${FRONTEND_PATH}/package.json" ]; then
-    if check_port 3000; then
+    if check_port 8080; then
         echo -e "${YELLOW}Frontend appears to be running. Skipping...${NC}"
     else
         cd "${FRONTEND_PATH}"
@@ -254,11 +254,11 @@ if [ -d "${FRONTEND_PATH}" ] && [ -f "${FRONTEND_PATH}/package.json" ]; then
             npm install > "${LOG_DIR}/frontend-install.log" 2>&1
         fi
         
-        # Start frontend
-        echo -e "${CYAN}Starting frontend...${NC}"
+        # Start frontend (runs on port 8080)
+        echo -e "${CYAN}Starting frontend on port 8080...${NC}"
         nohup npm start > "${LOG_DIR}/frontend.log" 2>&1 &
         
-        wait_for_service "Frontend" 3000
+        wait_for_service "Frontend" 8080
         
         echo -e "${GREEN}✓ Frontend started${NC}"
     fi
@@ -281,7 +281,7 @@ echo -e "  ${BLUE}•${NC} ML Privacy Filter: ${CYAN}http://localhost:5001${NC}"
 echo -e "  ${BLUE}•${NC} Orchestrator: ${CYAN}http://localhost:5002${NC}"
 
 if [ -d "${FRONTEND_PATH}" ]; then
-    echo -e "  ${BLUE}•${NC} Frontend: ${CYAN}http://localhost:3000${NC}"
+    echo -e "  ${BLUE}•${NC} Frontend: ${CYAN}http://localhost:8080${NC}"
 fi
 
 # Get contract address
