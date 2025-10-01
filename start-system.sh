@@ -11,7 +11,8 @@
 # - Frontend (if available)
 # ============================================================================
 
-set -e
+# Don't exit on error - handle errors gracefully
+set +e
 
 # Colors for output
 RED='\033[0;31m'
@@ -172,22 +173,53 @@ if check_port 8545; then
 else
     # Use Docker for Ganache
     echo -e "${CYAN}Starting Ganache in Docker...${NC}"
+    
+    # First check if container exists and remove it
+    docker rm -f ganache-cli 2>/dev/null
+    
+    # Start Ganache container
     docker run -d \
         --name ganache-cli \
         -p 8545:8545 \
         trufflesuite/ganache:latest \
         --accounts 10 \
-        --host 0.0.0.0 \
-        > /dev/null 2>&1
+        --host 0.0.0.0
+    
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Failed to start Ganache container${NC}"
+        echo -e "${YELLOW}Trying alternative approach...${NC}"
+        
+        # Try starting without name to avoid conflicts
+        docker run -d \
+            -p 8545:8545 \
+            trufflesuite/ganache:latest \
+            --accounts 10 \
+            --host 0.0.0.0
+        
+        if [ $? -ne 0 ]; then
+            echo -e "${RED}Error: Could not start Ganache. Please check Docker is running.${NC}"
+            echo -e "${YELLOW}You can manually start Ganache with:${NC}"
+            echo -e "  docker run -d -p 8545:8545 trufflesuite/ganache:latest"
+        fi
+    fi
     
     wait_for_service "Ganache" 8545
     
-    # Deploy smart contracts
-    echo -e "${CYAN}Deploying smart contracts...${NC}"
-    cd "${ETHEREUM_PATH}"
-    npx truffle migrate --network development --reset > "${LOG_DIR}/truffle.log" 2>&1
-    
-    echo -e "${GREEN}✓ Ethereum network started and contracts deployed${NC}"
+    if check_port 8545; then
+        # Deploy smart contracts
+        echo -e "${CYAN}Deploying smart contracts...${NC}"
+        cd "${ETHEREUM_PATH}"
+        npx truffle migrate --network development --reset > "${LOG_DIR}/truffle.log" 2>&1
+        
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}✓ Ethereum network started and contracts deployed${NC}"
+        else
+            echo -e "${YELLOW}⚠ Ganache started but contract deployment had issues${NC}"
+            echo -e "${YELLOW}Check ${LOG_DIR}/truffle.log for details${NC}"
+        fi
+    else
+        echo -e "${RED}✗ Ganache failed to start${NC}"
+    fi
 fi
 
 # ============================================================================
@@ -204,10 +236,15 @@ else
     echo -e "${CYAN}Building and starting ML services...${NC}"
     docker-compose -f docker-compose-hybrid.yml up -d --build ml-gateway ml-privacy > "${LOG_DIR}/ml-services.log" 2>&1
     
-    wait_for_service "ML Gateway" 5000
-    wait_for_service "ML Privacy Filter" 5001
-    
-    echo -e "${GREEN}✓ ML services started${NC}"
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error starting ML services with docker-compose${NC}"
+        echo -e "${YELLOW}Check ${LOG_DIR}/ml-services.log for details${NC}"
+    else
+        wait_for_service "ML Gateway" 5000
+        wait_for_service "ML Privacy Filter" 5001
+        
+        echo -e "${GREEN}✓ ML services started${NC}"
+    fi
 fi
 
 # ============================================================================
@@ -225,13 +262,27 @@ else
     echo -e "${CYAN}Installing Python dependencies...${NC}"
     pip3 install --user -q Flask==2.3.0 Flask-CORS==3.0.10 web3==6.0.0 requests==2.28.0 python-dotenv==0.19.0 2>/dev/null
     
+    if [ $? -ne 0 ]; then
+        echo -e "${YELLOW}Some Python packages may not have installed. Continuing...${NC}"
+    fi
+    
     # Start orchestrator
     echo -e "${CYAN}Starting Orchestrator...${NC}"
-    nohup python3 orchestrator.py > "${LOG_DIR}/orchestrator.log" 2>&1 &
+    chmod +x "${PROJECT_ROOT}/orchestrator/start-orchestrator.sh"
+    nohup bash "${PROJECT_ROOT}/orchestrator/start-orchestrator.sh" > "${LOG_DIR}/orchestrator.log" 2>&1 &
+    ORCH_PID=$!
+    echo -e "  Process ID: $ORCH_PID"
     
     wait_for_service "Orchestrator" 5002
     
-    echo -e "${GREEN}✓ Orchestrator started${NC}"
+    if check_port 5002; then
+        echo -e "${GREEN}✓ Orchestrator started${NC}"
+    else
+        echo -e "${RED}Orchestrator failed to start properly${NC}"
+        echo -e "${YELLOW}Check ${LOG_DIR}/orchestrator.log for details${NC}"
+        echo -e "${YELLOW}Last 10 lines of log:${NC}"
+        tail -10 "${LOG_DIR}/orchestrator.log" | sed 's/^/  /'
+    fi
 fi
 
 # ============================================================================
@@ -256,11 +307,21 @@ if [ -d "${FRONTEND_PATH}" ] && [ -f "${FRONTEND_PATH}/package.json" ]; then
         
         # Start frontend (runs on port 8080)
         echo -e "${CYAN}Starting frontend on port 8080...${NC}"
-        nohup npm start > "${LOG_DIR}/frontend.log" 2>&1 &
+        cd "${FRONTEND_PATH}"
+        nohup node server.js > "${LOG_DIR}/frontend.log" 2>&1 </dev/null &
+        FRONTEND_PID=$!
+        disown $FRONTEND_PID 2>/dev/null || true
+        echo -e "  Process ID: $FRONTEND_PID"
+        cd "${PROJECT_ROOT}"
         
         wait_for_service "Frontend" 8080
         
-        echo -e "${GREEN}✓ Frontend started${NC}"
+        if check_port 8080; then
+            echo -e "${GREEN}✓ Frontend started${NC}"
+        else
+            echo -e "${YELLOW}⚠ Frontend may take longer to start${NC}"
+            echo -e "${YELLOW}Check ${LOG_DIR}/frontend.log for details${NC}"
+        fi
     fi
 else
     echo -e "${YELLOW}No frontend found. Skipping...${NC}"
