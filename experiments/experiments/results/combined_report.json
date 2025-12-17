@@ -1,55 +1,28 @@
 {
   "title": "Hybrid Blockchain Digital Twin System - Experimental Evaluation",
-  "timestamp": "2025-12-17T13:45:53.374508",
-  "duration_seconds": 412.893342,
+  "timestamp": "2025-12-17T14:44:52.629968",
+  "duration_seconds": 520.396283,
   "mode": "quick",
   "experiments": {
     "experiment_1": {
-      "status": "success",
-      "summary": {
-        "fabric_only": {
-          "mean_ms": 203.88886235004975,
-          "median_ms": 196.7439705003926,
-          "p95_ms": 242.6580883004135,
-          "p99_ms": 255.92428805906818,
-          "min_ms": 171.87852000097337,
-          "max_ms": 259.2408379987319,
-          "std_ms": 22.784015042574843,
-          "sample_count": 20
-        },
-        "fabric_ethereum": {
-          "mean_ms": 185.7228195499374,
-          "median_ms": 184.62971600092715,
-          "p95_ms": 209.4065643002978,
-          "p99_ms": 227.30757845944024,
-          "min_ms": 163.81518699927256,
-          "max_ms": 231.7828319992259,
-          "std_ms": 15.076036096525975,
-          "sample_count": 20
-        },
-        "throughput": {
-          "max_throughput_rps": 8.02385877922152,
-          "saturation_point_rps": 20,
-          "back_pressure_onset_rps": 0.0
-        }
-      },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{End-to-End Latency Results (Experiment 1)}\n\\label{tab:latency_results}\n\\begin{tabular}{lcccccc}\n\\toprule\n\\textbf{Path Type} & \\textbf{Mean} & \\textbf{Median} & \\textbf{P95} & \\textbf{P99} & \\textbf{Min} & \\textbf{Max} \\\\\n & (ms) & (ms) & (ms) & (ms) & (ms) & (ms) \\\\\n\\midrule\nFabric-Only & 203.89 & 196.74 & 242.66 & 255.92 & 171.88 & 259.24 \\\\\nFabric+Ethereum & 185.72 & 184.63 & 209.41 & 227.31 & 163.82 & 231.78 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "status": "error",
+      "error": "182 (of 930) futures unfinished"
     },
     "experiment_2": {
       "status": "success",
       "summary": {
         "total_samples": 100,
-        "accuracy": 0.6,
-        "precision_sensitive": 0.6,
+        "accuracy": 1.0,
+        "precision_sensitive": 1.0,
         "recall_sensitive": 1.0,
-        "f1_sensitive": 0.75,
+        "f1_sensitive": 1.0,
         "misroute_count": 0,
         "misroute_rate": 0.0,
         "privacy_budget_epsilon": 0.05,
         "achieved_epsilon": 0.0,
         "budget_respected": true
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Privacy Classification Performance (Experiment 2)}\n\\label{tab:privacy_classification}\n\\begin{tabular}{lcccc}\n\\toprule\n\\textbf{Class} & \\textbf{Precision} & \\textbf{Recall} & \\textbf{F1-Score} & \\textbf{Support} \\\\\n\\midrule\nPublic & 0.000 & 0.000 & 0.000 & 40 \\\\\nSensitive & 0.600 & 1.000 & 0.750 & 60 \\\\\n\\midrule\nAccuracy & \\multicolumn{4}{c}{0.600} \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Misrouting Probability vs Threshold $\\tau$ (Eq. 35)}\n\\label{tab:threshold_sweep}\n\\begin{tabular}{ccccc}\n\\toprule\n\\textbf{$\\tau$} & \\textbf{Pr[Misroute]} & \\textbf{Pr[False Public]} & \\textbf{Accuracy} & \\textbf{$\\leq \\epsilon$?} \\\\\n\\midrule\n0.1 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.2 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.3 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.4 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.5 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.6 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.7 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.8 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n0.9 & 0.0000 & 0.0000 & 0.600 & \\checkmark \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Privacy Classification Performance (Experiment 2)}\n\\label{tab:privacy_classification}\n\\begin{tabular}{lcccc}\n\\toprule\n\\textbf{Class} & \\textbf{Precision} & \\textbf{Recall} & \\textbf{F1-Score} & \\textbf{Support} \\\\\n\\midrule\nPublic & 1.000 & 1.000 & 1.000 & 40 \\\\\nSensitive & 1.000 & 1.000 & 1.000 & 60 \\\\\n\\midrule\nAccuracy & \\multicolumn{4}{c}{1.000} \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Misrouting Probability vs Threshold $\\tau$ (Eq. 35)}\n\\label{tab:threshold_sweep}\n\\begin{tabular}{ccccc}\n\\toprule\n\\textbf{$\\tau$} & \\textbf{Pr[Misroute]} & \\textbf{Pr[False Public]} & \\textbf{Accuracy} & \\textbf{$\\leq \\epsilon$?} \\\\\n\\midrule\n0.1 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.2 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.3 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.4 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.5 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.6 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.7 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.8 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.9 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_3": {
       "status": "success",
@@ -61,7 +34,7 @@
         "optimal_gas_reduction_percent": 99.5,
         "optimal_cost_per_record_usd": 0.04
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Gas Efficiency of Merkle-Batched Anchoring (Experiment 3)}\n\\label{tab:gas_efficiency}\n\\begin{tabular}{rrrrrr}\n\\toprule\n\\textbf{Batch Size} & \\textbf{Gas/Record} & \\textbf{Reduction} & \\textbf{Cost/Record} & \\textbf{Latency} \\\\\n\\textbf{(N)} & & \\textbf{(\\%)} & \\textbf{(USD)} & \\textbf{(ms)} \\\\\n\\midrule\n1 (baseline) & 200000 & -- & \\$8.0000 & -- \\\\\n\\midrule\n2 & 100000 & 50.0\\% & \\$4.0000 & 48.7 \\\\\n5 & 40000 & 80.0\\% & \\$1.6000 & 45.0 \\\\\n10 & 20000 & 90.0\\% & \\$0.8000 & 47.0 \\\\\n20 & 10000 & 95.0\\% & \\$0.4000 & 57.3 \\\\\n50 & 4000 & 98.0\\% & \\$0.1600 & 60.1 \\\\\n100 & 2000 & 99.0\\% & \\$0.0800 & 46.1 \\\\\n200 & 1000 & 99.5\\% & \\$0.0400 & 39.9 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Gas Efficiency of Merkle-Batched Anchoring (Experiment 3)}\n\\label{tab:gas_efficiency}\n\\begin{tabular}{rrrrrr}\n\\toprule\n\\textbf{Batch Size} & \\textbf{Gas/Record} & \\textbf{Reduction} & \\textbf{Cost/Record} & \\textbf{Latency} \\\\\n\\textbf{(N)} & & \\textbf{(\\%)} & \\textbf{(USD)} & \\textbf{(ms)} \\\\\n\\midrule\n1 (baseline) & 200000 & -- & \\$8.0000 & -- \\\\\n\\midrule\n2 & 100000 & 50.0\\% & \\$4.0000 & 67.6 \\\\\n5 & 40000 & 80.0\\% & \\$1.6000 & 63.6 \\\\\n10 & 20000 & 90.0\\% & \\$0.8000 & 68.6 \\\\\n20 & 10000 & 95.0\\% & \\$0.4000 & 65.5 \\\\\n50 & 4000 & 98.0\\% & \\$0.1600 & 94.7 \\\\\n100 & 2000 & 99.0\\% & \\$0.0800 & 94.9 \\\\\n200 & 1000 & 99.5\\% & \\$0.0400 & 64.3 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_4": {
       "status": "success",
@@ -69,8 +42,8 @@
         "max_practical_rollback_depth": 20,
         "max_versions_tested": 20,
         "final_storage_reduction_percent": 0.0,
-        "full_snapshot_storage_kb": 9.96875,
-        "delta_storage_kb": 9.96875,
+        "full_snapshot_storage_kb": 9.962890625,
+        "delta_storage_kb": 9.962890625,
         "rollback_depths_tested": [
           1,
           2,
@@ -78,9 +51,9 @@
           10,
           20
         ],
-        "avg_checkpoint_speedup_percent": -48.0
+        "avg_checkpoint_speedup_percent": 65.80266290383685
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Versioning Storage Overhead (Experiment 4, Eq. 38)}\n\\label{tab:storage_overhead}\n\\begin{tabular}{rrrr}\n\\toprule\n\\textbf{Versions} & \\textbf{Full Snapshots} & \\textbf{Delta-Based} & \\textbf{Reduction} \\\\\n & (KB) & (KB) & (\\%) \\\\\n\\midrule\n5 & 2.5 & 2.5 & 0.0 \\\\\n10 & 5.0 & 5.0 & 0.0 \\\\\n20 & 10.0 & 10.0 & 0.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Rollback Latency vs Depth (Experiment 4, Eq. 42)}\n\\label{tab:rollback_latency}\n\\begin{tabular}{rrrrr}\n\\toprule\n\\textbf{Depth} & \\textbf{Avg Latency} & \\textbf{P95 Latency} & \\textbf{With Checkpoint} & \\textbf{Speedup} \\\\\n & (ms) & (ms) & (ms) & (\\%) \\\\\n\\midrule\n1 & 3.0 & 3.5 & 12.1 & -300.0 \\\\\n2 & 3.5 & 4.5 & 7.0 & -100.0 \\\\\n5 & 2.9 & 3.1 & 2.3 & 20.0 \\\\\n10 & 3.2 & 3.6 & 1.3 & 60.0 \\\\\n20 & 3.2 & 3.7 & 0.6 & 80.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Versioning Storage Overhead (Experiment 4, Eq. 38)}\n\\label{tab:storage_overhead}\n\\begin{tabular}{rrrr}\n\\toprule\n\\textbf{Versions} & \\textbf{Full Snapshots} & \\textbf{Delta-Based} & \\textbf{Reduction} \\\\\n & (KB) & (KB) & (\\%) \\\\\n\\midrule\n5 & 2.5 & 2.5 & 0.0 \\\\\n10 & 5.0 & 5.0 & 0.0 \\\\\n20 & 10.0 & 10.0 & 0.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Rollback Latency vs Depth (Experiment 4, Eq. 42)}\n\\label{tab:rollback_latency}\n\\begin{tabular}{rrrrr}\n\\toprule\n\\textbf{Depth} & \\textbf{Avg Latency} & \\textbf{P95 Latency} & \\textbf{With Checkpoint} & \\textbf{Speedup} \\\\\n & (ms) & (ms) & (ms) & (\\%) \\\\\n\\midrule\n1 & 3.5 & 4.4 & 0.5 & 85.0 \\\\\n2 & 2.7 & 2.8 & 0.6 & 79.0 \\\\\n5 & 2.7 & 2.9 & 1.8 & 35.0 \\\\\n10 & 7.5 & 12.9 & 3.7 & 50.0 \\\\\n20 & 2.3 & 2.5 & 0.5 & 80.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_5": {
       "status": "success",

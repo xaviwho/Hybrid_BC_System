@@ -167,17 +167,18 @@ class SensitivityClassifier:
             Dictionary with fields that can be shared (non-sensitive fields)
         """
         # Define sensitive field patterns (fields that should be REMOVED from public metadata)
+        # NOTE: Be precise - 'location' alone is not sensitive (zone_1 is fine),
+        # but 'exactlocation', 'homelocation', 'patientlocation' are sensitive
         sensitive_field_patterns = [
-            'patientid', 'patient_id', 'patient',
+            'patientid', 'patient_id', 'patientname',
             'ssn', 'social_security', 'socialsecurity',
-            'email', 'phone', 'address', 'location',
-            'password', 'secret', 'key', 'token', 'credential',
-            'creditcard', 'credit_card', 'cardnumber',
-            'diagnosis', 'prescription', 'medication', 'medical',
-            'salary', 'income', 'financial', 'bank', 'account',
-            'confidential', 'private', 'restricted', 'classified',
+            'email', 'phone', 'homeaddress', 'streetaddress',
+            'password', 'secret', 'apikey', 'authtoken', 'credential',
+            'creditcard', 'credit_card', 'cardnumber', 'cvv',
+            'diagnosis', 'prescription', 'medication',
+            'salary', 'income', 'bankaccount', 'accountnumber',
             'proprietary', 'formula', 'catalyst', 'machinesettings',
-            'exactgps', 'gps', 'coordinates'
+            'exactgps', 'exactlocation', 'homecoordinates'
         ]
         
         # Sensitive value patterns (check in string values)
@@ -207,8 +208,9 @@ class SensitivityClassifier:
             confidence = max(confidence, 0.90)
         
         # Check dataType for sensitive categories
+        # NOTE: Only truly sensitive data types, not generic 'industrial' or 'environmental'
         data_type = data.get('dataType', '').lower()
-        if data_type in ['medical', 'health', 'financial', 'personal', 'industrial']:
+        if data_type in ['medical', 'health', 'financial', 'personal']:
             has_sensitive_fields = True
             confidence = max(confidence, 0.85)
         

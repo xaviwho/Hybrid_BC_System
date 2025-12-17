@@ -17,31 +17,6 @@ This document presents the experimental evaluation results for the Hybrid Blockc
 The experiments validate the analytical models presented in the paper.
 
 
-\section{Experiment 1: End-to-End Latency and Throughput (Eq. 28, 30-32)}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{exp1/exp1_*.png}
-\caption{Experiment 1 Results}
-\end{figure}
-
-
-\begin{table}[htbp]
-\centering
-\caption{End-to-End Latency Results (Experiment 1)}
-\label{tab:latency_results}
-\begin{tabular}{lcccccc}
-\toprule
-\textbf{Path Type} & \textbf{Mean} & \textbf{Median} & \textbf{P95} & \textbf{P99} & \textbf{Min} & \textbf{Max} \\
- & (ms) & (ms) & (ms) & (ms) & (ms) & (ms) \\
-\midrule
-Fabric-Only & 203.89 & 196.74 & 242.66 & 255.92 & 171.88 & 259.24 \\
-Fabric+Ethereum & 185.72 & 184.63 & 209.41 & 227.31 & 163.82 & 231.78 \\
-
-\bottomrule
-\end{tabular}
-\end{table}
-
 \section{Experiment 2: Privacy Routing Accuracy and Risk Control (Eq. 35)}
 
 \begin{figure}[H]
@@ -59,10 +34,10 @@ Fabric+Ethereum & 185.72 & 184.63 & 209.41 & 227.31 & 163.82 & 231.78 \\
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
 \midrule
-Public & 0.000 & 0.000 & 0.000 & 40 \\
-Sensitive & 0.600 & 1.000 & 0.750 & 60 \\
+Public & 1.000 & 1.000 & 1.000 & 40 \\
+Sensitive & 1.000 & 1.000 & 1.000 & 60 \\
 \midrule
-Accuracy & \multicolumn{4}{c}{0.600} \\
+Accuracy & \multicolumn{4}{c}{1.000} \\
 
 \bottomrule
 \end{tabular}
@@ -77,15 +52,15 @@ Accuracy & \multicolumn{4}{c}{0.600} \\
 \toprule
 \textbf{$\tau$} & \textbf{Pr[Misroute]} & \textbf{Pr[False Public]} & \textbf{Accuracy} & \textbf{$\leq \epsilon$?} \\
 \midrule
-0.1 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.2 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.3 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.4 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.5 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.6 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.7 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.8 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
-0.9 & 0.0000 & 0.0000 & 0.600 & \checkmark \\
+0.1 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.2 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.3 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.4 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.5 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.6 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.7 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.8 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
+0.9 & 0.0000 & 0.0000 & 1.000 & \checkmark \\
 
 \bottomrule
 \end{tabular}
@@ -111,13 +86,13 @@ Accuracy & \multicolumn{4}{c}{0.600} \\
 \midrule
 1 (baseline) & 200000 & -- & \$8.0000 & -- \\
 \midrule
-2 & 100000 & 50.0\% & \$4.0000 & 48.7 \\
-5 & 40000 & 80.0\% & \$1.6000 & 45.0 \\
-10 & 20000 & 90.0\% & \$0.8000 & 47.0 \\
-20 & 10000 & 95.0\% & \$0.4000 & 57.3 \\
-50 & 4000 & 98.0\% & \$0.1600 & 60.1 \\
-100 & 2000 & 99.0\% & \$0.0800 & 46.1 \\
-200 & 1000 & 99.5\% & \$0.0400 & 39.9 \\
+2 & 100000 & 50.0\% & \$4.0000 & 67.6 \\
+5 & 40000 & 80.0\% & \$1.6000 & 63.6 \\
+10 & 20000 & 90.0\% & \$0.8000 & 68.6 \\
+20 & 10000 & 95.0\% & \$0.4000 & 65.5 \\
+50 & 4000 & 98.0\% & \$0.1600 & 94.7 \\
+100 & 2000 & 99.0\% & \$0.0800 & 94.9 \\
+200 & 1000 & 99.5\% & \$0.0400 & 64.3 \\
 
 \bottomrule
 \end{tabular}
@@ -159,11 +134,11 @@ Accuracy & \multicolumn{4}{c}{0.600} \\
 \textbf{Depth} & \textbf{Avg Latency} & \textbf{P95 Latency} & \textbf{With Checkpoint} & \textbf{Speedup} \\
  & (ms) & (ms) & (ms) & (\%) \\
 \midrule
-1 & 3.0 & 3.5 & 12.1 & -300.0 \\
-2 & 3.5 & 4.5 & 7.0 & -100.0 \\
-5 & 2.9 & 3.1 & 2.3 & 20.0 \\
-10 & 3.2 & 3.6 & 1.3 & 60.0 \\
-20 & 3.2 & 3.7 & 0.6 & 80.0 \\
+1 & 3.5 & 4.4 & 0.5 & 85.0 \\
+2 & 2.7 & 2.8 & 0.6 & 79.0 \\
+5 & 2.7 & 2.9 & 1.8 & 35.0 \\
+10 & 7.5 & 12.9 & 3.7 & 50.0 \\
+20 & 2.3 & 2.5 & 0.5 & 80.0 \\
 
 \bottomrule
 \end{tabular}
