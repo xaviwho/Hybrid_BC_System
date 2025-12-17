@@ -1,0 +1,17 @@
+{
+  "deviceId": "cnc_machine_factory_floor2_unit05",
+  "location": "Manufacturing Plant - Floor 2",
+  "dataType": "industrial",
+  "privacyLevel": "high",
+  "data": {
+    "productQuality": "Grade A",
+    "defectRate": 0.02,
+    "outputUnits": 1500,
+    "efficiency": 94.5,
+    "operatingHours": 1250,
+    "maintenanceStatus": "Good",
+    "proprietaryProcessTemp": 450,
+    "secretCatalystFormula": "CONFIDENTIAL_FORMULA_X_2024",
+    "machineSettings": "PROPRIETARY_PARAMS_CLASSIFIED"
+  }
+}

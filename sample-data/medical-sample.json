@@ -1,0 +1,16 @@
+{
+  "deviceId": "medical_monitor_ward5_bed12",
+  "location": "City Hospital - Ward 5",
+  "dataType": "medical",
+  "privacyLevel": "high",
+  "data": {
+    "heartRate": 72,
+    "bloodPressure": "120/80",
+    "oxygenLevel": 98,
+    "temperature": 36.7,
+    "respiratoryRate": 16,
+    "patientId": "CONFIDENTIAL_P12345",
+    "patientAge": 45,
+    "diagnosis": "Post-surgery recovery - stable condition"
+  }
+}

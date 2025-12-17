@@ -1,0 +1,412 @@
+{
+  "timestamp": "2025-12-17T13:45:44.925308",
+  "idempotency_results": [
+    {
+      "idempotency_key": "a78543b2dcaaf11f",
+      "total_attempts": 3,
+      "unique_responses": 1,
+      "duplicate_detected": false,
+      "all_responses_identical": true,
+      "tx_hashes": [
+        "0x046d56a26991b522217c19e46e7dc9eb7eed3b41d380997bb338d372c7ba4fc8"
+      ]
+    },
+    {
+      "idempotency_key": "3115b56edefe7f0d",
+      "total_attempts": 3,
+      "unique_responses": 1,
+      "duplicate_detected": false,
+      "all_responses_identical": true,
+      "tx_hashes": [
+        "0x2c0461aa76adee6c666e0d220e0a17302bb9ad3264ffe91304b037e08aa4dd04"
+      ]
+    },
+    {
+      "idempotency_key": "7573742c15995112",
+      "total_attempts": 3,
+      "unique_responses": 1,
+      "duplicate_detected": false,
+      "all_responses_identical": true,
+      "tx_hashes": [
+        "0x57d18a7f6d44b43b1089392906673dff369aac4cc06e931cbdce4cf9a979720c"
+      ]
+    },
+    {
+      "idempotency_key": "9b919290637322f5",
+      "total_attempts": 3,
+      "unique_responses": 1,
+      "duplicate_detected": false,
+      "all_responses_identical": true,
+      "tx_hashes": [
+        "0x09d8539d5e51a531f3b301943fd047c82d8236b12ef6568111c04990349ff8c7"
+      ]
+    },
+    {
+      "idempotency_key": "21f1cbec0e3f9f09",
+      "total_attempts": 3,
+      "unique_responses": 1,
+      "duplicate_detected": false,
+      "all_responses_identical": true,
+      "tx_hashes": [
+        "0xa2626f586a7e2a54095f5bc07a2d52cd2aea7a86c528cb8d2117728b3e4c981e"
+      ]
+    }
+  ],
+  "failure_injection_results": [
+    {
+      "test_name": "Orchestrator Crash Recovery",
+      "failure_type": "orchestrator_crash",
+      "total_requests": 8,
+      "successful_requests": 8,
+      "duplicate_anchors": 10,
+      "lost_commits": 0,
+      "state_consistent": false,
+      "recovery_time_ms": 0,
+      "details": {
+        "initial_successful": 4,
+        "initial_failed": 4,
+        "recovered": 4
+      }
+    },
+    {
+      "test_name": "Ethereum Relay Failure",
+      "failure_type": "ethereum_relay_failure",
+      "total_requests": 8,
+      "successful_requests": 8,
+      "duplicate_anchors": 0,
+      "lost_commits": 0,
+      "state_consistent": true,
+      "recovery_time_ms": 0,
+      "details": {
+        "fabric_commits": 8,
+        "ethereum_anchors": 8,
+        "pending_ethereum": 0
+      }
+    },
+    {
+      "test_name": "Concurrent Duplicate Handling",
+      "failure_type": "duplicate_requests",
+      "total_requests": 12,
+      "successful_requests": 4,
+      "duplicate_anchors": 0,
+      "lost_commits": 0,
+      "state_consistent": true,
+      "recovery_time_ms": 0,
+      "details": {
+        "unique_requests": 4,
+        "duplicates_per_request": 3,
+        "successful_unique": 4
+      }
+    }
+  ],
+  "request_results": [
+    {
+      "request_id": "idempotency_test_0_1765946744",
+      "idempotency_key": "a78543b2dcaaf11f",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x046d56a26991b522217c19e46e7dc9eb7eed3b41d380997bb338d372c7ba4fc8",
+      "fabric_tx_id": "fabric_tx_a41fa7d30c9cdbbf",
+      "latency_ms": 169.33812800016312,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_0_1765946744",
+      "idempotency_key": "a78543b2dcaaf11f",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x046d56a26991b522217c19e46e7dc9eb7eed3b41d380997bb338d372c7ba4fc8",
+      "fabric_tx_id": "fabric_tx_a41fa7d30c9cdbbf",
+      "latency_ms": 3.8157799990585772,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_0_1765946744",
+      "idempotency_key": "a78543b2dcaaf11f",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x046d56a26991b522217c19e46e7dc9eb7eed3b41d380997bb338d372c7ba4fc8",
+      "fabric_tx_id": "fabric_tx_a41fa7d30c9cdbbf",
+      "latency_ms": 3.025799000170082,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_1_1765946745",
+      "idempotency_key": "3115b56edefe7f0d",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x2c0461aa76adee6c666e0d220e0a17302bb9ad3264ffe91304b037e08aa4dd04",
+      "fabric_tx_id": "fabric_tx_fca9c487e79d78a2",
+      "latency_ms": 195.13832699885825,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_1_1765946745",
+      "idempotency_key": "3115b56edefe7f0d",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x2c0461aa76adee6c666e0d220e0a17302bb9ad3264ffe91304b037e08aa4dd04",
+      "fabric_tx_id": "fabric_tx_fca9c487e79d78a2",
+      "latency_ms": 2.948882000055164,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_1_1765946745",
+      "idempotency_key": "3115b56edefe7f0d",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x2c0461aa76adee6c666e0d220e0a17302bb9ad3264ffe91304b037e08aa4dd04",
+      "fabric_tx_id": "fabric_tx_fca9c487e79d78a2",
+      "latency_ms": 2.664133000507718,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_2_1765946745",
+      "idempotency_key": "7573742c15995112",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x57d18a7f6d44b43b1089392906673dff369aac4cc06e931cbdce4cf9a979720c",
+      "fabric_tx_id": "fabric_tx_feaf6312f684d937",
+      "latency_ms": 184.16287699983513,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_2_1765946745",
+      "idempotency_key": "7573742c15995112",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x57d18a7f6d44b43b1089392906673dff369aac4cc06e931cbdce4cf9a979720c",
+      "fabric_tx_id": "fabric_tx_feaf6312f684d937",
+      "latency_ms": 3.4671229986997787,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_2_1765946745",
+      "idempotency_key": "7573742c15995112",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x57d18a7f6d44b43b1089392906673dff369aac4cc06e931cbdce4cf9a979720c",
+      "fabric_tx_id": "fabric_tx_feaf6312f684d937",
+      "latency_ms": 3.649829999631038,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_3_1765946746",
+      "idempotency_key": "9b919290637322f5",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x09d8539d5e51a531f3b301943fd047c82d8236b12ef6568111c04990349ff8c7",
+      "fabric_tx_id": "fabric_tx_85dad40f32281745",
+      "latency_ms": 190.42565199924866,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_3_1765946746",
+      "idempotency_key": "9b919290637322f5",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x09d8539d5e51a531f3b301943fd047c82d8236b12ef6568111c04990349ff8c7",
+      "fabric_tx_id": "fabric_tx_85dad40f32281745",
+      "latency_ms": 2.81000200084236,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_3_1765946746",
+      "idempotency_key": "9b919290637322f5",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x09d8539d5e51a531f3b301943fd047c82d8236b12ef6568111c04990349ff8c7",
+      "fabric_tx_id": "fabric_tx_85dad40f32281745",
+      "latency_ms": 11.363767000148073,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_4_1765946746",
+      "idempotency_key": "21f1cbec0e3f9f09",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xa2626f586a7e2a54095f5bc07a2d52cd2aea7a86c528cb8d2117728b3e4c981e",
+      "fabric_tx_id": "fabric_tx_91c13decb076d075",
+      "latency_ms": 202.26992000061728,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_4_1765946746",
+      "idempotency_key": "21f1cbec0e3f9f09",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xa2626f586a7e2a54095f5bc07a2d52cd2aea7a86c528cb8d2117728b3e4c981e",
+      "fabric_tx_id": "fabric_tx_91c13decb076d075",
+      "latency_ms": 4.3848559998878045,
+      "error": ""
+    },
+    {
+      "request_id": "idempotency_test_4_1765946746",
+      "idempotency_key": "21f1cbec0e3f9f09",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xa2626f586a7e2a54095f5bc07a2d52cd2aea7a86c528cb8d2117728b3e4c981e",
+      "fabric_tx_id": "fabric_tx_91c13decb076d075",
+      "latency_ms": 3.819146999376244,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_0_1765946750",
+      "idempotency_key": "8032678037a98d6d",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x23151d78cb83a73e023357f90c0b4ded9b3a6d622f136ad089ec98863945a1b3",
+      "fabric_tx_id": "fabric_tx_30379d72967e035f",
+      "latency_ms": 186.06732499938516,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_0_1765946750",
+      "idempotency_key": "8032678037a98d6d",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x23151d78cb83a73e023357f90c0b4ded9b3a6d622f136ad089ec98863945a1b3",
+      "fabric_tx_id": "fabric_tx_30379d72967e035f",
+      "latency_ms": 191.12970599962864,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_0_1765946750",
+      "idempotency_key": "8032678037a98d6d",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x23151d78cb83a73e023357f90c0b4ded9b3a6d622f136ad089ec98863945a1b3",
+      "fabric_tx_id": "fabric_tx_30379d72967e035f",
+      "latency_ms": 189.56514000092284,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_1_1765946750",
+      "idempotency_key": "1309fc76baebbbb9",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xc05a8e7819901b59b1f8e9b34fd32201631c3084214739a98c46979683b6ad21",
+      "fabric_tx_id": "fabric_tx_614c54957ac25d2d",
+      "latency_ms": 184.04451700007485,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_1_1765946750",
+      "idempotency_key": "1309fc76baebbbb9",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xc05a8e7819901b59b1f8e9b34fd32201631c3084214739a98c46979683b6ad21",
+      "fabric_tx_id": "fabric_tx_614c54957ac25d2d",
+      "latency_ms": 183.1212510005571,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_1_1765946750",
+      "idempotency_key": "1309fc76baebbbb9",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xc05a8e7819901b59b1f8e9b34fd32201631c3084214739a98c46979683b6ad21",
+      "fabric_tx_id": "fabric_tx_614c54957ac25d2d",
+      "latency_ms": 185.57855799917888,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_2_1765946750",
+      "idempotency_key": "d5a0e189b1143f34",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xbb869c2bb65fee4b3231d8b0797d94572b3ef050d65c977212d456a0d382fb6a",
+      "fabric_tx_id": "fabric_tx_7aec88b4c35dbe22",
+      "latency_ms": 494.3095020007604,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_2_1765946750",
+      "idempotency_key": "d5a0e189b1143f34",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xbb869c2bb65fee4b3231d8b0797d94572b3ef050d65c977212d456a0d382fb6a",
+      "fabric_tx_id": "fabric_tx_7aec88b4c35dbe22",
+      "latency_ms": 495.7580190002773,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_2_1765946750",
+      "idempotency_key": "d5a0e189b1143f34",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0xbb869c2bb65fee4b3231d8b0797d94572b3ef050d65c977212d456a0d382fb6a",
+      "fabric_tx_id": "fabric_tx_7aec88b4c35dbe22",
+      "latency_ms": 493.9300030000595,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_3_1765946750",
+      "idempotency_key": "f158a937246f7864",
+      "attempt_number": 2,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x12557076fbd760b2503ca1babf1533c7c27a659a0c35fc6eb2105e3286032b27",
+      "fabric_tx_id": "fabric_tx_9bc75877de5a5101",
+      "latency_ms": 196.121878001577,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_3_1765946750",
+      "idempotency_key": "f158a937246f7864",
+      "attempt_number": 3,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x12557076fbd760b2503ca1babf1533c7c27a659a0c35fc6eb2105e3286032b27",
+      "fabric_tx_id": "fabric_tx_9bc75877de5a5101",
+      "latency_ms": 194.7487959987484,
+      "error": ""
+    },
+    {
+      "request_id": "dup_test_3_1765946750",
+      "idempotency_key": "f158a937246f7864",
+      "attempt_number": 1,
+      "success": true,
+      "response_code": 200,
+      "ethereum_tx_hash": "0x12557076fbd760b2503ca1babf1533c7c27a659a0c35fc6eb2105e3286032b27",
+      "fabric_tx_id": "fabric_tx_9bc75877de5a5101",
+      "latency_ms": 197.31325900102092,
+      "error": ""
+    }
+  ],
+  "exactly_once_verified": true,
+  "total_duplicate_anchors": 0,
+  "total_lost_commits": 0,
+  "summary": {
+    "total_requests": 27,
+    "successful_requests": 27,
+    "total_duplicate_anchors": 0,
+    "total_lost_commits": 0,
+    "exactly_once_verified": true,
+    "idempotency_pass_rate": 1.0
+  }
+}

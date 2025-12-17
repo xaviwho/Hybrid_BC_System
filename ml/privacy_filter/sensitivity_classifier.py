@@ -164,54 +164,103 @@ class SensitivityClassifier:
             requester_access_level: Access level of the requester ('public', 'user', 'researcher', 'admin')
             
         Returns:
-            Dictionary with fields that can be shared
+            Dictionary with fields that can be shared (non-sensitive fields)
         """
-        # Convert access level to numeric
-        if isinstance(requester_access_level, str):
-            access_level_num = self.access_levels.get(requester_access_level.lower(), 1)
-        else:
-            access_level_num = requester_access_level
-            
-        # Get data sensitivity level
-        if 'sensitivityLevel' in data and isinstance(data['sensitivityLevel'], str):
-            sensitivity_level = self.sensitivity_levels.get(data['sensitivityLevel'].lower(), 4)
-        else:
-            sensitivity_level = data.get('sensitivityLevel', 4)
-            
-        # Basic sharing rules:
-        # - Public data (1): Share all non-sensitive fields with everyone
-        # - Restricted data (2): Share basic info with users+ access
-        # - Confidential data (3): Share limited info with researchers+ access
-        # - Critical data (4): Share minimal info with admins only
+        # Define sensitive field patterns (fields that should be REMOVED from public metadata)
+        sensitive_field_patterns = [
+            'patientid', 'patient_id', 'patient',
+            'ssn', 'social_security', 'socialsecurity',
+            'email', 'phone', 'address', 'location',
+            'password', 'secret', 'key', 'token', 'credential',
+            'creditcard', 'credit_card', 'cardnumber',
+            'diagnosis', 'prescription', 'medication', 'medical',
+            'salary', 'income', 'financial', 'bank', 'account',
+            'confidential', 'private', 'restricted', 'classified',
+            'proprietary', 'formula', 'catalyst', 'machinesettings',
+            'exactgps', 'gps', 'coordinates'
+        ]
         
+        # Sensitive value patterns (check in string values)
+        sensitive_value_patterns = [
+            'patient', 'p12345', 'ssn', 'confidential', 'secret',
+            'private', 'classified', 'proprietary', 'formula'
+        ]
+        
+        # Start with all data
         shareable_data = {}
         
-        # Always shareable fields
-        shareable_data['id'] = data.get('id', '')
-        shareable_data['timestamp'] = data.get('timestamp', '')
+        # Determine data sensitivity
+        data_sensitivity = 'public'
+        has_sensitive_fields = False
+        confidence = 0.5  # Base confidence
         
-        # Conditionally shareable fields based on sensitivity vs access level
-        if access_level_num >= sensitivity_level:
-            # Full access
-            for key, value in data.items():
-                if key not in ['encryptedData', 'publicKey']:
-                    shareable_data[key] = value
-        elif access_level_num == 3 and sensitivity_level == 4:
-            # Researcher access to critical data
-            shareable_data['deviceId'] = data.get('deviceId', '')
-            shareable_data['dataType'] = data.get('dataType', '')
-            # Provide sanitized/aggregated values
-            if 'value' in data:
-                shareable_data['value'] = 'SANITIZED'
-        elif access_level_num == 2 and sensitivity_level >= 3:
-            # User access to confidential/critical data
-            shareable_data['deviceId'] = data.get('deviceId', '')
-            shareable_data['dataType'] = data.get('dataType', '')
-            # No values provided
-        elif access_level_num == 1:
-            # Public access gets minimal info regardless of sensitivity
-            shareable_data['dataType'] = data.get('dataType', '')
+        # Check if data explicitly declares sensitivity level
+        explicit_sensitivity = data.get('sensitivityLevel', '').lower()
+        if explicit_sensitivity in ['sensitive', 'restricted', 'confidential', 'critical', 'private']:
+            has_sensitive_fields = True
+            confidence = 0.95  # High confidence when explicitly marked
+        
+        # Check privacyLevel field (common in IoT data)
+        privacy_level = data.get('privacyLevel', '').lower()
+        if privacy_level in ['high', 'sensitive', 'restricted', 'confidential']:
+            has_sensitive_fields = True
+            confidence = max(confidence, 0.90)
+        
+        # Check dataType for sensitive categories
+        data_type = data.get('dataType', '').lower()
+        if data_type in ['medical', 'health', 'financial', 'personal', 'industrial']:
+            has_sensitive_fields = True
+            confidence = max(confidence, 0.85)
+        
+        # Check each field for sensitive patterns
+        sensitive_field_count = 0
+        total_fields = len(data)
+        
+        for key, value in data.items():
+            key_lower = key.lower().replace('_', '').replace('-', '')
             
+            # Check if this field matches any sensitive pattern
+            is_sensitive = any(pattern in key_lower for pattern in sensitive_field_patterns)
+            
+            # Also check value content for sensitive patterns
+            if isinstance(value, str):
+                value_lower = value.lower()
+                if any(pattern in value_lower for pattern in sensitive_value_patterns):
+                    is_sensitive = True
+            
+            # Check nested data objects
+            if isinstance(value, dict):
+                for nested_key in value.keys():
+                    nested_lower = nested_key.lower().replace('_', '').replace('-', '')
+                    if any(pattern in nested_lower for pattern in sensitive_field_patterns):
+                        is_sensitive = True
+                        break
+            
+            if is_sensitive:
+                has_sensitive_fields = True
+                sensitive_field_count += 1
+                # Skip this field - don't add to shareable data
+                continue
+            else:
+                # This field is safe to share
+                shareable_data[key] = value
+        
+        # Calculate confidence based on sensitive field ratio
+        if total_fields > 0 and sensitive_field_count > 0:
+            field_ratio = sensitive_field_count / total_fields
+            confidence = max(confidence, 0.5 + field_ratio * 0.5)
+        
+        # Determine overall sensitivity
+        if has_sensitive_fields:
+            data_sensitivity = 'sensitive'
+        else:
+            data_sensitivity = 'public'
+            confidence = 1.0 - confidence  # Invert for public classification
+        
+        # Add data sensitivity and confidence to result
+        shareable_data['data_sensitivity'] = data_sensitivity
+        shareable_data['confidence'] = round(confidence, 4)
+        
         return shareable_data
     
     def save(self, model_path=None, preprocessor_path=None):

@@ -88,16 +88,21 @@ def filter_data():
         iot_data = request_data['iot_data']
         access_level = request_data['requester_access_level']
         
-        # Determine shareable fields
-        shareable_data = classifier.determine_shareable_fields(iot_data, access_level)
+        # Determine shareable fields (now includes confidence)
+        shareable_result = classifier.determine_shareable_fields(iot_data, access_level)
+        
+        # Extract confidence and sensitivity from classifier result
+        data_sensitivity = shareable_result.pop('data_sensitivity', 'unknown')
+        confidence = shareable_result.pop('confidence', 0.5)
         
         # Add request metadata
         result = {
             'request_id': request_data.get('request_id', f"req-{datetime.now().timestamp()}"),
             'timestamp': datetime.now().isoformat(),
             'requester_access_level': access_level,
-            'data_sensitivity': iot_data.get('sensitivityLevel', 'unknown'),
-            'shareable_data': shareable_data
+            'data_sensitivity': data_sensitivity,
+            'confidence': confidence,
+            'shareable_data': shareable_result
         }
         
         return jsonify({

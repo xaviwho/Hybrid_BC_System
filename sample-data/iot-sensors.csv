@@ -1,0 +1,6 @@
+deviceId,location,temperature,humidity,airQuality,pm25,co2Level
+env_sensor_001,Building A - Floor 3,22.5,65,good,12,410
+env_sensor_002,Building A - Floor 2,23.1,62,good,15,405
+env_sensor_003,Building B - Floor 1,21.8,68,moderate,22,430
+env_sensor_004,Building B - Floor 3,22.9,60,good,10,395
+env_sensor_005,Building C - Lobby,24.2,58,good,8,385

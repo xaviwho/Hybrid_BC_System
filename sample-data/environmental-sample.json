@@ -1,0 +1,17 @@
+{
+  "deviceId": "air_quality_sensor_downtown_01",
+  "location": "Downtown District - Main Street",
+  "dataType": "environmental",
+  "privacyLevel": "medium",
+  "data": {
+    "temperature": 22.5,
+    "humidity": 65,
+    "airQuality": "good",
+    "pm25": 12,
+    "pm10": 18,
+    "co2Level": 410,
+    "noiseLevel": 55,
+    "exactGPS": "37.7749,-122.4194",
+    "nearbyAddress": "123 Main Street"
+  }
+}

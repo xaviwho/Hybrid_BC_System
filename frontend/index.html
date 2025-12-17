@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -15,10 +16,11 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-shield-alt"></i>
-                    <h1>Hybrid BC IoT</h1>
+                    <h1>Hybrid BC</h1>
                 </div>
                 <nav class="nav">
                     <a href="#dashboard" class="nav-link active">Dashboard</a>
+                    <a href="#realtime-twins" class="nav-link">Real-Time Twins</a>
                     <a href="#data-ingestion" class="nav-link">Data Ingestion</a>
                     <a href="#privacy-controls" class="nav-link">Privacy Controls</a>
                     <a href="#blockchain" class="nav-link">Blockchain</a>
@@ -89,7 +91,7 @@
                             <div class="flow-icon">
                                 <i class="fas fa-microchip"></i>
                             </div>
-                            <span>IoT Device</span>
+                            <span>Device</span>
                         </div>
                         <div class="flow-arrow">→</div>
                         <div class="flow-step">
@@ -135,6 +137,47 @@
                 </div>
             </section>
 
+            <!-- Real-Time Digital Twins Section -->
+            <section id="realtime-twins" class="section">
+                <div class="section-header">
+                    <h2>Real-Time Digital Twins</h2>
+                    <p>Live monitoring and synchronization of digital twin states</p>
+                </div>
+
+                <!-- Connection Status -->
+                <div class="connection-status-bar">
+                    <div class="status-indicator" id="ws-status">
+                        <span class="status-dot disconnected"></span>
+                        <span class="status-text">Disconnected</span>
+                    </div>
+                    <div class="connection-info">
+                        <span id="active-twins-count">0 Active Twins</span>
+                        <span class="separator">|</span>
+                        <span id="connected-clients">0 Connected Clients</span>
+                    </div>
+                </div>
+
+                <!-- Active Twins Grid -->
+                <div class="twins-grid" id="twins-grid">
+                    <div class="empty-state">
+                        <i class="fas fa-cube"></i>
+                        <p>No active digital twins</p>
+                        <small>Submit data or stream real-time updates to see twins here</small>
+                    </div>
+                </div>
+
+                <!-- Real-Time Data Stream -->
+                <div class="stream-container">
+                    <h3>Live Data Stream</h3>
+                    <div class="stream-log" id="stream-log">
+                        <div class="log-entry">
+                            <span class="log-time">--:--:--</span>
+                            <span class="log-message">Waiting for real-time updates...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Data Ingestion Section -->
             <section id="data-ingestion" class="section">
                 <div class="section-header">
@@ -145,6 +188,64 @@
                 <div class="ingestion-container">
                     <div class="ingestion-form">
                         <h3>Submit Digital Twin Data</h3>
+                        
+                        <!-- Quick Test Buttons -->
+                        <div class="quick-test-section">
+                            <h4><i class="fas fa-bolt"></i> Quick Test Data:</h4>
+                            <div class="quick-test-buttons">
+                                <button type="button" class="btn-quick" onclick="loadSampleData('environmental')">
+                                    <i class="fas fa-cloud"></i> Environmental
+                                </button>
+                                <button type="button" class="btn-quick" onclick="loadSampleData('medical')">
+                                    <i class="fas fa-heartbeat"></i> Medical
+                                </button>
+                                <button type="button" class="btn-quick" onclick="loadSampleData('industrial')">
+                                    <i class="fas fa-industry"></i> Industrial
+                                </button>
+                                <button type="button" class="btn-quick" onclick="loadSampleData('security')">
+                                    <i class="fas fa-shield-alt"></i> Security
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- File Upload Option -->
+                        <div class="file-upload-section">
+                            <h4><i class="fas fa-file-upload"></i> Or Upload Data File:</h4>
+                            <div class="file-upload-area" id="file-upload-area">
+                                <input type="file" id="file-input" accept=".json,.csv,.xlsx,.xls" style="display: none;">
+                                <div class="upload-prompt" onclick="document.getElementById('file-input').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Click to upload or drag & drop file</p>
+                                    <span class="file-hint">Supports JSON, CSV, XLSX, XLS files</span>
+                                </div>
+                                <div class="file-info" id="file-info" style="display: none;">
+                                    <i class="fas fa-file-code"></i>
+                                    <span id="file-name"></span>
+                                    <button type="button" class="btn-clear" onclick="clearFile()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- File Preview Area -->
+                            <div class="file-preview-container" id="file-preview-container" style="display: none;">
+                                <h4><i class="fas fa-table"></i> File Preview</h4>
+                                <div class="file-preview-controls">
+                                    <button type="button" class="btn-preview-control" onclick="togglePreviewMode('table')">
+                                        <i class="fas fa-table"></i> Table View
+                                    </button>
+                                    <button type="button" class="btn-preview-control" onclick="togglePreviewMode('json')">
+                                        <i class="fas fa-code"></i> JSON View
+                                    </button>
+                                    <button type="button" class="btn-preview-control" onclick="selectDataMapping()">
+                                        <i class="fas fa-map"></i> Map Columns
+                                    </button>
+                                </div>
+                                <div class="file-preview-content" id="file-preview-content"></div>
+                                <div class="file-stats" id="file-stats"></div>
+                            </div>
+                        </div>
+
                         <form id="data-form">
                             <div class="form-group">
                                 <label for="device-id">Device ID</label>
@@ -160,7 +261,7 @@
                                 <label for="data-type">Data Type</label>
                                 <select id="data-type" required>
                                     <option value="">Select data type</option>
-                                    <option value="medical">Digital Twin Data</option>
+                                    <option value="medical">Medical/Health Data</option>
                                     <option value="environmental">Environmental Data</option>
                                     <option value="security">Security Data</option>
                                     <option value="industrial">Industrial IoT Data</option>
@@ -168,15 +269,21 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="data-payload">Data Payload (JSON)</label>
-                                <textarea id="data-payload" rows="6" placeholder='{"data": "data", "privacyLevel": "privacyLevel", "data": "data"}' required></textarea>
+                                <label for="data-payload">
+                                    Data Payload (JSON)
+                                    <button type="button" class="btn-validate" onclick="validateJSON()">
+                                        <i class="fas fa-check-circle"></i> Validate
+                                    </button>
+                                </label>
+                                <textarea id="data-payload" rows="8" placeholder='{"temperature": 25, "humidity": 60}' required></textarea>
+                                <div class="json-status" id="json-status"></div>
                             </div>
 
                             <div class="form-group">
                                 <label for="privacy-level">Privacy Level</label>
                                 <select id="privacy-level" required>
                                     <option value="high">High - Minimal public metadata</option>
-                                    <option value="medium">Medium - Balanced sharing</option>
+                                    <option value="medium" selected>Medium - Balanced sharing</option>
                                     <option value="low">Low - Maximum transparency</option>
                                 </select>
                             </div>
@@ -251,7 +358,7 @@
                     <h3>Data Sharing Policies</h3>
                     <div class="policy-grid">
                         <div class="policy-item">
-                            <h4>Medical Data</h4>
+                            <h4>Digital Twin Data</h4>
                             <select class="policy-select">
                                 <option value="strict">Strict Privacy</option>
                                 <option value="moderate">Moderate Sharing</option>
@@ -283,6 +390,27 @@
                 <div class="section-header">
                     <h2>Blockchain Networks</h2>
                     <p>Monitor private and public blockchain interactions</p>
+                </div>
+                
+                <!-- Blockchain Data Explorer -->
+                <div class="explorer-section">
+                    <h3><i class="fas fa-search"></i> Blockchain Data Explorer</h3>
+                    <p>View and verify data stored on both blockchains</p>
+                    
+                    <div class="explorer-controls">
+                        <input type="text" id="tx-search" placeholder="Enter Transaction Hash or Device ID..." class="explorer-input">
+                        <button class="btn btn-primary" onclick="searchBlockchainData()">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <button class="btn btn-secondary" onclick="viewAllTransactions()">
+                            <i class="fas fa-list"></i> View All
+                        </button>
+                    </div>
+                    
+                    <div class="explorer-results" id="explorer-results" style="display: none;">
+                        <h4>Search Results:</h4>
+                        <div id="explorer-content"></div>
+                    </div>
                 </div>
 
                 <div class="blockchain-grid">
@@ -414,7 +542,10 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    
+    <!-- Main Script -->
     <script src="script.js"></script>
-</body>
-</html>

@@ -1,0 +1,6 @@
+deviceId,location,heartRate,bloodPressure,oxygenLevel,temperature,patientId
+heart_monitor_001,Ward 5 - Bed 12,72,120/80,98,36.7,P12345
+heart_monitor_002,Ward 5 - Bed 13,68,118/76,97,36.5,P12346
+heart_monitor_003,Ward 3 - Bed 05,75,125/82,99,36.8,P12347
+heart_monitor_004,ICU - Bed 02,82,130/85,96,37.1,P12348
+heart_monitor_005,Ward 7 - Bed 20,70,115/75,98,36.6,P12349

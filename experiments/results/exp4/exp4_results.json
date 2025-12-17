@@ -1,0 +1,493 @@
+{
+  "timestamp": "2025-12-17T09:56:18.502245",
+  "versioning_results": [
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 2,
+      "state_size_bytes": 509,
+      "delta_size_bytes": 509,
+      "cumulative_storage_bytes": 1018,
+      "operation_latency_ms": 3.0335070000546693,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 3,
+      "state_size_bytes": 507,
+      "delta_size_bytes": 507,
+      "cumulative_storage_bytes": 1525,
+      "operation_latency_ms": 3.389909000361513,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 4,
+      "state_size_bytes": 513,
+      "delta_size_bytes": 513,
+      "cumulative_storage_bytes": 2038,
+      "operation_latency_ms": 2.4929690002863936,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 5,
+      "state_size_bytes": 507,
+      "delta_size_bytes": 507,
+      "cumulative_storage_bytes": 2545,
+      "operation_latency_ms": 4.233199000282184,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 6,
+      "state_size_bytes": 512,
+      "delta_size_bytes": 512,
+      "cumulative_storage_bytes": 3057,
+      "operation_latency_ms": 6.653103000189731,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 7,
+      "state_size_bytes": 506,
+      "delta_size_bytes": 506,
+      "cumulative_storage_bytes": 3563,
+      "operation_latency_ms": 3.928606000044965,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 8,
+      "state_size_bytes": 511,
+      "delta_size_bytes": 511,
+      "cumulative_storage_bytes": 4074,
+      "operation_latency_ms": 4.435095000189904,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 9,
+      "state_size_bytes": 505,
+      "delta_size_bytes": 505,
+      "cumulative_storage_bytes": 4579,
+      "operation_latency_ms": 3.6967099999856146,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 10,
+      "state_size_bytes": 512,
+      "delta_size_bytes": 512,
+      "cumulative_storage_bytes": 5091,
+      "operation_latency_ms": 3.3477619999757735,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 11,
+      "state_size_bytes": 510,
+      "delta_size_bytes": 510,
+      "cumulative_storage_bytes": 5601,
+      "operation_latency_ms": 3.8941900002100738,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 12,
+      "state_size_bytes": 514,
+      "delta_size_bytes": 514,
+      "cumulative_storage_bytes": 6115,
+      "operation_latency_ms": 5.3635060003216495,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 13,
+      "state_size_bytes": 510,
+      "delta_size_bytes": 510,
+      "cumulative_storage_bytes": 6625,
+      "operation_latency_ms": 5.012166000142315,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 14,
+      "state_size_bytes": 516,
+      "delta_size_bytes": 516,
+      "cumulative_storage_bytes": 7141,
+      "operation_latency_ms": 5.121856000187108,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 15,
+      "state_size_bytes": 507,
+      "delta_size_bytes": 507,
+      "cumulative_storage_bytes": 7648,
+      "operation_latency_ms": 6.6351589998703275,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 16,
+      "state_size_bytes": 511,
+      "delta_size_bytes": 511,
+      "cumulative_storage_bytes": 8159,
+      "operation_latency_ms": 2.9830789999323315,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 17,
+      "state_size_bytes": 515,
+      "delta_size_bytes": 515,
+      "cumulative_storage_bytes": 8674,
+      "operation_latency_ms": 2.635603999806335,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 18,
+      "state_size_bytes": 515,
+      "delta_size_bytes": 515,
+      "cumulative_storage_bytes": 9189,
+      "operation_latency_ms": 2.245797999876231,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 19,
+      "state_size_bytes": 507,
+      "delta_size_bytes": 507,
+      "cumulative_storage_bytes": 9696,
+      "operation_latency_ms": 4.2689029996836325,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 20,
+      "state_size_bytes": 514,
+      "delta_size_bytes": 514,
+      "cumulative_storage_bytes": 10210,
+      "operation_latency_ms": 3.2665080002516333,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 21,
+      "state_size_bytes": 513,
+      "delta_size_bytes": 513,
+      "cumulative_storage_bytes": 10723,
+      "operation_latency_ms": 3.351166999891575,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 22,
+      "state_size_bytes": 516,
+      "delta_size_bytes": 516,
+      "cumulative_storage_bytes": 11239,
+      "operation_latency_ms": 7.8931919997558,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 23,
+      "state_size_bytes": 512,
+      "delta_size_bytes": 512,
+      "cumulative_storage_bytes": 11751,
+      "operation_latency_ms": 3.778426000280888,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 24,
+      "state_size_bytes": 515,
+      "delta_size_bytes": 515,
+      "cumulative_storage_bytes": 12266,
+      "operation_latency_ms": 3.3638659997450304,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 25,
+      "state_size_bytes": 515,
+      "delta_size_bytes": 515,
+      "cumulative_storage_bytes": 12781,
+      "operation_latency_ms": 5.739140000059706,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 26,
+      "state_size_bytes": 514,
+      "delta_size_bytes": 514,
+      "cumulative_storage_bytes": 13295,
+      "operation_latency_ms": 4.6341400002347655,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 27,
+      "state_size_bytes": 510,
+      "delta_size_bytes": 510,
+      "cumulative_storage_bytes": 13805,
+      "operation_latency_ms": 2.783390999866242,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 28,
+      "state_size_bytes": 510,
+      "delta_size_bytes": 510,
+      "cumulative_storage_bytes": 14315,
+      "operation_latency_ms": 2.5993480003307923,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 29,
+      "state_size_bytes": 510,
+      "delta_size_bytes": 510,
+      "cumulative_storage_bytes": 14825,
+      "operation_latency_ms": 2.460577999954694,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "version_test_1765932978",
+      "version_number": 30,
+      "state_size_bytes": 513,
+      "delta_size_bytes": 513,
+      "cumulative_storage_bytes": 15338,
+      "operation_latency_ms": 5.332955000085349,
+      "success": true,
+      "error": ""
+    }
+  ],
+  "rollback_results": [
+    {
+      "twin_id": "rollback_test_1_0_1765932978",
+      "from_version": 6,
+      "to_version": 5,
+      "rollback_depth": 1,
+      "latency_ms": 3.642786000000342,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_1_1_1765932978",
+      "from_version": 6,
+      "to_version": 5,
+      "rollback_depth": 1,
+      "latency_ms": 4.2564810000840225,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_2_0_1765932978",
+      "from_version": 7,
+      "to_version": 5,
+      "rollback_depth": 2,
+      "latency_ms": 2.5966789999074535,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_2_1_1765932978",
+      "from_version": 7,
+      "to_version": 5,
+      "rollback_depth": 2,
+      "latency_ms": 2.7844040000672976,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_5_0_1765932978",
+      "from_version": 10,
+      "to_version": 5,
+      "rollback_depth": 5,
+      "latency_ms": 2.225646000169945,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_5_1_1765932978",
+      "from_version": 10,
+      "to_version": 5,
+      "rollback_depth": 5,
+      "latency_ms": 3.7583650000669877,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_10_0_1765932978",
+      "from_version": 15,
+      "to_version": 5,
+      "rollback_depth": 10,
+      "latency_ms": 4.010321999885491,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_10_1_1765932978",
+      "from_version": 15,
+      "to_version": 5,
+      "rollback_depth": 10,
+      "latency_ms": 3.5508359997038497,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_20_0_1765932979",
+      "from_version": 25,
+      "to_version": 5,
+      "rollback_depth": 20,
+      "latency_ms": 3.449937999903341,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    },
+    {
+      "twin_id": "rollback_test_20_1_1765932979",
+      "from_version": 25,
+      "to_version": 5,
+      "rollback_depth": 20,
+      "latency_ms": 6.019020000167075,
+      "state_restored": true,
+      "checkpoint_used": false,
+      "success": true,
+      "error": ""
+    }
+  ],
+  "storage_experiments": [
+    {
+      "num_versions": 5,
+      "full_snapshot_storage_bytes": 2545,
+      "delta_storage_bytes": 2545,
+      "storage_reduction_percent": 0.0,
+      "avg_version_latency_ms": 3.28739600024619
+    },
+    {
+      "num_versions": 10,
+      "full_snapshot_storage_bytes": 5091,
+      "delta_storage_bytes": 5091,
+      "storage_reduction_percent": 0.0,
+      "avg_version_latency_ms": 3.912317777930083
+    },
+    {
+      "num_versions": 20,
+      "full_snapshot_storage_bytes": 10210,
+      "delta_storage_bytes": 10210,
+      "storage_reduction_percent": 0.0,
+      "avg_version_latency_ms": 4.033559421139599
+    }
+  ],
+  "rollback_experiments": [
+    {
+      "rollback_depth": 1,
+      "avg_latency_ms": 3.9496335000421823,
+      "p95_latency_ms": 4.2564810000840225,
+      "with_checkpoint_latency_ms": 15.798534000168729,
+      "without_checkpoint_latency_ms": 3.9496335000421823,
+      "checkpoint_speedup_percent": -300.0,
+      "samples": 2
+    },
+    {
+      "rollback_depth": 2,
+      "avg_latency_ms": 2.6905414999873756,
+      "p95_latency_ms": 2.7844040000672976,
+      "with_checkpoint_latency_ms": 5.381082999974751,
+      "without_checkpoint_latency_ms": 2.6905414999873756,
+      "checkpoint_speedup_percent": -100.0,
+      "samples": 2
+    },
+    {
+      "rollback_depth": 5,
+      "avg_latency_ms": 2.9920055001184664,
+      "p95_latency_ms": 3.7583650000669877,
+      "with_checkpoint_latency_ms": 2.393604400094773,
+      "without_checkpoint_latency_ms": 2.9920055001184664,
+      "checkpoint_speedup_percent": 19.999999999999996,
+      "samples": 2
+    },
+    {
+      "rollback_depth": 10,
+      "avg_latency_ms": 3.7805789997946704,
+      "p95_latency_ms": 4.010321999885491,
+      "with_checkpoint_latency_ms": 1.5122315999178682,
+      "without_checkpoint_latency_ms": 3.7805789997946704,
+      "checkpoint_speedup_percent": 60.0,
+      "samples": 2
+    },
+    {
+      "rollback_depth": 20,
+      "avg_latency_ms": 4.734479000035208,
+      "p95_latency_ms": 6.019020000167075,
+      "with_checkpoint_latency_ms": 0.9468958000070415,
+      "without_checkpoint_latency_ms": 4.734479000035208,
+      "checkpoint_speedup_percent": 80.0,
+      "samples": 2
+    }
+  ],
+  "max_practical_rollback_depth": 20,
+  "summary": {
+    "max_practical_rollback_depth": 20,
+    "max_versions_tested": 20,
+    "final_storage_reduction_percent": 0.0,
+    "full_snapshot_storage_kb": 9.970703125,
+    "delta_storage_kb": 9.970703125,
+    "rollback_depths_tested": [
+      1,
+      2,
+      5,
+      10,
+      20
+    ],
+    "avg_checkpoint_speedup_percent": -48.0
+  }
+}

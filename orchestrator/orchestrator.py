@@ -12,6 +12,7 @@ import os
 import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit
 from dotenv import load_dotenv
 # Fabric SDK imports - commented out due to dependency issues
 # We'll use REST API calls to Fabric instead
@@ -20,6 +21,10 @@ from dotenv import load_dotenv
 import requests
 import hashlib
 from web3 import Web3
+from datetime import datetime
+import threading
+import time
+from twin_manager import TwinManager
 
 # Load environment variables from .env file
 load_dotenv()
@@ -111,6 +116,104 @@ def store_on_fabric(data_id, data):
 # --- Flask App Initialization ---
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Store active digital twins and their real-time data
+active_twins = {}
+twin_connections = set()
+
+# Initialize Twin Manager for lifecycle management
+twin_manager = TwinManager()
+
+# --- Idempotency Cache for Exactly-Once Semantics ---
+# Maps idempotency_key -> {response, timestamp, ethereum_tx_hash, status}
+# status can be: 'pending' (in-flight), 'complete' (finished)
+idempotency_cache = {}
+idempotency_lock = threading.Lock()
+idempotency_conditions = {}  # Maps key -> threading.Condition for waiting
+IDEMPOTENCY_CACHE_TTL = 3600  # Cache entries expire after 1 hour
+IDEMPOTENCY_WAIT_TIMEOUT = 120  # Max seconds to wait for pending request
+
+def get_idempotency_key(data: dict, explicit_key: str = None) -> str:
+    """Generate or use an idempotency key for a request."""
+    if explicit_key:
+        return explicit_key
+    # Generate key from data content hash
+    data_str = json.dumps(data, sort_keys=True)
+    return hashlib.sha256(data_str.encode()).hexdigest()
+
+def acquire_idempotency_slot(key: str) -> tuple:
+    """
+    Try to acquire the right to process a request with this key.
+    Returns (cached_response, should_process):
+    - (response, False) if already processed - return cached response
+    - (None, True) if this request should process
+    - (None, False) if waited but timed out
+    """
+    with idempotency_lock:
+        if key in idempotency_cache:
+            entry = idempotency_cache[key]
+            # Check if entry is expired
+            if time.time() - entry['timestamp'] > IDEMPOTENCY_CACHE_TTL:
+                del idempotency_cache[key]
+                if key in idempotency_conditions:
+                    del idempotency_conditions[key]
+            elif entry['status'] == 'complete':
+                # Already processed, return cached response
+                return (entry['response'], False)
+            elif entry['status'] == 'pending':
+                # Another request is processing - we need to wait
+                condition = idempotency_conditions.get(key)
+                if condition:
+                    # Wait for the pending request to complete
+                    condition.wait(timeout=IDEMPOTENCY_WAIT_TIMEOUT)
+                    # Check again after waiting
+                    if key in idempotency_cache and idempotency_cache[key]['status'] == 'complete':
+                        return (idempotency_cache[key]['response'], False)
+                    # Timed out or failed, let this request try
+                    pass
+        
+        # Mark this key as pending (we're going to process it)
+        idempotency_cache[key] = {
+            'response': None,
+            'timestamp': time.time(),
+            'ethereum_tx_hash': None,
+            'status': 'pending'
+        }
+        idempotency_conditions[key] = threading.Condition(idempotency_lock)
+        return (None, True)
+
+def complete_idempotency(key: str, response: dict):
+    """Mark a request as complete and store the response."""
+    with idempotency_lock:
+        idempotency_cache[key] = {
+            'response': response,
+            'timestamp': time.time(),
+            'ethereum_tx_hash': response.get('ethereum_tx_hash'),
+            'status': 'complete'
+        }
+        # Notify any waiting requests
+        if key in idempotency_conditions:
+            idempotency_conditions[key].notify_all()
+        
+        # Cleanup old entries periodically
+        if len(idempotency_cache) > 10000:
+            current_time = time.time()
+            expired_keys = [k for k, v in idempotency_cache.items() 
+                           if current_time - v['timestamp'] > IDEMPOTENCY_CACHE_TTL]
+            for k in expired_keys:
+                del idempotency_cache[k]
+                if k in idempotency_conditions:
+                    del idempotency_conditions[k]
+
+def release_idempotency_slot(key: str):
+    """Release a pending slot if processing failed."""
+    with idempotency_lock:
+        if key in idempotency_cache and idempotency_cache[key]['status'] == 'pending':
+            del idempotency_cache[key]
+        if key in idempotency_conditions:
+            idempotency_conditions[key].notify_all()
+            del idempotency_conditions[key]
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -121,10 +224,31 @@ def health_check():
 def ingest_data():
     """
     Main endpoint to ingest raw IoT data and orchestrate the full workflow.
+    Implements exactly-once semantics via idempotency key.
     """
     raw_iot_data = request.get_json()
     if not raw_iot_data:
         return jsonify({"error": "Invalid JSON payload"}), 400
+
+    # Check for idempotency key (from header or generate from data)
+    idempotency_key = request.headers.get('X-Idempotency-Key')
+    if not idempotency_key:
+        # Generate key from data content for implicit idempotency
+        idempotency_key = get_idempotency_key(raw_iot_data)
+    
+    # Try to acquire the right to process this request (handles concurrent duplicates)
+    cached_response, should_process = acquire_idempotency_slot(idempotency_key)
+    
+    if cached_response:
+        print(f"Idempotency hit: returning cached response for key {idempotency_key[:16]}...")
+        cached_response = cached_response.copy()  # Don't modify cached version
+        cached_response['idempotency_replay'] = True
+        return jsonify(cached_response), 200
+    
+    if not should_process:
+        # Waited for pending request but it failed/timed out
+        release_idempotency_slot(idempotency_key)
+        return jsonify({"error": "Request processing timed out"}), 503
 
     # Step 1: Call the ML Privacy Filter
     try:
@@ -181,13 +305,30 @@ def ingest_data():
         # Use the shareable data for Ethereum registration
         data_id_str = shareable_data['id']
         data_id_bytes32 = hashlib.sha256(data_id_str.encode()).digest()
-        metadata_str = json.dumps({key: val for key, val in shareable_data.items() if key != 'id'})
+        
+        # Create metadata JSON (excluding id)
+        metadata_obj = {key: val for key, val in shareable_data.items() if key != 'id'}
+        metadata_str = json.dumps(metadata_obj)
+        
+        # Create data hash (hash of the full raw data)
+        data_hash = hashlib.sha256(json.dumps(raw_iot_data).encode()).hexdigest()
+        
+        # Add Fabric TX ID to metadata if available
+        if fabric_tx_id:
+            metadata_obj['fabricTxId'] = fabric_tx_id
+            metadata_str = json.dumps(metadata_obj)
 
-        print(f"Registering data on Ethereum. ID: {data_id_str}, Metadata: {metadata_str}")
+        print(f"Registering data on Ethereum:")
+        print(f"  Data ID: {data_id_str}")
+        print(f"  Data Hash: {data_hash}")
+        print(f"  Metadata: {metadata_str}")
+        print(f"  Sensitivity: {data_sensitivity}")
+        
+        # Call smart contract with CORRECT parameter order
         tx_hash = iot_data_registry_contract.functions.registerData(
-            data_id_bytes32,
-            metadata_str,
-            data_sensitivity
+            data_id_bytes32,    # Parameter 1: _dataId
+            data_hash,          # Parameter 2: _dataHash (hash of full data)
+            metadata_str        # Parameter 3: _metadata (public metadata JSON)
         ).transact()
 
         print("Transaction sent. Waiting for receipt...")
@@ -198,15 +339,560 @@ def ingest_data():
             "status": "success",
             "message": "Data processed and registered on the blockchain.",
             "ethereum_tx_hash": receipt.transactionHash.hex(),
-            "data_id": data_id_str
+            "block_number": receipt.blockNumber,
+            "data_id": data_id_str,
+            "data_hash": data_hash,
+            "data_sensitivity": data_sensitivity,
+            "fabric_tx_id": fabric_tx_id,
+            "metadata": metadata_obj,
+            "idempotency_key": idempotency_key,
+            "idempotency_replay": False
         }
+        
+        # Mark as complete in idempotency cache for exactly-once semantics
+        complete_idempotency(idempotency_key, final_response)
+        
         return jsonify(final_response), 200
 
     except Exception as e:
         print(f"ERROR: An error occurred during the Ethereum transaction: {e}")
+        # Release the idempotency slot so retries can work
+        release_idempotency_slot(idempotency_key)
         return jsonify({"error": "Failed to register data on the Ethereum blockchain"}), 500
+
+# --- Real-Time WebSocket Endpoints ---
+
+@socketio.on('connect')
+def handle_connect():
+    """Handle client connection"""
+    print(f"Client connected: {request.sid}")
+    twin_connections.add(request.sid)
+    emit('connection_status', {'status': 'connected', 'message': 'Connected to real-time twin updates'})
+    
+    # Send current active twins
+    emit('active_twins', {'twins': list(active_twins.keys()), 'count': len(active_twins)})
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    """Handle client disconnection"""
+    print(f"Client disconnected: {request.sid}")
+    twin_connections.discard(request.sid)
+
+@socketio.on('subscribe_twin')
+def handle_subscribe(data):
+    """Subscribe to a specific digital twin's updates"""
+    twin_id = data.get('twin_id')
+    if twin_id:
+        print(f"Client {request.sid} subscribed to twin: {twin_id}")
+        emit('subscription_confirmed', {'twin_id': twin_id, 'status': 'subscribed'})
+        
+        # Send current state if twin exists
+        if twin_id in active_twins:
+            emit('twin_state', {
+                'twin_id': twin_id,
+                'state': active_twins[twin_id],
+                'timestamp': datetime.now().isoformat()
+            })
+
+@socketio.on('unsubscribe_twin')
+def handle_unsubscribe(data):
+    """Unsubscribe from a digital twin's updates"""
+    twin_id = data.get('twin_id')
+    if twin_id:
+        print(f"Client {request.sid} unsubscribed from twin: {twin_id}")
+        emit('subscription_confirmed', {'twin_id': twin_id, 'status': 'unsubscribed'})
+
+@app.route('/stream_data', methods=['POST'])
+def stream_data():
+    """
+    Endpoint for devices to stream real-time data.
+    This updates the digital twin and broadcasts to connected clients.
+    """
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Invalid JSON payload"}), 400
+        
+        twin_id = data.get('deviceId') or data.get('id', 'unknown')
+        timestamp = datetime.now().isoformat()
+        
+        # Update twin state
+        active_twins[twin_id] = {
+            'data': data,
+            'last_update': timestamp,
+            'status': 'active'
+        }
+        
+        # Broadcast to all connected clients
+        # Use socketio.emit with app context
+        with app.app_context():
+            socketio.emit('twin_update', {
+                'twin_id': twin_id,
+                'data': data,
+                'timestamp': timestamp
+            })
+        
+        print(f"Real-time update for twin {twin_id} broadcasted to {len(twin_connections)} clients")
+        
+        return jsonify({
+            "status": "success",
+            "twin_id": twin_id,
+            "timestamp": timestamp,
+            "clients_notified": len(twin_connections)
+        }), 200
+    except Exception as e:
+        print(f"Error in stream_data: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/twins', methods=['GET'])
+def get_active_twins():
+    """Get all active digital twins"""
+    return jsonify({
+        "twins": active_twins,
+        "count": len(active_twins),
+        "connected_clients": len(twin_connections)
+    }), 200
+
+@app.route('/twins/<twin_id>', methods=['GET'])
+def get_twin_state(twin_id):
+    """Get current state of a specific digital twin"""
+    if twin_id in active_twins:
+        return jsonify({
+            "twin_id": twin_id,
+            "state": active_twins[twin_id]
+        }), 200
+    else:
+        return jsonify({"error": "Twin not found"}), 404
+
+# ===== TWIN LIFECYCLE MANAGEMENT API =====
+
+@app.route('/api/twins', methods=['POST'])
+def create_twin():
+    """Create a new digital twin with full lifecycle management"""
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        if not data.get('twin_id'):
+            return jsonify({"error": "twin_id is required"}), 400
+        if not data.get('twin_type'):
+            return jsonify({"error": "twin_type is required"}), 400
+        if not data.get('initial_state'):
+            return jsonify({"error": "initial_state is required"}), 400
+        
+        twin = twin_manager.create_twin(
+            twin_id=data['twin_id'],
+            twin_type=data['twin_type'],
+            initial_state=data['initial_state'],
+            metadata=data.get('metadata', {}),
+            parent_id=data.get('parent_id')
+        )
+        
+        # Also add to active_twins for real-time tracking
+        active_twins[twin.twin_id] = {
+            'data': twin.current_state,
+            'last_update': twin.updated_at,
+            'status': twin.status
+        }
+        
+        # Broadcast twin creation
+        with app.app_context():
+            socketio.emit('twin_created', {
+                'twin_id': twin.twin_id,
+                'twin_type': twin.twin_type,
+                'timestamp': twin.created_at
+            })
+        
+        return jsonify({
+            "status": "success",
+            "message": "Twin created successfully",
+            "twin": twin.to_dict()
+        }), 201
+        
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        print(f"Error creating twin: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins', methods=['GET'])
+def list_twins():
+    """List all digital twins with optional filters"""
+    try:
+        # Get query parameters for filtering
+        filters = {}
+        if request.args.get('status'):
+            filters['status'] = request.args.get('status')
+        if request.args.get('twin_type'):
+            filters['twin_type'] = request.args.get('twin_type')
+        if request.args.get('parent_id'):
+            filters['parent_id'] = request.args.get('parent_id')
+        
+        twins = twin_manager.list_twins(filters)
+        
+        return jsonify({
+            "status": "success",
+            "count": len(twins),
+            "twins": twins
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>', methods=['GET'])
+def get_twin_details(twin_id):
+    """Get detailed information about a specific twin"""
+    try:
+        include_versions = request.args.get('include_versions', 'false').lower() == 'true'
+        
+        twin = twin_manager.get_twin(twin_id)
+        if not twin:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        return jsonify({
+            "status": "success",
+            "twin": twin.to_dict(include_versions=include_versions)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>', methods=['PUT'])
+def update_twin_full(twin_id):
+    """Update a twin's state (full replacement)"""
+    try:
+        data = request.get_json()
+        
+        if not data.get('state'):
+            return jsonify({"error": "state is required"}), 400
+        
+        success = twin_manager.update_twin(
+            twin_id=twin_id,
+            new_state=data['state'],
+            metadata=data.get('metadata')
+        )
+        
+        if not success:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        # Update active_twins for real-time
+        twin = twin_manager.get_twin(twin_id)
+        active_twins[twin_id] = {
+            'data': twin.current_state,
+            'last_update': twin.updated_at,
+            'status': twin.status
+        }
+        
+        # Broadcast update
+        with app.app_context():
+            socketio.emit('twin_update', {
+                'twin_id': twin_id,
+                'data': twin.current_state,
+                'timestamp': twin.updated_at
+            })
+        
+        return jsonify({
+            "status": "success",
+            "message": "Twin updated successfully",
+            "twin": twin.to_dict()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>', methods=['PATCH'])
+def update_twin_partial(twin_id):
+    """Partially update a twin's state"""
+    try:
+        data = request.get_json()
+        
+        if not data.get('partial_state'):
+            return jsonify({"error": "partial_state is required"}), 400
+        
+        success = twin_manager.patch_twin(
+            twin_id=twin_id,
+            partial_state=data['partial_state'],
+            metadata=data.get('metadata')
+        )
+        
+        if not success:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        # Update active_twins for real-time
+        twin = twin_manager.get_twin(twin_id)
+        active_twins[twin_id] = {
+            'data': twin.current_state,
+            'last_update': twin.updated_at,
+            'status': twin.status
+        }
+        
+        # Broadcast update
+        with app.app_context():
+            socketio.emit('twin_update', {
+                'twin_id': twin_id,
+                'data': twin.current_state,
+                'timestamp': twin.updated_at
+            })
+        
+        return jsonify({
+            "status": "success",
+            "message": "Twin patched successfully",
+            "twin": twin.to_dict()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>', methods=['DELETE'])
+def delete_twin_endpoint(twin_id):
+    """Delete a twin (soft delete by default)"""
+    try:
+        soft_delete = request.args.get('soft', 'true').lower() == 'true'
+        
+        success = twin_manager.delete_twin(twin_id, soft_delete=soft_delete)
+        
+        if not success:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        # Remove from active_twins if hard delete
+        if not soft_delete and twin_id in active_twins:
+            del active_twins[twin_id]
+        
+        # Broadcast deletion
+        with app.app_context():
+            socketio.emit('twin_deleted', {
+                'twin_id': twin_id,
+                'soft_delete': soft_delete,
+                'timestamp': datetime.now().isoformat()
+            })
+        
+        return jsonify({
+            "status": "success",
+            "message": f"Twin {'soft' if soft_delete else 'hard'} deleted successfully"
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ===== VERSION CONTROL API =====
+
+@app.route('/api/twins/<twin_id>/versions', methods=['GET'])
+def get_twin_versions(twin_id):
+    """Get version history for a twin"""
+    try:
+        twin = twin_manager.get_twin(twin_id)
+        if not twin:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        return jsonify({
+            "status": "success",
+            "twin_id": twin_id,
+            "current_version": twin.current_version - 1,
+            "versions": twin.get_version_history()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>/versions/<int:version_number>', methods=['GET'])
+def get_specific_version(twin_id, version_number):
+    """Get a specific version of a twin"""
+    try:
+        twin = twin_manager.get_twin(twin_id)
+        if not twin:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        version = twin.get_version(version_number)
+        if not version:
+            return jsonify({"error": "Version not found"}), 404
+        
+        return jsonify({
+            "status": "success",
+            "twin_id": twin_id,
+            "version": version.to_dict()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>/rollback/<int:version_number>', methods=['POST'])
+def rollback_twin(twin_id, version_number):
+    """Rollback a twin to a specific version"""
+    try:
+        twin = twin_manager.get_twin(twin_id)
+        if not twin:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        success = twin.rollback_to_version(version_number)
+        if not success:
+            return jsonify({"error": "Version not found"}), 404
+        
+        # Update active_twins
+        active_twins[twin_id] = {
+            'data': twin.current_state,
+            'last_update': twin.updated_at,
+            'status': twin.status
+        }
+        
+        # Broadcast rollback
+        with app.app_context():
+            socketio.emit('twin_rollback', {
+                'twin_id': twin_id,
+                'version': version_number,
+                'timestamp': twin.updated_at
+            })
+        
+        return jsonify({
+            "status": "success",
+            "message": f"Twin rolled back to version {version_number}",
+            "twin": twin.to_dict()
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>/diff', methods=['GET'])
+def get_version_diff(twin_id):
+    """Compare two versions of a twin"""
+    try:
+        version1 = int(request.args.get('version1', 1))
+        version2 = int(request.args.get('version2', 2))
+        
+        diff = twin_manager.get_version_diff(twin_id, version1, version2)
+        if not diff:
+            return jsonify({"error": "Twin or versions not found"}), 404
+        
+        return jsonify({
+            "status": "success",
+            "twin_id": twin_id,
+            "diff": diff
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ===== GENEALOGY API =====
+
+@app.route('/api/twins/<twin_id>/hierarchy', methods=['GET'])
+def get_twin_hierarchy_endpoint(twin_id):
+    """Get full hierarchy tree for a twin"""
+    try:
+        hierarchy = twin_manager.get_twin_hierarchy(twin_id)
+        if not hierarchy:
+            return jsonify({"error": "Twin not found"}), 404
+        
+        return jsonify({
+            "status": "success",
+            "hierarchy": hierarchy
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>/ancestors', methods=['GET'])
+def get_twin_ancestors_endpoint(twin_id):
+    """Get all ancestors of a twin"""
+    try:
+        ancestors = twin_manager.get_twin_ancestors(twin_id)
+        
+        return jsonify({
+            "status": "success",
+            "twin_id": twin_id,
+            "ancestors": ancestors,
+            "count": len(ancestors)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>/descendants', methods=['GET'])
+def get_twin_descendants_endpoint(twin_id):
+    """Get all descendants of a twin"""
+    try:
+        descendants = twin_manager.get_twin_descendants(twin_id)
+        
+        return jsonify({
+            "status": "success",
+            "twin_id": twin_id,
+            "descendants": descendants,
+            "count": len(descendants)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/<twin_id>/children', methods=['POST'])
+def add_child_twin(twin_id):
+    """Add a child to a twin"""
+    try:
+        data = request.get_json()
+        child_id = data.get('child_id')
+        
+        if not child_id:
+            return jsonify({"error": "child_id is required"}), 400
+        
+        twin = twin_manager.get_twin(twin_id)
+        if not twin:
+            return jsonify({"error": "Parent twin not found"}), 404
+        
+        child = twin_manager.get_twin(child_id)
+        if not child:
+            return jsonify({"error": "Child twin not found"}), 404
+        
+        twin.add_child(child_id)
+        child.parent_id = twin_id
+        
+        return jsonify({
+            "status": "success",
+            "message": "Child added successfully"
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ===== UTILITY API =====
+
+@app.route('/api/twins/search', methods=['GET'])
+def search_twins_endpoint():
+    """Search twins by query"""
+    try:
+        query = request.args.get('q', '')
+        if not query:
+            return jsonify({"error": "Query parameter 'q' is required"}), 400
+        
+        results = twin_manager.search_twins(query)
+        
+        return jsonify({
+            "status": "success",
+            "query": query,
+            "count": len(results),
+            "results": results
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/twins/statistics', methods=['GET'])
+def get_twin_statistics():
+    """Get statistics about all twins"""
+    try:
+        stats = twin_manager.get_statistics()
+        
+        return jsonify({
+            "status": "success",
+            "statistics": stats
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
     # Note: For production, use a proper WSGI server like Gunicorn or uWSGI
-    app.run(host='0.0.0.0', port=5002, debug=True)
+    print("Starting Orchestrator with WebSocket support...")
+    print("Real-time twin updates enabled on ws://0.0.0.0:5002")
+    socketio.run(app, host='0.0.0.0', port=5002, debug=True, allow_unsafe_werkzeug=True)
