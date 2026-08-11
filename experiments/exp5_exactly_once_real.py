@@ -45,12 +45,51 @@ def payload(uid):
     return {"id": uid, "deviceId": "d1", "temperature": 21.0, "humidity": 50}
 
 
+ANCHOR_POLL_S = 0.05
+ANCHOR_TIMEOUT_S = 120
+
+
+def _await_anchor(outbox_id):
+    """Resolve an outbox id to its on-chain anchor tx hash.
+
+    Phase 2 made anchoring asynchronous: /ingest_data returns 202 with an
+    outbox_id and no ethereum_tx_hash, because the anchor has not been broadcast
+    yet when the response is written. The tx hash now has to be collected from
+    /anchor_status once the relay has delivered it.
+
+    Without this the experiment reads tx=None for every request, which collapses
+    the DISTINCT case to one "unique anchor" and would report exactly-once
+    holding for the wrong reason.
+    """
+    if not outbox_id:
+        return None
+    deadline = time.time() + ANCHOR_TIMEOUT_S
+    url = f"{BASE}/anchor_status/{outbox_id}"
+    while time.time() < deadline:
+        try:
+            r = requests.get(url, timeout=10)
+            if r.status_code == 200:
+                j = r.json()
+                if j.get("anchor_state") == "delivered":
+                    return j.get("eth_tx_hash")
+                if j.get("anchor_state") in ("failed", "not_required"):
+                    return None
+        except requests.RequestException:
+            pass
+        time.sleep(ANCHOR_POLL_S)
+    return None
+
+
 def send(uid):
     try:
         r = requests.post(ORCH, json=payload(uid), timeout=60)
-        if r.status_code == 200:
+        # 202 Accepted is the current success code (private commit done, anchor
+        # enqueued). 200 is kept for an idempotency replay served from cache.
+        if r.status_code in (200, 202):
             j = r.json()
-            return {"tx": j.get("ethereum_tx_hash"), "replay": j.get("idempotency_replay"),
+            return {"tx": _await_anchor(j.get("outbox_id")),
+                    "outbox_id": j.get("outbox_id"),
+                    "replay": j.get("idempotency_replay"),
                     "fabric": j.get("fabric_tx_id"), "ok": True}
         return {"ok": False, "status": r.status_code}
     except requests.RequestException as e:
