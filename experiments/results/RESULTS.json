@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-11T13:54:07",
+  "generated_at": "2026-08-11T15:32:46",
   "config": {
     "fabric": "2.5.0 / CA 1.5.5, channel hiot, chaincode iot-data seq2",
     "ethereum": "Ganache chainId 1337, IoTDataRegistry",
@@ -24,6 +24,10 @@
     {
       "source_exp": "exp3",
       "reason": "result file predates Phase 2: 7 of 8 batch rows were division on a fixed 64-leaf root. Rerun exp3_gas_real.py."
+    },
+    {
+      "source_exp": "exp1,exp3,exp5",
+      "reason": "no contract_addr in provenance, so the single-deployment cross-check could not be performed for these experiments"
     }
   ],
   "metrics": [

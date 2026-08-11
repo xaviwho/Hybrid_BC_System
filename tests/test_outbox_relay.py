@@ -174,6 +174,71 @@ def test_request_thread_isolation(db):
           f"enqueue={enqueue_ms:.2f} ms vs anchor={ANCHOR_DELAY_S*1000:.0f} ms")
 
 
+def test_wal_guard(db):
+    print("\n[7] startup guard: refuses to run without WAL")
+    ob = Outbox(db, anchor_fn=StubChain())
+    mode = ob._conn().execute("PRAGMA journal_mode").fetchone()[0]
+    check("WAL engaged on a supported filesystem", str(mode).lower() == "wal", str(mode))
+
+    # Simulate the drvfs/FAT32 case, where SQLite silently reports back a mode
+    # other than wal instead of erroring.
+    ob._conn().execute("PRAGMA journal_mode=DELETE")
+    try:
+        ob._assert_wal()
+        check("guard raises when journal_mode is not wal", False, "no exception")
+    except RuntimeError as e:
+        check("guard raises when journal_mode is not wal", True)
+        check("error names the fix (OUTBOX_DB)", "OUTBOX_DB" in str(e))
+
+
+def test_contract_registry():
+    print("\n[8] contract address: one selection rule, stale-address guard")
+    import contract_registry as cr
+
+    nets = {
+        "1700000000001": {"address": "0x1111111111111111111111111111111111111111"},
+        "1700000000009": {"address": "0x9999999999999999999999999999999999999999"},
+        "1700000000005": {"address": "0x5555555555555555555555555555555555555555"},
+    }
+    nid, addr = cr.select_network(nets)
+    check("highest numeric network id wins", nid == "1700000000009", f"{nid} {addr}")
+    check("not merely last-in-file order",
+          nid != list(nets.keys())[-1],
+          "file order would have picked 1700000000005 — this is exactly the "
+          "divergence the shared rule removes")
+
+    for bad, label in ((({}), "empty networks"),
+                       ({"abc": {"address": "0x1"}}, "non-numeric ids"),
+                       ({"1": {}}, "entry without an address")):
+        try:
+            cr.select_network(bad)
+            check(f"rejects {label}", False, "no exception")
+        except cr.ContractResolutionError:
+            check(f"rejects {label}", True)
+
+    class _StaleW3:
+        class eth:
+            chain_id = 1337
+            @staticmethod
+            def get_code(_):
+                return b"0x"      # len 2 -> no contract
+        @staticmethod
+        def to_checksum_address(a):
+            return a
+    import json as _json
+    import tempfile as _tf
+    p = os.path.join(_tf.mkdtemp(), "artifact.json")
+    with open(p, "w") as f:
+        _json.dump({"abi": [], "networks": {
+            "1337": {"address": "0x" + "ab" * 20}}}, f)
+    try:
+        cr.resolve(p, w3=_StaleW3(), require_code=True)
+        check("stale address (no bytecode) rejected", False, "no exception")
+    except cr.ContractResolutionError as e:
+        check("stale address (no bytecode) rejected", True)
+        check("error tells you to redeploy", "truffle migrate" in str(e))
+
+
 def main():
     print("=" * 72)
     print("  OUTBOX + RELAY ACCEPTANCE TESTS (Phase 2, Change 1)")
@@ -186,6 +251,8 @@ def main():
         test_all_sensitive_no_outbox_row(os.path.join(tmp, "t4.db"))
         test_retry_and_failure(os.path.join(tmp, "t5.db"))
         test_request_thread_isolation(os.path.join(tmp, "t6.db"))
+        test_wal_guard(os.path.join(tmp, "t7.db"))
+        test_contract_registry()
     finally:
         print("\n" + "=" * 72)
         print(f"  {len(PASS)} passed, {len(FAIL)} failed")

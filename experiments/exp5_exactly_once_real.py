@@ -146,7 +146,9 @@ def test_distinct_requests():
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     try:
-        assert requests.get(BASE + "/health", timeout=5).status_code == 200
+        _h = requests.get(BASE + "/health", timeout=5)
+        assert _h.status_code == 200
+        health = _h.json()
     except Exception as e:
         print(f"ERROR: orchestrator not reachable: {e}")
         return 1
@@ -163,6 +165,15 @@ def main():
     results = {
         "experiment": "exp5_exactly_once_real",
         "measured": True,
+        "provenance": {
+            # Recorded so consolidate_results.py can prove every experiment in a
+            # run anchored to the SAME contract. exp3 measuring gas on one
+            # deployment while exp1/exp5 use another is otherwise undetectable.
+            "contract_addr": health.get("contract_addr"),
+            "chain_id": health.get("chain_id"),
+            "network_id": health.get("network_id"),
+            "outbox_db": health.get("outbox_db"),
+        },
         "sequential_duplicates": a,
         "concurrent_duplicates": b,
         "distinct_requests": c,

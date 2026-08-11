@@ -318,9 +318,12 @@ If it prints `delete`, the database is not where you think it is, or the
 filesystem rejected WAL. Do not run exp5 in that state — crash-recovery and
 exactly-once results from a non-WAL outbox are not trustworthy.
 
-I did **not** add a runtime guard for this in the code; it is documented here only.
-A startup assertion that `PRAGMA journal_mode` returns `wal` would be a cheap
-addition if you want the stack to fail loudly instead.
+**This is now enforced in code.** `Outbox.__init__` calls `_assert_wal()`, which
+reads back `PRAGMA journal_mode` and raises if it is not `wal`, naming `OUTBOX_DB`
+and the fix in the error text. The orchestrator will not start against a non-WAL
+outbox, so the silent-fallback case cannot reach a measurement run. Covered by
+`tests/test_outbox_relay.py` [7], which forces `journal_mode=DELETE` and asserts
+the guard fires.
 
 ## B. The contract address, and what caches it
 
@@ -375,9 +378,45 @@ npx truffle migrate --network development --reset
 
 Order matters: **always restart the orchestrator after a redeploy.**
 
-Worth fixing in code at some point: make both consumers use the same selection and
-have the orchestrator refuse to start when `get_code()` is empty. Not changed here
-— that is a behaviour change outside this request.
+**Both problems are now fixed in code**, so the sequence above is a convenience
+rather than a discipline requirement:
+
+* `orchestrator/contract_registry.py` holds the single selection rule — highest
+  numeric network id — used by both the orchestrator and exp3. They cannot
+  diverge because there is only one implementation.
+* The orchestrator **refuses to start** when the resolved address holds no
+  bytecode (`SystemExit`, with the redeploy command in the message). A stale
+  artifact now fails at startup instead of surfacing later inside the relay
+  worker, after requests have already been acknowledged with 202.
+* Covered by `tests/test_outbox_relay.py` [8], including a case where file order
+  and highest-id disagree.
+
+Checked against the current artifact: the two old rules happen to agree today —
+both select network `1782885038550` — so no existing result is invalidated. The
+risk was real but had not yet fired.
+
+### After the run: prove it was one deployment
+
+`consolidate_results.py` cross-checks the contract address recorded by exp1, exp3
+and exp5, and **fails the build** if they differ, naming each experiment and its
+address. On success it emits a `run_contract_addr` metric, so `RESULTS.json`
+carries positive evidence that every chain-dependent number came from one
+deployment — rather than merely not contradicting it.
+
+exp1 and exp5 take the address from the orchestrator's `/health`, which now
+reports `contract_addr`, `network_id`, `chain_id` and `outbox_db`. exp3 records
+the address it resolved directly. Any experiment that produced results without
+recording an address is listed in `not_measured` rather than silently skipped.
+
+Manual check before consolidating, if you want one — all printed addresses must
+be identical:
+
+```bash
+grep -h -o '"contract_addr[a-z]*": "[^"]*"' \
+     experiments/results/exp1/exp1_latency_real.json \
+     experiments/results/exp3/exp3_gas_real.json \
+     experiments/results/exp5/exp5_exactly_once_real.json | sort -u
+```
 
 ## C. Hardcoded `200` checks vs the new `202`
 

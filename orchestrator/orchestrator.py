@@ -26,6 +26,7 @@ import threading
 import time
 from twin_manager import TwinManager
 from outbox import Outbox
+import contract_registry
 import fabric_client
 
 # Load environment variables from .env file
@@ -68,32 +69,36 @@ CONTRACT_ARTIFACT_PATH = os.path.abspath(os.path.join(
 
 iot_data_registry_contract = None
 IOT_DATA_REGISTRY_ADDRESS = None
+CONTRACT_RESOLUTION = None
 
+# Resolved through contract_registry — the SINGLE selection rule shared with the
+# experiments. Previously this module used networks[-1] while exp3_gas_real.py
+# used max(key=int); when those diverge, the gas experiment measures one contract
+# while the latency and exactly-once experiments anchor to another, inside what is
+# reported as one consolidated run.
+#
+# Startup is refused if the resolved address holds no bytecode. That state means
+# the artifact is stale relative to the running chain (a Ganache restart without a
+# redeploy). Continuing would surface later as an opaque failure inside the relay
+# worker, after the request has already been acknowledged with 202.
 try:
-    with open(CONTRACT_ARTIFACT_PATH) as f:
-        artifact = json.load(f)
-    
-    IOT_DATA_REGISTRY_ABI = artifact['abi']
-    
-    # Get the address from the latest network deployment (e.g., Ganache)
-    # This assumes the last network in the artifact is the one we want.
-    if artifact.get('networks'):
-        network_id = list(artifact['networks'].keys())[-1]
-        IOT_DATA_REGISTRY_ADDRESS = artifact['networks'][network_id]['address']
-        
-        # Create contract instance
-        iot_data_registry_contract = web3.eth.contract(
-            address=IOT_DATA_REGISTRY_ADDRESS, 
-            abi=IOT_DATA_REGISTRY_ABI
-        )
-        print(f"Successfully loaded contract 'IoTDataRegistry' at address: {IOT_DATA_REGISTRY_ADDRESS}")
-    else:
-        print("Warning: No network information found in contract artifact. Has it been deployed?")
-
+    CONTRACT_RESOLUTION = contract_registry.resolve(
+        CONTRACT_ARTIFACT_PATH, w3=web3, require_code=True)
+    IOT_DATA_REGISTRY_ADDRESS = CONTRACT_RESOLUTION["address"]
+    IOT_DATA_REGISTRY_ABI = CONTRACT_RESOLUTION["abi"]
+    iot_data_registry_contract = web3.eth.contract(
+        address=IOT_DATA_REGISTRY_ADDRESS, abi=IOT_DATA_REGISTRY_ABI)
+    print(f"IoTDataRegistry at {IOT_DATA_REGISTRY_ADDRESS} "
+          f"(network id {CONTRACT_RESOLUTION['network_id']}, "
+          f"chain id {CONTRACT_RESOLUTION['chain_id']}, "
+          f"{CONTRACT_RESOLUTION['code_size']} bytes of code, selected from "
+          f"{CONTRACT_RESOLUTION['networks_in_artifact']} artifact entries)")
 except FileNotFoundError:
-    print(f"ERROR: Contract artifact not found at {CONTRACT_ARTIFACT_PATH}")
-except KeyError:
-    print("ERROR: Could not find ABI or network address in contract artifact.")
+    raise SystemExit(
+        f"FATAL: contract artifact not found at {CONTRACT_ARTIFACT_PATH}. "
+        f"Deploy first: npx truffle migrate --network development --reset")
+except contract_registry.ContractResolutionError as e:
+    raise SystemExit(f"FATAL: cannot resolve IoTDataRegistry.\n{e}")
 
 # Fabric Configuration
 FABRIC_CONN_PROFILE = os.path.join(os.path.dirname(__file__), 'connection-org1.json')
@@ -281,8 +286,21 @@ def release_idempotency_slot(key: str):
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint."""
-    return jsonify({"status": "healthy", "ethereum_connected": web3.is_connected()}), 200
+    """Health check endpoint.
+
+    Reports the contract this process is actually anchoring to. Experiments record
+    it in their provenance so that a run using a different contract from another
+    experiment in the same consolidation is detectable after the fact
+    (consolidate_results.py cross-checks these).
+    """
+    return jsonify({
+        "status": "healthy",
+        "ethereum_connected": web3.is_connected(),
+        "contract_addr": IOT_DATA_REGISTRY_ADDRESS,
+        "network_id": (CONTRACT_RESOLUTION or {}).get("network_id"),
+        "chain_id": (CONTRACT_RESOLUTION or {}).get("chain_id"),
+        "outbox_db": OUTBOX_DB,
+    }), 200
 
 @app.route('/ingest_data', methods=['POST'])
 def ingest_data():

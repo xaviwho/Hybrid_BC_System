@@ -105,6 +105,34 @@ class Outbox:
             os.makedirs(d, exist_ok=True)
         with self._conn() as c:
             c.executescript(_SCHEMA)
+        self._assert_wal()
+
+    def _assert_wal(self):
+        """Refuse to run unless the database is genuinely in WAL mode.
+
+        SQLite does not error when it cannot honour `PRAGMA journal_mode=WAL`; it
+        silently reports back the mode it actually used. On a drvfs/FAT32 mount —
+        which is where OUTBOX_DB lands if the env var is unset, since the repo
+        sits on the Windows drive — WAL cannot work: it needs a shared-memory
+        -shm file and POSIX advisory locking, and the mount provides neither.
+
+        The result would be an outbox with no write-ahead log while still
+        claiming durability. exp5's crash-recovery and exactly-once results would
+        be measured against a store that cannot deliver the property they test,
+        with nothing visible to say so. Fail at startup instead.
+        """
+        mode = self._conn().execute("PRAGMA journal_mode").fetchone()[0]
+        if str(mode).lower() != "wal":
+            raise RuntimeError(
+                f"outbox at {self.db_path!r} is in journal_mode={mode!r}, not 'wal'.\n"
+                f"SQLite silently refuses WAL on filesystems without shared memory "
+                f"and POSIX locking (drvfs / FAT32 / some network mounts).\n"
+                f"Durability and crash-recovery are NOT guaranteed in this mode, so "
+                f"exactly-once results measured against it would be worthless.\n"
+                f"Fix: point OUTBOX_DB at a native Linux filesystem, e.g.\n"
+                f"    mkdir -p /root/orbit-state && "
+                f"export OUTBOX_DB=/root/orbit-state/outbox.db"
+            )
 
     # --- connection handling: one connection per thread, WAL for concurrency ---
 

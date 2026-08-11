@@ -269,6 +269,45 @@ def main(stamp):
                   "experiment-local implementation"),
             ]
 
+    # ---- cross-experiment provenance: one run, one contract ----
+    # The paper presents these numbers as a single consolidated run. If exp3
+    # measured gas against one deployment while exp1/exp5 anchored to another,
+    # that claim is false and nothing else in the pipeline would notice. The
+    # address is recorded by each experiment from the chain/orchestrator it
+    # actually used, so a mismatch is detectable here and only here.
+    seen_contracts = {}
+    for exp, node in (("exp1", raw.get("exp1")), ("exp3", raw.get("exp3")),
+                      ("exp5", raw.get("exp5"))):
+        if not node:
+            continue
+        prov = node.get("provenance") or {}
+        addr = prov.get("contract_addr") or prov.get("contract_address")
+        if addr:
+            seen_contracts[exp] = str(addr).lower()
+
+    distinct = set(seen_contracts.values())
+    if len(distinct) > 1:
+        _errors.append(
+            "contract address mismatch across experiments in the same run: "
+            + ", ".join(f"{e}={a}" for e, a in sorted(seen_contracts.items()))
+            + ". These results do NOT come from one deployment and must not be "
+              "consolidated. Redeploy, restart the orchestrator, and rerun all "
+              "chain-dependent experiments together (STACK_BRINGUP.md section B).")
+    elif distinct:
+        metrics.append(
+            M("run_contract_addr", next(iter(distinct)), "address", "exp1+exp3+exp5",
+              "measured",
+              f"identical across {sorted(seen_contracts)} — single-deployment run "
+              f"confirmed"))
+    missing_prov = [e for e in ("exp1", "exp3", "exp5")
+                    if raw.get(e) and e not in seen_contracts]
+    if missing_prov:
+        not_measured.append({
+            "source_exp": ",".join(missing_prov),
+            "reason": ("no contract_addr in provenance, so the single-deployment "
+                       "cross-check could not be performed for these experiments"),
+        })
+
     # ---- mandatory kind validation ----
     for m in metrics:
         if "kind" not in m or m["kind"] not in VALID_KINDS:

@@ -36,6 +36,8 @@ import time
 from web3 import Web3
 
 _REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(_REPO, "orchestrator"))
+import contract_registry  # noqa: E402  — the SINGLE address-selection rule
 OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp3")
 CONTRACT_JSON = os.path.join(
     _REPO, "blockchain", "setup", "ethereum", "build", "contracts", "IoTDataRegistry.json")
@@ -93,12 +95,16 @@ def main():
         print(f"ERROR: cannot reach Ganache at {GANACHE_URL}. Start it first.")
         print("Nothing written — a missing number is recoverable, a fabricated one is not.")
         return 1
-    j = json.load(open(CONTRACT_JSON))
-    addr = Web3.to_checksum_address(j["networks"][max(j["networks"], key=int)]["address"])
-    if len(w3.eth.get_code(addr)) <= 2:
-        print(f"ERROR: no contract code at {addr}. Redeploy IoTDataRegistry.")
+    # Same resolver as the orchestrator. If these two ever disagree, exp3 measures
+    # gas on one contract while exp1/exp5 anchor to another within a single run.
+    try:
+        res = contract_registry.resolve(CONTRACT_JSON, w3=w3, require_code=True)
+    except contract_registry.ContractResolutionError as e:
+        print(f"ERROR: {e}")
+        print("Nothing written — a missing number is recoverable, a fabricated one is not.")
         return 1
-    c = w3.eth.contract(address=addr, abi=j["abi"])
+    addr = res["address"]
+    c = w3.eth.contract(address=addr, abi=res["abi"])
     acct = w3.eth.accounts[0]
     w3.eth.default_account = acct
     run_salt = f"{os.getpid()}-{int(time.time())}"

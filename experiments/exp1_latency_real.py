@@ -281,6 +281,7 @@ def main():
     try:
         h = requests.get(BASE + "/health", timeout=5)
         assert h.status_code == 200
+        health = h.json()
     except Exception as e:
         print(f"ERROR: orchestrator not reachable at {BASE}: {e}")
         print("This experiment requires the live stack (orchestrator + policy + "
@@ -329,6 +330,13 @@ def main():
             "per_request_rows": "experiments/results/exp1/exp1_requests.jsonl",
             "architecture": ("async: private commit acknowledged at 202, public "
                              "anchor delivered by the outbox relay worker"),
+            # Recorded so consolidate_results.py can prove every experiment in a
+            # run anchored to the SAME contract. Without this, exp3 measuring gas
+            # on one deployment while exp1/exp5 use another is undetectable.
+            "contract_addr": health.get("contract_addr"),
+            "chain_id": health.get("chain_id"),
+            "network_id": health.get("network_id"),
+            "outbox_db": health.get("outbox_db"),
         },
         "latency": latency,
         "throughput": throughput,
