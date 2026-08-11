@@ -1,0 +1,48 @@
+================================================================================
+ML ABLATION STUDY SUMMARY REPORT
+Sensitivity Classification for Hybrid Blockchain IoT System
+Generated: 2026-01-14T21:26:40.883325
+================================================================================
+
+## Cross-Validation Results (5-Fold Stratified)
+------------------------------------------------------------
+Classifier                Accuracy     F1 Score     ROC-AUC      Time      
+------------------------------------------------------------
+Gradient Boosting         0.9767±0.001  0.9547±0.003  0.9967±0.001  270.43s
+K-Nearest Neighbors       0.9754±0.001  0.9541±0.003  0.9894±0.002  0.12s
+Decision Tree             0.9710±0.001  0.9483±0.004  0.9938±0.002  1.66s
+Random Forest             0.9702±0.001  0.9435±0.003  0.9976±0.000  17.34s
+MLP Neural Network        0.9461±0.002  0.7557±0.010  0.9910±0.001  18.19s
+Logistic Regression       0.8987±0.002  0.7363±0.003  0.9855±0.000  16.04s
+AdaBoost                  0.9422±0.009  0.6857±0.007  0.9757±0.003  35.47s
+LinearSVC                 0.9295±0.003  0.6763±0.004  0.9861±0.001  264.96s
+Naive Bayes               0.5110±0.145  0.4063±0.077  0.8477±0.034  2.61s
+
+## Statistical Significance (vs Random Forest)
+------------------------------------------------------------
+Random Forest significantly better: 5 classifiers
+No significant difference: 0 classifiers
+Random Forest significantly worse: 3 classifiers
+
+## Hold-out Test Set Results
+------------------------------------------------------------
+Classifier                Accuracy   F1 Score   ROC-AUC   
+------------------------------------------------------------
+Gradient Boosting         0.7031     0.5987     0.9011
+K-Nearest Neighbors       0.6908     0.5581     0.8182
+AdaBoost                  0.6886     0.5475     0.8414
+MLP Neural Network        0.6776     0.5197     0.9101
+Logistic Regression       0.6213     0.5156     0.9135
+Decision Tree             0.6225     0.4947     0.8108
+Random Forest             0.6226     0.4918     0.9186
+LinearSVC                 0.5756     0.4291     0.8779
+Naive Bayes               0.3506     0.3469     0.7337
+
+## Conclusion
+------------------------------------------------------------
+Best performing classifier: Gradient Boosting
+  - F1 Score: 0.9547 ± 0.0034
+  - Accuracy: 0.9767 ± 0.0009
+
+Note: Random Forest achieved F1=0.9435
+================================================================================

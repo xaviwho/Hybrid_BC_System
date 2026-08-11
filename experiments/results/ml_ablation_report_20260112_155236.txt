@@ -1,0 +1,36 @@
+================================================================================
+ML ABLATION STUDY SUMMARY REPORT
+Sensitivity Classification for Hybrid Blockchain IoT System
+Generated: 2026-01-12T15:52:36.294177
+================================================================================
+
+## Cross-Validation Results (5-Fold Stratified)
+------------------------------------------------------------
+Classifier                Accuracy     F1 Score     ROC-AUC      Time      
+------------------------------------------------------------
+Random Forest             1.0000±0.000  1.0000±0.000  nan±nan  1.96s
+Decision Tree             1.0000±0.000  1.0000±0.000  nan±nan  0.40s
+AdaBoost                  1.0000±0.000  1.0000±0.000  nan±nan  0.63s
+K-Nearest Neighbors       1.0000±0.000  1.0000±0.000  nan±nan  0.32s
+Naive Bayes               1.0000±0.000  1.0000±0.000  nan±nan  0.85s
+MLP Neural Network        1.0000±0.000  1.0000±0.000  nan±nan  13.46s
+
+## Statistical Significance (vs Random Forest)
+------------------------------------------------------------
+Random Forest significantly better: 0 classifiers
+No significant difference: 5 classifiers
+Random Forest significantly worse: 0 classifiers
+
+## Hold-out Test Set Results
+------------------------------------------------------------
+Classifier                Accuracy   F1 Score   ROC-AUC   
+------------------------------------------------------------
+
+## Conclusion
+------------------------------------------------------------
+Best performing classifier: Random Forest
+  - F1 Score: 1.0000 ± 0.0000
+  - Accuracy: 1.0000 ± 0.0000
+
+Random Forest is justified as the optimal choice for this task.
+================================================================================

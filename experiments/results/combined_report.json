@@ -1,98 +1,125 @@
 {
   "title": "Hybrid Blockchain Digital Twin System - Experimental Evaluation",
-  "timestamp": "2025-12-17T09:56:29.561788",
-  "duration_seconds": 223.772955,
-  "mode": "quick",
+  "timestamp": "2026-04-10T15:30:04.001381",
+  "duration_seconds": 123.156624,
+  "mode": "full",
   "experiments": {
     "experiment_1": {
       "status": "success",
       "summary": {
         "fabric_only": {
-          "mean_ms": 59.520422000059625,
-          "median_ms": 58.63871599990489,
-          "p95_ms": 75.84601429996384,
-          "p99_ms": 84.22582445987699,
-          "min_ms": 46.888947000297776,
-          "max_ms": 86.3207769998553,
-          "std_ms": 10.176808873046378,
-          "sample_count": 20
+          "mean_ms": 95.89139947123962,
+          "median_ms": 83.28243651310964,
+          "p95_ms": 196.3610007079865,
+          "p99_ms": 299.4524295339503,
+          "min_ms": 31.380407729785578,
+          "max_ms": 386.4165708545312,
+          "std_ms": 57.29759090637828,
+          "sample_count": 100
         },
         "fabric_ethereum": {
-          "mean_ms": 51.212976749980044,
-          "median_ms": 48.76998350005124,
-          "p95_ms": 65.88680389982075,
-          "p99_ms": 84.62806797994742,
-          "min_ms": 37.05343699994046,
-          "max_ms": 89.31338399997912,
-          "std_ms": 12.573238341294683,
-          "sample_count": 20
+          "mean_ms": 428.4782817841787,
+          "median_ms": 352.4424802737409,
+          "p95_ms": 805.1034652924747,
+          "p99_ms": 1113.1059097232899,
+          "min_ms": 154.26222434911617,
+          "max_ms": 1271.0362408009564,
+          "std_ms": 221.38600809479004,
+          "sample_count": 100
         },
         "throughput": {
-          "max_throughput_rps": 16.339223426440302,
-          "saturation_point_rps": 20,
-          "back_pressure_onset_rps": 0.0
+          "max_throughput_rps": 57.13333333333333,
+          "saturation_point_rps": 75,
+          "back_pressure_onset_rps": 75
         }
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{End-to-End Latency Results (Experiment 1)}\n\\label{tab:latency_results}\n\\begin{tabular}{lcccccc}\n\\toprule\n\\textbf{Path Type} & \\textbf{Mean} & \\textbf{Median} & \\textbf{P95} & \\textbf{P99} & \\textbf{Min} & \\textbf{Max} \\\\\n & (ms) & (ms) & (ms) & (ms) & (ms) & (ms) \\\\\n\\midrule\nFabric-Only & 59.52 & 58.64 & 75.85 & 84.23 & 46.89 & 86.32 \\\\\nFabric+Ethereum & 51.21 & 48.77 & 65.89 & 84.63 & 37.05 & 89.31 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{End-to-End Latency Results (Experiment 1)}\n\\label{tab:latency_results}\n\\begin{tabular}{lcccccc}\n\\toprule\n\\textbf{Path Type} & \\textbf{Mean} & \\textbf{Median} & \\textbf{P95} & \\textbf{P99} & \\textbf{Min} & \\textbf{Max} \\\\\n & (ms) & (ms) & (ms) & (ms) & (ms) & (ms) \\\\\n\\midrule\nFabric-Only & 95.89 & 83.28 & 196.36 & 299.45 & 31.38 & 386.42 \\\\\nFabric+Ethereum & 428.48 & 352.44 & 805.10 & 1113.11 & 154.26 & 1271.04 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_2": {
       "status": "success",
       "summary": {
-        "total_samples": 100,
-        "accuracy": 0.7,
+        "total_samples": 500,
+        "accuracy": 1.0,
         "precision_sensitive": 1.0,
-        "recall_sensitive": 0.5,
-        "f1_sensitive": 0.6666666666666666,
-        "misroute_count": 30,
-        "misroute_rate": 0.3,
+        "recall_sensitive": 1.0,
+        "f1_sensitive": 1.0,
+        "misroute_count": 0,
+        "misroute_rate": 0.0,
         "privacy_budget_epsilon": 0.05,
-        "achieved_epsilon": 0.5,
-        "budget_respected": false
+        "achieved_epsilon": 0.0,
+        "budget_respected": true
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Privacy Classification Performance (Experiment 2)}\n\\label{tab:privacy_classification}\n\\begin{tabular}{lcccc}\n\\toprule\n\\textbf{Class} & \\textbf{Precision} & \\textbf{Recall} & \\textbf{F1-Score} & \\textbf{Support} \\\\\n\\midrule\nPublic & 0.571 & 1.000 & 0.727 & 40 \\\\\nSensitive & 1.000 & 0.500 & 0.667 & 60 \\\\\n\\midrule\nAccuracy & \\multicolumn{4}{c}{0.700} \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Misrouting Probability vs Threshold $\\tau$ (Eq. 35)}\n\\label{tab:threshold_sweep}\n\\begin{tabular}{ccccc}\n\\toprule\n\\textbf{$\\tau$} & \\textbf{Pr[Misroute]} & \\textbf{Pr[False Public]} & \\textbf{Accuracy} & \\textbf{$\\leq \\epsilon$?} \\\\\n\\midrule\n0.1 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.2 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.3 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.4 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.5 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.6 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.7 & 0.3000 & 0.5000 & 0.700 &  \\\\\n0.8 & 0.6000 & 1.0000 & 0.700 &  \\\\\n0.9 & 0.6000 & 1.0000 & 0.700 &  \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Privacy Classification Performance (Experiment 2)}\n\\label{tab:privacy_classification}\n\\begin{tabular}{lcccc}\n\\toprule\n\\textbf{Class} & \\textbf{Precision} & \\textbf{Recall} & \\textbf{F1-Score} & \\textbf{Support} \\\\\n\\midrule\nPublic & 1.000 & 1.000 & 1.000 & 200 \\\\\nSensitive & 1.000 & 1.000 & 1.000 & 300 \\\\\n\\midrule\nAccuracy & \\multicolumn{4}{c}{1.000} \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Misrouting Probability vs Threshold $\\tau$ (Eq. 35)}\n\\label{tab:threshold_sweep}\n\\begin{tabular}{ccccc}\n\\toprule\n\\textbf{$\\tau$} & \\textbf{Pr[Misroute]} & \\textbf{Pr[False Public]} & \\textbf{Accuracy} & \\textbf{$\\leq \\epsilon$?} \\\\\n\\midrule\n0.1 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.2 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.3 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.4 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.5 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.6 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.7 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.8 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n0.9 & 0.0000 & 0.0000 & 1.000 & \\checkmark \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_3": {
       "status": "success",
       "summary": {
-        "baseline_gas_per_record": 24384.0,
+        "baseline_gas_per_record": 24382.4,
         "optimal_batch_size": 200,
         "knee_point_batch_size": 10,
-        "optimal_gas_per_record": 414.21000000000004,
-        "optimal_gas_reduction_percent": 98.30130413385827,
-        "optimal_cost_per_record_usd": 0.0165684
+        "optimal_gas_per_record": 414.23999999999995,
+        "optimal_gas_reduction_percent": 98.30106962399108,
+        "optimal_cost_per_record_usd": 0.0165696
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Gas Efficiency of Merkle-Batched Anchoring (Experiment 3)}\n\\label{tab:gas_efficiency}\n\\begin{tabular}{rrrrrr}\n\\toprule\n\\textbf{Batch Size} & \\textbf{Gas/Record} & \\textbf{Reduction} & \\textbf{Cost/Record} & \\textbf{Latency} \\\\\n\\textbf{(N)} & & \\textbf{(\\%)} & \\textbf{(USD)} & \\textbf{(ms)} \\\\\n\\midrule\n1 (baseline) & 24384 & -- & \\$0.9754 & -- \\\\\n\\midrule\n2 & 12083 & 50.4\\% & \\$0.4833 & 21.4 \\\\\n5 & 4994 & 79.5\\% & \\$0.1997 & 25.8 \\\\\n10 & 2638 & 89.2\\% & \\$0.1055 & 20.2 \\\\\n20 & 1454 & 94.0\\% & \\$0.0582 & 21.3 \\\\\n50 & 745 & 96.9\\% & \\$0.0298 & 20.6 \\\\\n100 & 525 & 97.8\\% & \\$0.0210 & 20.1 \\\\\n200 & 414 & 98.3\\% & \\$0.0166 & 22.6 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Gas Efficiency of Merkle-Batched Anchoring (Experiment 3)}\n\\label{tab:gas_efficiency}\n\\begin{tabular}{rrrrrr}\n\\toprule\n\\textbf{Batch Size} & \\textbf{Gas/Record} & \\textbf{Reduction} & \\textbf{Cost/Record} & \\textbf{Latency} \\\\\n\\textbf{(N)} & & \\textbf{(\\%)} & \\textbf{(USD)} & \\textbf{(ms)} \\\\\n\\midrule\n1 (baseline) & 24382 & -- & \\$0.9753 & -- \\\\\n\\midrule\n2 & 12086 & 50.4\\% & \\$0.4834 & 236.0 \\\\\n5 & 4993 & 79.5\\% & \\$0.1997 & 242.7 \\\\\n10 & 2638 & 89.2\\% & \\$0.1055 & 243.3 \\\\\n20 & 1454 & 94.0\\% & \\$0.0581 & 248.6 \\\\\n50 & 745 & 96.9\\% & \\$0.0298 & 247.1 \\\\\n100 & 525 & 97.8\\% & \\$0.0210 & 258.0 \\\\\n200 & 414 & 98.3\\% & \\$0.0166 & 248.4 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_4": {
       "status": "success",
       "summary": {
-        "max_practical_rollback_depth": 20,
-        "max_versions_tested": 20,
+        "max_practical_rollback_depth": 50,
+        "max_versions_tested": 100,
         "final_storage_reduction_percent": 0.0,
-        "full_snapshot_storage_kb": 9.970703125,
-        "delta_storage_kb": 9.970703125,
+        "full_snapshot_storage_kb": 49.98828125,
+        "delta_storage_kb": 49.98828125,
         "rollback_depths_tested": [
           1,
           2,
           5,
           10,
-          20
+          20,
+          30,
+          50
         ],
-        "avg_checkpoint_speedup_percent": -48.0
+        "avg_checkpoint_speedup_percent": 74.63806990586939
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Versioning Storage Overhead (Experiment 4, Eq. 38)}\n\\label{tab:storage_overhead}\n\\begin{tabular}{rrrr}\n\\toprule\n\\textbf{Versions} & \\textbf{Full Snapshots} & \\textbf{Delta-Based} & \\textbf{Reduction} \\\\\n & (KB) & (KB) & (\\%) \\\\\n\\midrule\n5 & 2.5 & 2.5 & 0.0 \\\\\n10 & 5.0 & 5.0 & 0.0 \\\\\n20 & 10.0 & 10.0 & 0.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Rollback Latency vs Depth (Experiment 4, Eq. 42)}\n\\label{tab:rollback_latency}\n\\begin{tabular}{rrrrr}\n\\toprule\n\\textbf{Depth} & \\textbf{Avg Latency} & \\textbf{P95 Latency} & \\textbf{With Checkpoint} & \\textbf{Speedup} \\\\\n & (ms) & (ms) & (ms) & (\\%) \\\\\n\\midrule\n1 & 3.9 & 4.3 & 15.8 & -300.0 \\\\\n2 & 2.7 & 2.8 & 5.4 & -100.0 \\\\\n5 & 3.0 & 3.8 & 2.4 & 20.0 \\\\\n10 & 3.8 & 4.0 & 1.5 & 60.0 \\\\\n20 & 4.7 & 6.0 & 0.9 & 80.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Versioning Storage Overhead (Experiment 4, Eq. 38)}\n\\label{tab:storage_overhead}\n\\begin{tabular}{rrrr}\n\\toprule\n\\textbf{Versions} & \\textbf{Full Snapshots} & \\textbf{Delta-Based} & \\textbf{Reduction} \\\\\n & (KB) & (KB) & (\\%) \\\\\n\\midrule\n5 & 2.5 & 2.5 & 0.0 \\\\\n10 & 5.0 & 5.0 & 0.0 \\\\\n20 & 10.0 & 10.0 & 0.0 \\\\\n50 & 25.0 & 25.0 & 0.0 \\\\\n100 & 50.0 & 50.0 & 0.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{Rollback Latency vs Depth (Experiment 4, Eq. 42)}\n\\label{tab:rollback_latency}\n\\begin{tabular}{rrrrr}\n\\toprule\n\\textbf{Depth} & \\textbf{Avg Latency} & \\textbf{P95 Latency} & \\textbf{With Checkpoint} & \\textbf{Speedup} \\\\\n & (ms) & (ms) & (ms) & (\\%) \\\\\n\\midrule\n1 & 40.2 & 51.8 & 0.5 & 98.7 \\\\\n2 & 46.1 & 50.4 & 0.6 & 98.8 \\\\\n5 & 72.0 & 91.1 & 46.8 & 35.0 \\\\\n10 & 126.2 & 146.2 & 63.1 & 50.0 \\\\\n20 & 196.4 & 207.0 & 39.3 & 80.0 \\\\\n30 & 269.3 & 290.9 & 53.9 & 80.0 \\\\\n50 & 423.3 & 426.9 & 84.7 & 80.0 \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     },
     "experiment_5": {
       "status": "success",
       "summary": {
-        "total_requests": 27,
-        "successful_requests": 25,
-        "total_duplicate_anchors": 16,
+        "total_requests": 75,
+        "successful_requests": 73,
+        "total_duplicate_anchors": 0,
         "total_lost_commits": 0,
-        "exactly_once_verified": false,
-        "idempotency_pass_rate": 0.0
+        "exactly_once_verified": true,
+        "idempotency_pass_rate": 1.0
       },
-      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Exactly-Once Semantics Under Failure (Experiment 5)}\n\\label{tab:exactly_once}\n\\begin{tabular}{lcccc}\n\\toprule\n\\textbf{Failure Scenario} & \\textbf{Requests} & \\textbf{Successful} & \\textbf{Duplicates} & \\textbf{Consistent} \\\\\n\\midrule\nOrchestrator Crash Recovery & 8 & 8 & 0 & \\checkmark \\\\\nEthereum Relay Failure & 8 & 8 & 0 & \\checkmark \\\\\nConcurrent Duplicate Handling & 12 & 0 & 6 &  \\\\\n\\midrule\n\\textbf{Overall} & -- & -- & 16 &  \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Exactly-Once Semantics Under Failure (Experiment 5)}\n\\label{tab:exactly_once}\n\\begin{tabular}{lcccc}\n\\toprule\n\\textbf{Failure Scenario} & \\textbf{Requests} & \\textbf{Successful} & \\textbf{Duplicates} & \\textbf{Consistent} \\\\\n\\midrule\nOrchestrator Crash Recovery & 20 & 17 & 28 &  \\\\\nEthereum Relay Failure & 20 & 20 & 0 & \\checkmark \\\\\nConcurrent Duplicate Handling & 30 & 10 & 0 & \\checkmark \\\\\n\\midrule\n\\textbf{Overall} & -- & -- & 0 & \\checkmark \\\\\n\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
+    },
+    "experiment_7": {
+      "status": "success",
+      "summary": {
+        "hadc_storage_improvement_pct": 61.9,
+        "hadc_throughput_improvement_pct": 17.7,
+        "total_entities": 100,
+        "entity_classes": 4,
+        "simulation_duration_s": 3600,
+        "no_compression_ratio": 1.0,
+        "no_compression_compressed_kb": 5549.6,
+        "uniform_zlib6_ratio": 2.264,
+        "uniform_zlib6_compressed_kb": 2474.4,
+        "hadc_ratio": 5.955,
+        "hadc_compressed_kb": 943.4,
+        "machine_avg_delta_bytes": 70.3,
+        "machine_entropy": 4.88,
+        "conveyor_avg_delta_bytes": 42.6,
+        "conveyor_entropy": 4.79,
+        "sensor_avg_delta_bytes": 104.4,
+        "sensor_entropy": 4.91,
+        "agv_avg_delta_bytes": 66.0,
+        "agv_entropy": 4.73
+      },
+      "latex": "\n\\begin{table}[htbp]\n\\centering\n\\caption{Entity Class Delta Profiles (Experiment 7)}\n\\label{tab:hadc_profiles}\n\\begin{tabular}{lrrrrrc}\n\\toprule\n\\textbf{Class} & $|C|$ & \\textbf{Events} & $\\bar{\\delta}$ \\textbf{(B)} & $\\sigma_\\delta$ \\textbf{(B)} & $\\bar{k}$ & $H$ \\textbf{(bits/B)} \\\\\n\\midrule\nMachine & 25 & 8955 & 70 & 27 & 3.4 & 4.88 \\\\\nConveyor & 25 & 12692 & 43 & 19 & 2.2 & 4.79 \\\\\nSensor & 30 & 32400 & 104 & 6 & 4.9 & 4.91 \\\\\nAGV & 20 & 17115 & 66 & 19 & 3.3 & 4.73 \\\\\n\\bottomrule\n\\end{tabular}\n\\end{table}\n\n\n\\begin{table}[htbp]\n\\centering\n\\caption{HADC vs Uniform Compression per Entity Class (Experiment 7)}\n\\label{tab:hadc_comparison}\n\\begin{tabular}{lccccc}\n\\toprule\n\\textbf{Class} & \\textbf{Uniform} & \\textbf{HADC} & \\textbf{HADC} & \\textbf{Improv.} & \\textbf{HADC} \\\\\n & \\textbf{CR} & \\textbf{Strategy} & \\textbf{CR} & (\\%) & \\textbf{(Kev/s)} \\\\\n\\midrule\nMachine & 1.83$\\times$ & Z9+D/F64 & \\textbf{7.28}$\\times$ & +298 & 170 \\\\\nConveyor & 1.59$\\times$ & Z9+D/F64 & \\textbf{7.14}$\\times$ & +348 & 263 \\\\\nSensor & 2.64$\\times$ & Z1/F64 & \\textbf{5.39}$\\times$ & +105 & 957 \\\\\nAGV & 2.08$\\times$ & Z9+D/F64 & \\textbf{6.85}$\\times$ & +229 & 132 \\\\\n\\midrule\n\\textbf{Overall} & 2.26$\\times$ & Heterogeneous & \\textbf{5.96}$\\times$ & \\textbf{+62} & 269 \\\\\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
     }
   }
 }

@@ -1,0 +1,11 @@
+% Auto-generated from RESULTS.json (config=9fd36828240c generated_at=2026-07-01T15:19:25)
+\begin{table}[htbp]\centering
+\caption{Measured per-class delta compression. Overall uniform 11.59x, HADC 12.10x (4.2\% saving). Caveat: all classes selected the same codec (zlib-9), so the gain is from level selection, not structural heterogeneity.}
+\label{tab:c4_hadc}
+\begin{tabular}{lrrrrrl}\toprule
+Class & Raw (B) & Uniform (B) & HADC (B) & Uni.\ ratio & HADC ratio & Codec \\\midrule
+machine & 24,189 & 1,761 & 1,618 & 13.74 & 14.95 & zlib-9 \\
+conveyor & 24,087 & 1,674 & 1,569 & 14.39 & 15.35 & zlib-9 \\
+sensor & 24,249 & 1,355 & 1,322 & 17.90 & 18.34 & zlib-9 \\
+agv & 27,362 & 3,828 & 3,747 & 7.15 & 7.30 & zlib-9 \\
+\bottomrule\end{tabular}\end{table}

@@ -1,0 +1,8 @@
+# Measurement records are provenance artifacts: preserve their bytes exactly.
+# Without this, git normalizes LF->CRLF on checkout under core.autocrlf and the
+# stored JSON no longer matches what the experiment wrote.
+* -text
+*.json -text -diff=json
+*.png binary
+*.pdf binary
+*.zip binary

@@ -1,0 +1,55 @@
+{
+  "note": "PHASE 2 REPRODUCIBILITY FINDING — exp7 (Contribution 4) does not reproduce across environments. Recorded here because experiments/results/ is NOT under version control, so the original run would otherwise have been lost when exp7 was re-run. Original per-class values recovered from contribution4_figures/tab_contribution4.tex, which was generated from the original RESULTS.json (config 9fd36828240c).",
+  "what_reproduces_exactly": "raw delta bytes per class — the twin_manager delta derivation is fully deterministic",
+  "what_does_not_reproduce": "compressed sizes at zlib level 6, and therefore the uniform baseline, the HADC-vs-uniform saving, and the heterogeneous_selection flag",
+  "runs": {
+    "original": {
+      "environment": "WSL2 Ubuntu-22.04 (stack host)",
+      "generated_at": "2026-07-01T15:19:25",
+      "config_hash": "9fd36828240c",
+      "python": "unrecorded",
+      "zlib": "unrecorded",
+      "overall_uniform_ratio": 11.591,
+      "overall_hadc_ratio": 12.099,
+      "hadc_storage_savings_vs_uniform_pct": 4.2,
+      "heterogeneous_selection": false,
+      "codecs_selected": ["zlib-9"],
+      "per_class": {
+        "machine":  {"raw_bytes": 24189, "uniform_bytes": 1761, "hadc_bytes": 1618, "uniform_ratio": 13.74, "hadc_ratio": 14.95, "hadc_codec": "zlib-9"},
+        "conveyor": {"raw_bytes": 24087, "uniform_bytes": 1674, "hadc_bytes": 1569, "uniform_ratio": 14.39, "hadc_ratio": 15.35, "hadc_codec": "zlib-9"},
+        "sensor":   {"raw_bytes": 24249, "uniform_bytes": 1355, "hadc_bytes": 1322, "uniform_ratio": 17.90, "hadc_ratio": 18.34, "hadc_codec": "zlib-9"},
+        "agv":      {"raw_bytes": 27362, "uniform_bytes": 3828, "hadc_bytes": 3747, "uniform_ratio": 7.15,  "hadc_ratio": 7.30,  "hadc_codec": "zlib-9"}
+      }
+    },
+    "phase2_rerun": {
+      "environment": "Windows 11, native Python (NOT the stack host)",
+      "python": "3.12.10",
+      "zlib_runtime": "1.3.1",
+      "zlib_compiled": "1.3.1",
+      "overall_uniform_ratio": 11.536,
+      "overall_hadc_ratio": 12.304,
+      "hadc_storage_savings_vs_uniform_pct": 6.25,
+      "heterogeneous_selection": true,
+      "codecs_selected": ["zlib-6", "zlib-9"],
+      "per_class": {
+        "machine":  {"raw_bytes": 24189, "uniform_bytes": 1728, "hadc_bytes": 1618, "hadc_codec": "zlib-9"},
+        "conveyor": {"raw_bytes": 24087, "uniform_bytes": 1680, "hadc_bytes": 1569, "hadc_codec": "zlib-9"},
+        "sensor":   {"raw_bytes": 24249, "uniform_bytes": 1642, "hadc_bytes": 1322, "hadc_codec": "zlib-9"},
+        "agv":      {"raw_bytes": 27362, "uniform_bytes": 3609, "hadc_bytes": 3609, "hadc_codec": "zlib-6"}
+      }
+    }
+  },
+  "analysis": {
+    "raw_bytes_identical": true,
+    "zlib9_output_identical": "machine/conveyor/sensor HADC bytes are byte-identical across environments (1618, 1569, 1322)",
+    "zlib6_output_differs": "uniform baseline moved by -1.9% (machine), +0.4% (conveyor), +21.2% (sensor), -5.7% (agv)",
+    "consequence_1": "The 4.2% headline saving is not a property of the method. It is the ratio between a zlib-9 result and a zlib-6 result, and zlib-6's output depends on the zlib build. The same code yields 6.25% here.",
+    "consequence_2": "The published caveat 'all classes chose zlib-9, so there is no structural heterogeneity' is FALSE in this environment: agv selects zlib-6 and heterogeneous_selection is true. The caveat cannot be stated as a finding.",
+    "consequence_3": "Contribution 4 as currently framed rests on an unpinned dependency. Either pin the zlib version and report it as part of the configuration, or reframe the contribution around a codec set whose outputs are version-stable."
+  },
+  "action_required": [
+    "Re-run exp7 on the WSL2 stack host and record python + zlib versions in provenance.",
+    "Put experiments/results/ under version control, or write every run to a timestamped directory. An unversioned results tree let a re-run silently replace a published measurement.",
+    "Do not cite the 4.2% figure or the all-zlib-9 caveat until the environment is pinned."
+  ]
+}

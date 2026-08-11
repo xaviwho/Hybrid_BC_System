@@ -1,0 +1,462 @@
+{
+  "timestamp": "20260112_155236",
+  "cross_validation": {
+    "Random Forest": {
+      "accuracy": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "f1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "roc_auc": {
+        "mean": NaN,
+        "std": NaN,
+        "scores": [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "train_time": 26.315105676651,
+      "fit_time_mean": 1.9636927127838135,
+      "fit_time_std": 0.4507553572123801
+    },
+    "Decision Tree": {
+      "accuracy": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "f1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "roc_auc": {
+        "mean": NaN,
+        "std": NaN,
+        "scores": [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "train_time": 5.814872980117798,
+      "fit_time_mean": 0.402987003326416,
+      "fit_time_std": 0.10972327326606159
+    },
+    "Logistic Regression": {
+      "error": "\nAll the 5 fits failed.\nIt is very likely that your model is misconfigured.\nYou can try to debug the error by setting error_score='raise'.\n\nBelow are more details about the failures:\n--------------------------------------------------------------------------------\n5 fits failed with the following error:\nTraceback (most recent call last):\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\model_selection\\_validation.py\", line 859, in _fit_and_score\n    estimator.fit(X_train, y_train, **fit_params)\n    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\base.py\", line 1365, in wrapper\n    return fit_method(estimator, *args, **kwargs)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\linear_model\\_logistic.py\", line 1335, in fit\n    raise ValueError(\n    ...<3 lines>...\n    )\nValueError: This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(3)\n"
+    },
+    "SVM (RBF)": {
+      "error": "\nAll the 5 fits failed.\nIt is very likely that your model is misconfigured.\nYou can try to debug the error by setting error_score='raise'.\n\nBelow are more details about the failures:\n--------------------------------------------------------------------------------\n5 fits failed with the following error:\nTraceback (most recent call last):\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\model_selection\\_validation.py\", line 859, in _fit_and_score\n    estimator.fit(X_train, y_train, **fit_params)\n    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\base.py\", line 1365, in wrapper\n    return fit_method(estimator, *args, **kwargs)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\svm\\_base.py\", line 207, in fit\n    y = self._validate_targets(y)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\svm\\_base.py\", line 751, in _validate_targets\n    raise ValueError(\n    ...<2 lines>...\n    )\nValueError: The number of classes has to be greater than one; got 1 class\n"
+    },
+    "SVM (Linear)": {
+      "error": "\nAll the 5 fits failed.\nIt is very likely that your model is misconfigured.\nYou can try to debug the error by setting error_score='raise'.\n\nBelow are more details about the failures:\n--------------------------------------------------------------------------------\n5 fits failed with the following error:\nTraceback (most recent call last):\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\model_selection\\_validation.py\", line 859, in _fit_and_score\n    estimator.fit(X_train, y_train, **fit_params)\n    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\base.py\", line 1365, in wrapper\n    return fit_method(estimator, *args, **kwargs)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\svm\\_base.py\", line 207, in fit\n    y = self._validate_targets(y)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\svm\\_base.py\", line 751, in _validate_targets\n    raise ValueError(\n    ...<2 lines>...\n    )\nValueError: The number of classes has to be greater than one; got 1 class\n"
+    },
+    "Gradient Boosting": {
+      "error": "\nAll the 5 fits failed.\nIt is very likely that your model is misconfigured.\nYou can try to debug the error by setting error_score='raise'.\n\nBelow are more details about the failures:\n--------------------------------------------------------------------------------\n5 fits failed with the following error:\nTraceback (most recent call last):\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\model_selection\\_validation.py\", line 859, in _fit_and_score\n    estimator.fit(X_train, y_train, **fit_params)\n    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\base.py\", line 1365, in wrapper\n    return fit_method(estimator, *args, **kwargs)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\ensemble\\_gb.py\", line 669, in fit\n    y = self._encode_y(y=y, sample_weight=None)\n  File \"C:\\Users\\sandr\\AppData\\Roaming\\Python\\Python313\\site-packages\\sklearn\\ensemble\\_gb.py\", line 1536, in _encode_y\n    raise ValueError(\n    ...<3 lines>...\n    )\nValueError: y contains 1 class after sample_weight trimmed classes with zero weights, while a minimum of 2 classes are required.\n"
+    },
+    "AdaBoost": {
+      "accuracy": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "f1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "roc_auc": {
+        "mean": NaN,
+        "std": NaN,
+        "scores": [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "train_time": 1.4605181217193604,
+      "fit_time_mean": 0.6290003299713135,
+      "fit_time_std": 0.0377634597953546
+    },
+    "K-Nearest Neighbors": {
+      "accuracy": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "f1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "roc_auc": {
+        "mean": NaN,
+        "std": NaN,
+        "scores": [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "train_time": 395.8050799369812,
+      "fit_time_mean": 0.31705727577209475,
+      "fit_time_std": 0.02577671812126386
+    },
+    "Naive Bayes": {
+      "accuracy": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "f1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "roc_auc": {
+        "mean": NaN,
+        "std": NaN,
+        "scores": [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "train_time": 2.5124361515045166,
+      "fit_time_mean": 0.8469129085540772,
+      "fit_time_std": 0.2533820611295485
+    },
+    "MLP Neural Network": {
+      "accuracy": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "f1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "roc_auc": {
+        "mean": NaN,
+        "std": NaN,
+        "scores": [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "train_time": 19.592440843582153,
+      "fit_time_mean": 13.462081098556519,
+      "fit_time_std": 1.1664660642176428
+    }
+  },
+  "holdout_test": {
+    "Random Forest": {
+      "error": "Number of classes, 1, does not match size of target_names, 4. Try specifying the labels parameter"
+    },
+    "Decision Tree": {
+      "error": "Number of classes, 1, does not match size of target_names, 4. Try specifying the labels parameter"
+    },
+    "Logistic Regression": {
+      "error": "This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(3)"
+    },
+    "SVM (RBF)": {
+      "error": "The number of classes has to be greater than one; got 1 class"
+    },
+    "SVM (Linear)": {
+      "error": "The number of classes has to be greater than one; got 1 class"
+    },
+    "Gradient Boosting": {
+      "error": "y contains 1 class after sample_weight trimmed classes with zero weights, while a minimum of 2 classes are required."
+    },
+    "AdaBoost": {
+      "error": "Number of classes, 1, does not match size of target_names, 4. Try specifying the labels parameter"
+    },
+    "K-Nearest Neighbors": {
+      "error": "Number of classes, 1, does not match size of target_names, 4. Try specifying the labels parameter"
+    },
+    "Naive Bayes": {
+      "error": "Number of classes, 1, does not match size of target_names, 4. Try specifying the labels parameter"
+    },
+    "MLP Neural Network": {
+      "error": "Number of classes, 1, does not match size of target_names, 4. Try specifying the labels parameter"
+    }
+  },
+  "statistical_significance": {
+    "Decision Tree": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "cohens_d": 0,
+      "significant_at_0.05": "False",
+      "rf_better": "False"
+    },
+    "AdaBoost": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "cohens_d": 0,
+      "significant_at_0.05": "False",
+      "rf_better": "False"
+    },
+    "K-Nearest Neighbors": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "cohens_d": 0,
+      "significant_at_0.05": "False",
+      "rf_better": "False"
+    },
+    "Naive Bayes": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "cohens_d": 0,
+      "significant_at_0.05": "False",
+      "rf_better": "False"
+    },
+    "MLP Neural Network": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "cohens_d": 0,
+      "significant_at_0.05": "False",
+      "rf_better": "False"
+    }
+  },
+  "config": {
+    "n_splits": 5,
+    "random_state": 42,
+    "classifiers": [
+      "Random Forest",
+      "Decision Tree",
+      "Logistic Regression",
+      "SVM (RBF)",
+      "SVM (Linear)",
+      "Gradient Boosting",
+      "AdaBoost",
+      "K-Nearest Neighbors",
+      "Naive Bayes",
+      "MLP Neural Network"
+    ]
+  }
+}

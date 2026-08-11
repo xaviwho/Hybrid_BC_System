@@ -1,0 +1,192 @@
+{
+  "experiment": "exp1_latency_real",
+  "measured": true,
+  "stack": "orchestrator :5002 -> policy :5011 + Fabric(hiot) + Ganache(1337)",
+  "latency": {
+    "public": {
+      "path": "public",
+      "server_total": {
+        "n": 25,
+        "mean_ms": 94.446,
+        "p50_ms": 92.363,
+        "p95_ms": 102.027,
+        "p99_ms": 103.365,
+        "ci95_ms": 2.52
+      },
+      "stage_policy": {
+        "n": 25,
+        "mean_ms": 2.752,
+        "p50_ms": 2.644,
+        "p95_ms": 3.128,
+        "p99_ms": 3.209,
+        "ci95_ms": 0.142
+      },
+      "stage_ethereum": {
+        "n": 25,
+        "mean_ms": 91.693,
+        "p50_ms": 89.773,
+        "p95_ms": 99.477,
+        "p99_ms": 100.72,
+        "ci95_ms": 2.532
+      },
+      "client_rtt": {
+        "n": 25,
+        "mean_ms": 97.154,
+        "p50_ms": 95.778,
+        "p95_ms": 104.429,
+        "p99_ms": 106.278,
+        "ci95_ms": 2.522
+      }
+    },
+    "sensitive": {
+      "path": "sensitive",
+      "server_total": {
+        "n": 15,
+        "mean_ms": 2247.022,
+        "p50_ms": 2245.794,
+        "p95_ms": 2263.99,
+        "p99_ms": 2263.99,
+        "ci95_ms": 8.111
+      },
+      "stage_policy": {
+        "n": 15,
+        "mean_ms": 2.778,
+        "p50_ms": 2.606,
+        "p95_ms": 3.437,
+        "p99_ms": 3.437,
+        "ci95_ms": 0.17
+      },
+      "stage_ethereum": {
+        "n": 15,
+        "mean_ms": 105.976,
+        "p50_ms": 102.775,
+        "p95_ms": 115.425,
+        "p99_ms": 115.425,
+        "ci95_ms": 3.418
+      },
+      "client_rtt": {
+        "n": 15,
+        "mean_ms": 2249.571,
+        "p50_ms": 2248.25,
+        "p95_ms": 2266.781,
+        "p99_ms": 2266.781,
+        "ci95_ms": 8.139
+      },
+      "stage_fabric": {
+        "n": 15,
+        "mean_ms": 2138.268,
+        "p50_ms": 2138.943,
+        "p95_ms": 2156.452,
+        "p99_ms": 2156.452,
+        "ci95_ms": 6.654
+      }
+    }
+  },
+  "throughput": {
+    "public": [
+      {
+        "concurrency": 1,
+        "completed": 24,
+        "wall_s": 54.253,
+        "throughput_tps": 0.442,
+        "latency": {
+          "n": 24,
+          "mean_ms": 2260.416,
+          "p50_ms": 2261.465,
+          "p95_ms": 2310.833,
+          "p99_ms": 2322.789,
+          "ci95_ms": 13.007
+        }
+      },
+      {
+        "concurrency": 2,
+        "completed": 24,
+        "wall_s": 27.527,
+        "throughput_tps": 0.872,
+        "latency": {
+          "n": 24,
+          "mean_ms": 2292.49,
+          "p50_ms": 2291.571,
+          "p95_ms": 2329.116,
+          "p99_ms": 2349.286,
+          "ci95_ms": 13.862
+        }
+      },
+      {
+        "concurrency": 4,
+        "completed": 24,
+        "wall_s": 14.519,
+        "throughput_tps": 1.653,
+        "latency": {
+          "n": 24,
+          "mean_ms": 2411.851,
+          "p50_ms": 2413.335,
+          "p95_ms": 2508.862,
+          "p99_ms": 2520.754,
+          "ci95_ms": 28.414
+        }
+      },
+      {
+        "concurrency": 8,
+        "completed": 24,
+        "wall_s": 8.071,
+        "throughput_tps": 2.974,
+        "latency": {
+          "n": 24,
+          "mean_ms": 2653.318,
+          "p50_ms": 2633.508,
+          "p95_ms": 2848.449,
+          "p99_ms": 2900.32,
+          "ci95_ms": 58.126
+        }
+      }
+    ],
+    "sensitive": [
+      {
+        "concurrency": 1,
+        "completed": 8,
+        "wall_s": 17.889,
+        "throughput_tps": 0.447,
+        "latency": {
+          "n": 8,
+          "mean_ms": 2236.02,
+          "p50_ms": 2220.986,
+          "p95_ms": 2260.02,
+          "p99_ms": 2260.02,
+          "ci95_ms": 16.721
+        }
+      },
+      {
+        "concurrency": 2,
+        "completed": 8,
+        "wall_s": 9.225,
+        "throughput_tps": 0.867,
+        "latency": {
+          "n": 8,
+          "mean_ms": 2302.484,
+          "p50_ms": 2276.108,
+          "p95_ms": 2359.626,
+          "p99_ms": 2359.626,
+          "ci95_ms": 41.942
+        }
+      },
+      {
+        "concurrency": 4,
+        "completed": 8,
+        "wall_s": 4.84,
+        "throughput_tps": 1.653,
+        "latency": {
+          "n": 8,
+          "mean_ms": 2396.501,
+          "p50_ms": 2397.064,
+          "p95_ms": 2456.738,
+          "p99_ms": 2456.738,
+          "ci95_ms": 48.673
+        }
+      }
+    ]
+  },
+  "peak_tps_public": 2.974,
+  "peak_tps_sensitive": 1.653,
+  "finding": "Real per-stage timing contradicts the fabricated fixed-fraction breakdown: on the sensitive path the Fabric commit (peer-CLI invoke: subprocess spawn + endorse/order/commit) dominates end-to-end latency, NOT the Ethereum anchor. Public (Ethereum-only) path is ~20x faster. Throughput is bounded by the serial Fabric commit on the sensitive path."
+}

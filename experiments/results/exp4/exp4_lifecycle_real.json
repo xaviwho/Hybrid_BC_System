@@ -1,0 +1,148 @@
+{
+  "experiment": "exp4_lifecycle_real",
+  "measured": true,
+  "component": "orchestrator/twin_manager.py (in-process)",
+  "config": {
+    "warmup": 20,
+    "reps": 200,
+    "state_fields": 20
+  },
+  "versioning_model": "full-snapshot: deepcopy of entire state per version",
+  "rollback_model": "get_version() linear O(n) scan from front + deepcopy(state)",
+  "update_latency": {
+    "mean_ms": 0.03052550135180354,
+    "p95_ms": 0.03300001844763756,
+    "stdev_ms": 0.0034592995346206675,
+    "ci95_ms": 0.0004794344551808054,
+    "n": 200
+  },
+  "storage_growth": [
+    {
+      "versions": 1,
+      "reps": 5,
+      "total_bytes": 542.0,
+      "total_bytes_min": 542,
+      "total_bytes_max": 542,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 542.0
+    },
+    {
+      "versions": 10,
+      "reps": 5,
+      "total_bytes": 5761.0,
+      "total_bytes_min": 5761,
+      "total_bytes_max": 5761,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 576.1
+    },
+    {
+      "versions": 50,
+      "reps": 5,
+      "total_bytes": 29681.0,
+      "total_bytes_min": 29681,
+      "total_bytes_max": 29681,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 593.6
+    },
+    {
+      "versions": 100,
+      "reps": 5,
+      "total_bytes": 59832.0,
+      "total_bytes_min": 59832,
+      "total_bytes_max": 59832,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 598.3
+    },
+    {
+      "versions": 200,
+      "reps": 5,
+      "total_bytes": 120232.0,
+      "total_bytes_min": 120232,
+      "total_bytes_max": 120232,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 601.2
+    },
+    {
+      "versions": 400,
+      "reps": 5,
+      "total_bytes": 245032.0,
+      "total_bytes_min": 245032,
+      "total_bytes_max": 245032,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 612.6
+    },
+    {
+      "versions": 800,
+      "reps": 5,
+      "total_bytes": 494632.0,
+      "total_bytes_min": 494632,
+      "total_bytes_max": 494632,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 618.3
+    }
+  ],
+  "approx_bytes_per_version": 591.7,
+  "rollback_latency_by_target_version": [
+    {
+      "mean_ms": 0.045118010602891445,
+      "p95_ms": 0.06220000796020031,
+      "stdev_ms": 0.010712089972530418,
+      "ci95_ms": 0.002099569634615962,
+      "n": 100,
+      "target_version": 1
+    },
+    {
+      "mean_ms": 0.04945600172504783,
+      "p95_ms": 0.0638000201433897,
+      "stdev_ms": 0.007398569405168615,
+      "ci95_ms": 0.0014501196034130484,
+      "n": 100,
+      "target_version": 50
+    },
+    {
+      "mean_ms": 0.054952006321400404,
+      "p95_ms": 0.06960006430745125,
+      "stdev_ms": 0.012333725840105995,
+      "ci95_ms": 0.002417410264660775,
+      "n": 100,
+      "target_version": 100
+    },
+    {
+      "mean_ms": 0.0660660001449287,
+      "p95_ms": 0.09019998833537102,
+      "stdev_ms": 0.014617994698681617,
+      "ci95_ms": 0.002865126960941597,
+      "n": 100,
+      "target_version": 250
+    },
+    {
+      "mean_ms": 0.10380400344729424,
+      "p95_ms": 0.13569998554885387,
+      "stdev_ms": 0.019423987427839847,
+      "ci95_ms": 0.00380710153585661,
+      "n": 100,
+      "target_version": 500
+    },
+    {
+      "mean_ms": 0.12997300829738379,
+      "p95_ms": 0.16789999790489674,
+      "stdev_ms": 0.0197353544717347,
+      "ci95_ms": 0.0038681294764600013,
+      "n": 100,
+      "target_version": 750
+    },
+    {
+      "mean_ms": 0.146379005163908,
+      "p95_ms": 0.224800081923604,
+      "stdev_ms": 0.03126123990185625,
+      "ci95_ms": 0.006127203020763825,
+      "n": 100,
+      "target_version": 1000
+    }
+  ],
+  "rollback_min_ms": 0.045118010602891445,
+  "rollback_max_ms": 0.146379005163908,
+  "rollback_scales_with_target_index": true,
+  "is_constant_time": false,
+  "conclusion": "Rollback latency grows with the TARGET version's position in the history (get_version does a linear scan from the front) plus a full-state deepcopy. It is NOT O(1). Storage grows linearly with version count (full snapshots, no delta encoding). Absolute latencies are sub-millisecond at this scale, so a bounded-recovery claim is defensible, but the O(1) label is not."
+}

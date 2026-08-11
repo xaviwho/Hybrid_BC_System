@@ -1,0 +1,14 @@
+% Auto-generated from RESULTS.json (config=9fd36828240c generated_at=2026-07-01T15:19:25)
+\begin{table}[htbp]\centering
+\caption{Measured rollback latency by target version index. Rollback is NOT constant-time: it scales with the target's position in history (0.049--0.112 ms). Exactly-once holds over 71 requests.}
+\label{tab:c3_lifecycle}
+\begin{tabular}{rrrr}\toprule
+Target version & Mean (ms) & p95 (ms) & 95\% CI \\\midrule
+1 & 0.0493 & 0.0731 & $\pm$0.0049 \\
+50 & 0.0499 & 0.0745 & $\pm$0.0027 \\
+100 & 0.0534 & 0.0824 & $\pm$0.0032 \\
+250 & 0.0562 & 0.0782 & $\pm$0.0021 \\
+500 & 0.0729 & 0.0975 & $\pm$0.0035 \\
+750 & 0.1002 & 0.1775 & $\pm$0.0061 \\
+1000 & 0.1123 & 0.1519 & $\pm$0.0056 \\
+\bottomrule\end{tabular}\end{table}

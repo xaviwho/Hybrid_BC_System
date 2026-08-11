@@ -1,1031 +1,4631 @@
 {
-  "timestamp": "2025-12-17T09:56:01.308748",
+  "timestamp": "2026-04-10T15:28:18.170905",
   "classification_results": [
     {
-      "data_id": "public_20",
+      "data_id": "public_64",
       "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
       "is_misrouted": false,
-      "processing_time_ms": 11.0330590000558
-    },
-    {
-      "data_id": "restricted_1",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 6.5040749996114755
-    },
-    {
-      "data_id": "public_9",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 11.471357000118587
-    },
-    {
-      "data_id": "public_37",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 13.86971200008702
-    },
-    {
-      "data_id": "restricted_24",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 3.750278000097751
-    },
-    {
-      "data_id": "public_32",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.929005999907531
-    },
-    {
-      "data_id": "public_2",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.4136260001105256
-    },
-    {
-      "data_id": "restricted_27",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.546766000203206
-    },
-    {
-      "data_id": "restricted_28",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 6.286575000103767
-    },
-    {
-      "data_id": "restricted_9",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.235320000134379
-    },
-    {
-      "data_id": "public_8",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 6.893335999848205
-    },
-    {
-      "data_id": "confidential_1",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 10.250319000078889
-    },
-    {
-      "data_id": "public_15",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.914763000215316
-    },
-    {
-      "data_id": "public_36",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 6.558333999691968
+      "processing_time_ms": 26.331899978686124
     },
     {
       "data_id": "public_21",
       "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
       "is_misrouted": false,
-      "processing_time_ms": 2.593856999737909
+      "processing_time_ms": 14.181500009726733
     },
     {
-      "data_id": "public_24",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 2.8822059998674376
-    },
-    {
-      "data_id": "restricted_2",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.487648000122135
-    },
-    {
-      "data_id": "restricted_19",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.020754000066518
-    },
-    {
-      "data_id": "confidential_0",
+      "data_id": "restricted_3",
       "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 3.419217000100616
+      "processing_time_ms": 15.250399999786168
     },
     {
-      "data_id": "public_13",
+      "data_id": "restricted_40",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.160799986915663
+    },
+    {
+      "data_id": "public_69",
       "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
       "is_misrouted": false,
-      "processing_time_ms": 3.8696130000062112
+      "processing_time_ms": 24.699100002180785
+    },
+    {
+      "data_id": "confidential_100",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.5593999966513366
+    },
+    {
+      "data_id": "public_125",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 11.264800006756559
+    },
+    {
+      "data_id": "restricted_53",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.929799981880933
+    },
+    {
+      "data_id": "confidential_62",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.168000012636185
+    },
+    {
+      "data_id": "public_180",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.5910000030417
     },
     {
       "data_id": "confidential_23",
       "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 6.609569999909581
+      "processing_time_ms": 15.296300000045449
     },
     {
-      "data_id": "public_5",
+      "data_id": "public_110",
       "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
       "is_misrouted": false,
-      "processing_time_ms": 4.050358999847958
+      "processing_time_ms": 5.97679999191314
     },
     {
-      "data_id": "restricted_0",
-      "true_sensitivity": "sensitive",
+      "data_id": "public_15",
+      "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 2.9818359998898814
+      "is_misrouted": false,
+      "processing_time_ms": 14.948600000934675
     },
     {
-      "data_id": "confidential_27",
+      "data_id": "confidential_53",
       "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 6.050195000170788
-    },
-    {
-      "data_id": "confidential_19",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.936394999731419
-    },
-    {
-      "data_id": "restricted_23",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.352363999714726
-    },
-    {
-      "data_id": "restricted_14",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 6.1479000000872475
-    },
-    {
-      "data_id": "restricted_4",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.907247999653919
-    },
-    {
-      "data_id": "public_28",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.410932999689976
-    },
-    {
-      "data_id": "restricted_26",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 7.039894000172353
-    },
-    {
-      "data_id": "restricted_8",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 3.95027000013215
-    },
-    {
-      "data_id": "public_34",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.9450470003430382
-    },
-    {
-      "data_id": "public_26",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 6.115912000041135
-    },
-    {
-      "data_id": "public_23",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.626634000283957
-    },
-    {
-      "data_id": "restricted_5",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.1378890000487445
-    },
-    {
-      "data_id": "public_7",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.0712560003157705
-    },
-    {
-      "data_id": "public_31",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.04174300001614
-    },
-    {
-      "data_id": "public_22",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.439253999862558
-    },
-    {
-      "data_id": "confidential_6",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 3.820943999926385
-    },
-    {
-      "data_id": "confidential_26",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.041010000037204
-    },
-    {
-      "data_id": "confidential_2",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.0683229999558534
-    },
-    {
-      "data_id": "public_27",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 6.1203110003589245
-    },
-    {
-      "data_id": "restricted_20",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.476649000025645
-    },
-    {
-      "data_id": "restricted_15",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.19590799992875
-    },
-    {
-      "data_id": "restricted_10",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 3.816085999915231
-    },
-    {
-      "data_id": "public_4",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.7873989999752666
-    },
-    {
-      "data_id": "restricted_12",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.419914000209246
-    },
-    {
-      "data_id": "restricted_16",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 6.23928100003468
-    },
-    {
-      "data_id": "confidential_11",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.437971000243124
-    },
-    {
-      "data_id": "confidential_13",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.504236999764544
-    },
-    {
-      "data_id": "confidential_24",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.002513999694202
-    },
-    {
-      "data_id": "confidential_17",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 5.5199670000547485
-    },
-    {
-      "data_id": "confidential_5",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.714587999842479
-    },
-    {
-      "data_id": "public_1",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 6.738346000020101
-    },
-    {
-      "data_id": "public_12",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.020479000246269
-    },
-    {
-      "data_id": "confidential_25",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 5.977146000077482
-    },
-    {
-      "data_id": "confidential_10",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 3.7855649998164154
-    },
-    {
-      "data_id": "restricted_11",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 5.07635299982212
-    },
-    {
-      "data_id": "public_29",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 8.451209000213566
-    },
-    {
-      "data_id": "public_33",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 5.157101999884617
-    },
-    {
-      "data_id": "public_38",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 5.9537730003285105
-    },
-    {
-      "data_id": "public_19",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.941068999869458
-    },
-    {
-      "data_id": "restricted_25",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.362903999663104
-    },
-    {
-      "data_id": "confidential_20",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 7.8932999999778986
-    },
-    {
-      "data_id": "public_14",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.505098999994516
-    },
-    {
-      "data_id": "confidential_7",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.503871999986586
-    },
-    {
-      "data_id": "public_30",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 6.628266999996413
-    },
-    {
-      "data_id": "confidential_14",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.4662919999609585
-    },
-    {
-      "data_id": "confidential_16",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 5.670923999787192
-    },
-    {
-      "data_id": "confidential_18",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 4.2030569998132705
-    },
-    {
-      "data_id": "public_0",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.770955999902071
-    },
-    {
-      "data_id": "public_11",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.7766740001643484
-    },
-    {
-      "data_id": "confidential_28",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 6.031038999935845
-    },
-    {
-      "data_id": "public_39",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 3.7874899999224
-    },
-    {
-      "data_id": "public_16",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.445669000233465
-    },
-    {
-      "data_id": "public_18",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.371885999717051
-    },
-    {
-      "data_id": "restricted_17",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.009479999695031
-    },
-    {
-      "data_id": "restricted_6",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 3.849357000035525
-    },
-    {
-      "data_id": "restricted_18",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.193799999939074
-    },
-    {
-      "data_id": "public_17",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 9.16933100006645
-    },
-    {
-      "data_id": "restricted_3",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.507080000166752
-    },
-    {
-      "data_id": "confidential_4",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 6.14047599992773
-    },
-    {
-      "data_id": "confidential_29",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 3.8244269999268
+      "processing_time_ms": 15.237399988109246
     },
     {
       "data_id": "confidential_12",
       "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 4.532010000275477
+      "processing_time_ms": 16.703300003428012
     },
     {
-      "data_id": "public_3",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.464001000087592
-    },
-    {
-      "data_id": "public_6",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 5.058389000168972
-    },
-    {
-      "data_id": "restricted_22",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 3.704266000113421
-    },
-    {
-      "data_id": "confidential_9",
+      "data_id": "confidential_138",
       "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 4.222395999931905
+      "processing_time_ms": 16.703300003428012
     },
     {
-      "data_id": "confidential_15",
+      "data_id": "restricted_0",
       "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 6.283734000135155
-    },
-    {
-      "data_id": "restricted_29",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.552632000013546
-    },
-    {
-      "data_id": "restricted_7",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 6.986000000324566
-    },
-    {
-      "data_id": "public_35",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.990563000319526
-    },
-    {
-      "data_id": "confidential_21",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 6.463654000071983
-    },
-    {
-      "data_id": "confidential_8",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 12.894127999970806
-    },
-    {
-      "data_id": "confidential_3",
-      "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
-      "routed_to": "fabric_ethereum",
-      "is_misrouted": false,
-      "processing_time_ms": 3.9724509997540736
+      "processing_time_ms": 14.64259999920614
     },
     {
       "data_id": "restricted_13",
       "true_sensitivity": "sensitive",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
-      "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 4.5748130000902165
-    },
-    {
-      "data_id": "public_25",
-      "true_sensitivity": "public",
-      "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
-      "routed_to": "fabric_only",
-      "is_misrouted": false,
-      "processing_time_ms": 4.1538369996487745
-    },
-    {
-      "data_id": "confidential_22",
-      "true_sensitivity": "sensitive",
       "predicted_sensitivity": "sensitive",
-      "confidence": 0.7142857142857143,
+      "confidence": 0.95,
       "routed_to": "fabric_ethereum",
       "is_misrouted": false,
-      "processing_time_ms": 10.241703999781748
+      "processing_time_ms": 18.958000000566244
     },
     {
-      "data_id": "restricted_21",
-      "true_sensitivity": "sensitive",
+      "data_id": "public_67",
+      "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0714285714285714,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
-      "is_misrouted": true,
-      "processing_time_ms": 5.92829300012454
+      "is_misrouted": false,
+      "processing_time_ms": 15.155899978708476
+    },
+    {
+      "data_id": "confidential_35",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.612699990626425
+    },
+    {
+      "data_id": "restricted_1",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.950200013117865
+    },
+    {
+      "data_id": "public_144",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 17.852799996035174
+    },
+    {
+      "data_id": "confidential_65",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.068299991777167
+    },
+    {
+      "data_id": "restricted_136",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.05299998866394
+    },
+    {
+      "data_id": "confidential_91",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.288300006417558
+    },
+    {
+      "data_id": "restricted_106",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 21.290400007274002
     },
     {
       "data_id": "public_10",
       "true_sensitivity": "public",
       "predicted_sensitivity": "public",
-      "confidence": 1.0555555555555556,
+      "confidence": 0.5,
       "routed_to": "fabric_only",
       "is_misrouted": false,
-      "processing_time_ms": 3.301255999758723
+      "processing_time_ms": 21.90100000007078
+    },
+    {
+      "data_id": "confidential_0",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.76880000438541
+    },
+    {
+      "data_id": "restricted_33",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.380800003185868
+    },
+    {
+      "data_id": "confidential_44",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.661700006807223
+    },
+    {
+      "data_id": "confidential_5",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.684399986639619
+    },
+    {
+      "data_id": "restricted_44",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.087099994067103
+    },
+    {
+      "data_id": "public_140",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 7.077100017340854
+    },
+    {
+      "data_id": "public_105",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 23.25090000522323
+    },
+    {
+      "data_id": "public_146",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.096000008052215
+    },
+    {
+      "data_id": "restricted_27",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.593499994371086
+    },
+    {
+      "data_id": "public_41",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 21.06550001190044
+    },
+    {
+      "data_id": "restricted_46",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.891000007977709
+    },
+    {
+      "data_id": "restricted_48",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.621900006895885
+    },
+    {
+      "data_id": "restricted_21",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.025399994337931
+    },
+    {
+      "data_id": "restricted_30",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.506000005174428
+    },
+    {
+      "data_id": "restricted_62",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 25.840099988272414
+    },
+    {
+      "data_id": "public_127",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.604600019287318
+    },
+    {
+      "data_id": "restricted_47",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 20.960699999704957
+    },
+    {
+      "data_id": "public_24",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.97169999149628
+    },
+    {
+      "data_id": "confidential_30",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.373799986671656
+    },
+    {
+      "data_id": "public_44",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 16.089099983219057
+    },
+    {
+      "data_id": "public_89",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.8858000067994
+    },
+    {
+      "data_id": "public_3",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.092499990714714
+    },
+    {
+      "data_id": "restricted_35",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.925199977355078
+    },
+    {
+      "data_id": "confidential_8",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 24.457699997583404
+    },
+    {
+      "data_id": "confidential_116",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.007400012109429
+    },
+    {
+      "data_id": "public_65",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 7.176700019044802
+    },
+    {
+      "data_id": "confidential_114",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.71860000351444
+    },
+    {
+      "data_id": "restricted_112",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.2816000243183225
+    },
+    {
+      "data_id": "public_32",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 26.79619999253191
+    },
+    {
+      "data_id": "restricted_81",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.2800000014249235
+    },
+    {
+      "data_id": "confidential_83",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.226700023049489
+    },
+    {
+      "data_id": "public_184",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.303099993616343
+    },
+    {
+      "data_id": "restricted_20",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.07100000162609
+    },
+    {
+      "data_id": "confidential_43",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.542300010565668
+    },
+    {
+      "data_id": "restricted_98",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.856000009691343
+    },
+    {
+      "data_id": "restricted_78",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.54349999059923
+    },
+    {
+      "data_id": "public_182",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.631999976700172
+    },
+    {
+      "data_id": "public_47",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 19.336800003657117
+    },
+    {
+      "data_id": "restricted_51",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.815299993846565
+    },
+    {
+      "data_id": "restricted_140",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.711899992311373
+    },
+    {
+      "data_id": "public_59",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 18.794799980241805
+    },
+    {
+      "data_id": "public_117",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.27530001476407
+    },
+    {
+      "data_id": "public_138",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.852399996016175
+    },
+    {
+      "data_id": "restricted_7",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.502899990882725
+    },
+    {
+      "data_id": "confidential_16",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.1660999888554215
+    },
+    {
+      "data_id": "public_91",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.390500000445172
+    },
+    {
+      "data_id": "restricted_26",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.055299998493865
+    },
+    {
+      "data_id": "confidential_24",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.157399990130216
+    },
+    {
+      "data_id": "public_54",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.627599990693852
+    },
+    {
+      "data_id": "public_77",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 17.037800018442795
+    },
+    {
+      "data_id": "public_119",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.56190000497736
+    },
+    {
+      "data_id": "public_166",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 10.658300016075373
+    },
+    {
+      "data_id": "restricted_108",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.09210000303574
+    },
+    {
+      "data_id": "confidential_69",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.621599992504343
+    },
+    {
+      "data_id": "public_81",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 17.458399990573525
+    },
+    {
+      "data_id": "restricted_96",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.58949999161996
+    },
+    {
+      "data_id": "confidential_71",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.545400015776977
+    },
+    {
+      "data_id": "public_23",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 19.192000007024035
+    },
+    {
+      "data_id": "public_29",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.837599989026785
+    },
+    {
+      "data_id": "restricted_84",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.368899999884889
+    },
+    {
+      "data_id": "confidential_120",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.840000007301569
+    },
+    {
+      "data_id": "restricted_74",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 20.012799999676645
+    },
+    {
+      "data_id": "restricted_143",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 13.970400003017858
+    },
+    {
+      "data_id": "restricted_19",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 24.92650001659058
+    },
+    {
+      "data_id": "public_107",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.849399991566315
+    },
+    {
+      "data_id": "confidential_99",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 20.687100011855364
+    },
+    {
+      "data_id": "public_66",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.754799989517778
+    },
+    {
+      "data_id": "public_19",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.86649998696521
+    },
+    {
+      "data_id": "public_82",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 19.695800001500174
+    },
+    {
+      "data_id": "confidential_87",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.40710001043044
+    },
+    {
+      "data_id": "public_40",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.414800000144169
+    },
+    {
+      "data_id": "confidential_67",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.393300001742318
+    },
+    {
+      "data_id": "public_113",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 11.790300020948052
+    },
+    {
+      "data_id": "confidential_33",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 28.50769998622127
+    },
+    {
+      "data_id": "public_39",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.779500002972782
+    },
+    {
+      "data_id": "public_74",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 24.190900003304705
+    },
+    {
+      "data_id": "restricted_102",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.395199996419251
+    },
+    {
+      "data_id": "confidential_82",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.851200015982613
+    },
+    {
+      "data_id": "public_6",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.557699982309714
+    },
+    {
+      "data_id": "restricted_118",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.192899998510256
+    },
+    {
+      "data_id": "public_16",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.187100012553856
+    },
+    {
+      "data_id": "confidential_13",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.49030002206564
+    },
+    {
+      "data_id": "public_135",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.597200021147728
+    },
+    {
+      "data_id": "public_30",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.601300013950095
+    },
+    {
+      "data_id": "public_53",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.154900009278208
+    },
+    {
+      "data_id": "public_121",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.381000013789162
+    },
+    {
+      "data_id": "confidential_61",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 26.780899992445484
+    },
+    {
+      "data_id": "public_86",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 27.1045999834314
+    },
+    {
+      "data_id": "restricted_75",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 27.626800001598895
+    },
+    {
+      "data_id": "confidential_14",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 7.267400011187419
+    },
+    {
+      "data_id": "public_9",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.3558000072371215
+    },
+    {
+      "data_id": "confidential_78",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.618199986405671
+    },
+    {
+      "data_id": "restricted_55",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 13.756300002569333
+    },
+    {
+      "data_id": "restricted_17",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.725600000005215
+    },
+    {
+      "data_id": "confidential_51",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.453400004422292
+    },
+    {
+      "data_id": "public_167",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 22.111799975391477
+    },
+    {
+      "data_id": "restricted_116",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.770400001201779
+    },
+    {
+      "data_id": "restricted_119",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.167599991196766
+    },
+    {
+      "data_id": "restricted_5",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.765099979238585
+    },
+    {
+      "data_id": "public_149",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.218800001079217
+    },
+    {
+      "data_id": "confidential_49",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.732700006570667
+    },
+    {
+      "data_id": "public_192",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.397000000812113
+    },
+    {
+      "data_id": "restricted_4",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.620300002396107
+    },
+    {
+      "data_id": "restricted_130",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.07669999450445
+    },
+    {
+      "data_id": "public_120",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.419499988434836
+    },
+    {
+      "data_id": "confidential_84",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.727699997602031
+    },
+    {
+      "data_id": "restricted_25",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.279199976939708
+    },
+    {
+      "data_id": "restricted_39",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.604199977824464
+    },
+    {
+      "data_id": "public_131",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.283699982101098
+    },
+    {
+      "data_id": "restricted_29",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 13.652699999511242
+    },
+    {
+      "data_id": "confidential_119",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.053499984787777
+    },
+    {
+      "data_id": "public_108",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.154100013896823
+    },
+    {
+      "data_id": "confidential_115",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 26.96250000735745
+    },
+    {
+      "data_id": "restricted_80",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.903700006660074
+    },
+    {
+      "data_id": "restricted_120",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 9.007800021208823
+    },
+    {
+      "data_id": "public_159",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.785299978218973
+    },
+    {
+      "data_id": "confidential_86",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.069100025342777
+    },
+    {
+      "data_id": "public_115",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 7.894899987149984
+    },
+    {
+      "data_id": "restricted_148",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.694399975473061
+    },
+    {
+      "data_id": "restricted_91",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.346100002294406
+    },
+    {
+      "data_id": "restricted_15",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.428799991728738
+    },
+    {
+      "data_id": "restricted_89",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 21.361299994168803
+    },
+    {
+      "data_id": "public_143",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.8454999923706055
+    },
+    {
+      "data_id": "restricted_38",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 27.49400000902824
+    },
+    {
+      "data_id": "restricted_23",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.90349999605678
+    },
+    {
+      "data_id": "restricted_134",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.568899990990758
+    },
+    {
+      "data_id": "restricted_68",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 22.39299999200739
+    },
+    {
+      "data_id": "confidential_74",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.37080001574941
+    },
+    {
+      "data_id": "confidential_45",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.3110999977216125
+    },
+    {
+      "data_id": "restricted_54",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 21.67610000469722
+    },
+    {
+      "data_id": "public_62",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.999500000849366
+    },
+    {
+      "data_id": "public_76",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 26.343300007283688
+    },
+    {
+      "data_id": "confidential_127",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 7.213300006696954
+    },
+    {
+      "data_id": "restricted_11",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 22.375900007318705
+    },
+    {
+      "data_id": "public_87",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 18.11560001806356
+    },
+    {
+      "data_id": "public_103",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.019400016171858
+    },
+    {
+      "data_id": "restricted_94",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.922100002877414
+    },
+    {
+      "data_id": "public_111",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.042399987578392
+    },
+    {
+      "data_id": "public_27",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.006100002210587
+    },
+    {
+      "data_id": "confidential_56",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.978699997300282
+    },
+    {
+      "data_id": "restricted_113",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.574999999022111
+    },
+    {
+      "data_id": "restricted_22",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 25.980300008086488
+    },
+    {
+      "data_id": "public_11",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.541600006632507
+    },
+    {
+      "data_id": "confidential_28",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 26.358599978266284
+    },
+    {
+      "data_id": "public_183",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.070699999341741
+    },
+    {
+      "data_id": "confidential_125",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.548099987208843
+    },
+    {
+      "data_id": "public_129",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 27.657900005578995
+    },
+    {
+      "data_id": "restricted_58",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.569699997082353
+    },
+    {
+      "data_id": "confidential_47",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.718000009655952
+    },
+    {
+      "data_id": "restricted_8",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.272199991159141
+    },
+    {
+      "data_id": "public_96",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.556099989917129
+    },
+    {
+      "data_id": "public_52",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 25.43479998712428
+    },
+    {
+      "data_id": "confidential_68",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.078500000527129
+    },
+    {
+      "data_id": "confidential_123",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.946900017093867
+    },
+    {
+      "data_id": "public_71",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 26.878800010308623
+    },
+    {
+      "data_id": "restricted_139",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.975600022589788
+    },
+    {
+      "data_id": "public_60",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 25.530100014293566
+    },
+    {
+      "data_id": "public_58",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.393199990270659
+    },
+    {
+      "data_id": "public_198",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.842900001676753
+    },
+    {
+      "data_id": "confidential_36",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 24.640000017825514
+    },
+    {
+      "data_id": "public_97",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.756800004746765
+    },
+    {
+      "data_id": "confidential_104",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 23.855800012825057
+    },
+    {
+      "data_id": "confidential_147",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.806900003459305
+    },
+    {
+      "data_id": "restricted_117",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.9954000050202
+    },
+    {
+      "data_id": "public_191",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 17.218399996636435
+    },
+    {
+      "data_id": "public_49",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.549899990204722
+    },
+    {
+      "data_id": "public_157",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 24.30560000357218
+    },
+    {
+      "data_id": "restricted_60",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.25309997284785
+    },
+    {
+      "data_id": "restricted_129",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.601400014711544
+    },
+    {
+      "data_id": "confidential_98",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.539300016826019
+    },
+    {
+      "data_id": "public_2",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.674299997044727
+    },
+    {
+      "data_id": "restricted_28",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.352700002025813
+    },
+    {
+      "data_id": "restricted_107",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 22.705099981976673
+    },
+    {
+      "data_id": "public_50",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.079799990402535
+    },
+    {
+      "data_id": "public_57",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.305800004862249
+    },
+    {
+      "data_id": "restricted_18",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.22229998651892
+    },
+    {
+      "data_id": "restricted_137",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 22.04310000524856
+    },
+    {
+      "data_id": "public_92",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 21.215799992205575
+    },
+    {
+      "data_id": "public_130",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.565499983495101
+    },
+    {
+      "data_id": "restricted_66",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.463599994778633
+    },
+    {
+      "data_id": "public_196",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 28.240199986612424
+    },
+    {
+      "data_id": "restricted_95",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.987399991601706
+    },
+    {
+      "data_id": "public_118",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.609200006816536
+    },
+    {
+      "data_id": "public_46",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.80439999816008
+    },
+    {
+      "data_id": "restricted_65",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.335300005972385
+    },
+    {
+      "data_id": "public_114",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.026800014311448
+    },
+    {
+      "data_id": "public_7",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 18.694099999265745
+    },
+    {
+      "data_id": "public_174",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 19.422599987592548
+    },
+    {
+      "data_id": "confidential_132",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.810799988685176
+    },
+    {
+      "data_id": "restricted_142",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.136799986474216
+    },
+    {
+      "data_id": "confidential_19",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.254400001140311
+    },
+    {
+      "data_id": "public_13",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 16.078999993624166
+    },
+    {
+      "data_id": "confidential_129",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.012899995781481
+    },
+    {
+      "data_id": "public_133",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.670300015481189
+    },
+    {
+      "data_id": "confidential_46",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 10.984299995470792
+    },
+    {
+      "data_id": "confidential_131",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 20.10389999486506
+    },
+    {
+      "data_id": "confidential_50",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.059900001389906
+    },
+    {
+      "data_id": "public_142",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 16.101199988042936
+    },
+    {
+      "data_id": "restricted_122",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.354400005890056
+    },
+    {
+      "data_id": "restricted_133",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.482099999440834
+    },
+    {
+      "data_id": "public_188",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.331100022885948
+    },
+    {
+      "data_id": "public_190",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.155399994691834
+    },
+    {
+      "data_id": "confidential_141",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.024500005878508
+    },
+    {
+      "data_id": "confidential_21",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.880899999989197
+    },
+    {
+      "data_id": "public_12",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.197699987562373
+    },
+    {
+      "data_id": "public_4",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.369699976872653
+    },
+    {
+      "data_id": "confidential_52",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 20.35750000504777
+    },
+    {
+      "data_id": "public_147",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.318599995225668
+    },
+    {
+      "data_id": "confidential_146",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.396599977975711
+    },
+    {
+      "data_id": "public_178",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.244899987010285
+    },
+    {
+      "data_id": "confidential_40",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.6029000247363
+    },
+    {
+      "data_id": "confidential_3",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.09010000154376
+    },
+    {
+      "data_id": "confidential_102",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.326399982674047
+    },
+    {
+      "data_id": "public_20",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.563199995085597
+    },
+    {
+      "data_id": "restricted_64",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.494200019631535
+    },
+    {
+      "data_id": "public_195",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.414099994814023
+    },
+    {
+      "data_id": "restricted_125",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.698200004408136
+    },
+    {
+      "data_id": "restricted_10",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.262499993899837
+    },
+    {
+      "data_id": "confidential_4",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.439199989894405
+    },
+    {
+      "data_id": "public_56",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 17.135100002633408
+    },
+    {
+      "data_id": "public_79",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.62070002546534
+    },
+    {
+      "data_id": "public_155",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 20.031799998832867
+    },
+    {
+      "data_id": "confidential_63",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 25.701100006699562
+    },
+    {
+      "data_id": "public_164",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 18.233300012070686
+    },
+    {
+      "data_id": "confidential_34",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.786200006492436
+    },
+    {
+      "data_id": "confidential_29",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.584799986332655
+    },
+    {
+      "data_id": "confidential_137",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 24.070799991022795
+    },
+    {
+      "data_id": "restricted_52",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.802700015716255
+    },
+    {
+      "data_id": "restricted_2",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 27.085800014901906
+    },
+    {
+      "data_id": "public_31",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.448000001721084
+    },
+    {
+      "data_id": "restricted_61",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.181499999016523
+    },
+    {
+      "data_id": "restricted_77",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.32140000583604
+    },
+    {
+      "data_id": "confidential_59",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 15.985399979399517
+    },
+    {
+      "data_id": "confidential_60",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.471999980742112
+    },
+    {
+      "data_id": "public_14",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 35.1747999957297
+    },
+    {
+      "data_id": "restricted_135",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 24.176499980967492
+    },
+    {
+      "data_id": "public_123",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.894000001717359
+    },
+    {
+      "data_id": "restricted_32",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 8.091800002148375
+    },
+    {
+      "data_id": "restricted_76",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 30.760000023292378
+    },
+    {
+      "data_id": "restricted_92",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 10.505200014449656
+    },
+    {
+      "data_id": "public_137",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 21.997000003466383
+    },
+    {
+      "data_id": "restricted_149",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.0918000114616
+    },
+    {
+      "data_id": "public_176",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 27.31220002169721
+    },
+    {
+      "data_id": "public_5",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 27.374700002837926
+    },
+    {
+      "data_id": "public_45",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 12.992799980565906
+    },
+    {
+      "data_id": "public_17",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 25.87180002592504
+    },
+    {
+      "data_id": "confidential_10",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 25.133200018899515
+    },
+    {
+      "data_id": "confidential_9",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.9849999961443245
+    },
+    {
+      "data_id": "restricted_49",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.897600010735914
+    },
+    {
+      "data_id": "public_72",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.798000009031966
+    },
+    {
+      "data_id": "confidential_113",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.484299996169284
+    },
+    {
+      "data_id": "restricted_12",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 3.9689000113867223
+    },
+    {
+      "data_id": "confidential_15",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 3.8037000049371272
+    },
+    {
+      "data_id": "confidential_135",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 24.880300014046952
+    },
+    {
+      "data_id": "restricted_145",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.767200007336214
+    },
+    {
+      "data_id": "restricted_141",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.705200008582324
+    },
+    {
+      "data_id": "restricted_100",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 10.00069998553954
+    },
+    {
+      "data_id": "confidential_93",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 35.12330001103692
+    },
+    {
+      "data_id": "public_109",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 29.361400025663897
+    },
+    {
+      "data_id": "public_98",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 8.019400003831834
+    },
+    {
+      "data_id": "confidential_106",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.509400001959875
+    },
+    {
+      "data_id": "confidential_143",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 9.050900000147521
+    },
+    {
+      "data_id": "public_18",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.961699982639402
+    },
+    {
+      "data_id": "public_106",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.4533999937120825
+    },
+    {
+      "data_id": "public_168",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 10.962700005620718
+    },
+    {
+      "data_id": "restricted_123",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.481300002429634
+    },
+    {
+      "data_id": "public_51",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 21.793299994897097
+    },
+    {
+      "data_id": "confidential_22",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 8.306100004119799
+    },
+    {
+      "data_id": "restricted_85",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.01309998659417
+    },
+    {
+      "data_id": "public_26",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 10.209600004600361
+    },
+    {
+      "data_id": "confidential_55",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.8470000037923455
+    },
+    {
+      "data_id": "confidential_133",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 11.850099981529638
+    },
+    {
+      "data_id": "public_175",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 21.620099985739216
+    },
+    {
+      "data_id": "confidential_66",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 14.335300016682595
+    },
+    {
+      "data_id": "confidential_77",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.840700003318489
+    },
+    {
+      "data_id": "public_156",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 24.716799991438165
+    },
+    {
+      "data_id": "confidential_121",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 7.443700014846399
+    },
+    {
+      "data_id": "public_22",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.782099993666634
+    },
+    {
+      "data_id": "restricted_132",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.538599991472438
+    },
+    {
+      "data_id": "restricted_50",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.192199983866885
+    },
+    {
+      "data_id": "confidential_88",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.370500021148473
+    },
+    {
+      "data_id": "confidential_39",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.2689000042155385
+    },
+    {
+      "data_id": "restricted_97",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.782400006661192
+    },
+    {
+      "data_id": "confidential_64",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.648799997288734
+    },
+    {
+      "data_id": "public_160",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.18269999884069
+    },
+    {
+      "data_id": "restricted_9",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.048199993325397
+    },
+    {
+      "data_id": "restricted_126",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.957600001944229
+    },
+    {
+      "data_id": "confidential_90",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.685399995651096
+    },
+    {
+      "data_id": "confidential_139",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.703899991000071
+    },
+    {
+      "data_id": "confidential_25",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.49819998559542
+    },
+    {
+      "data_id": "restricted_6",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.862199992407113
+    },
+    {
+      "data_id": "public_193",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.6138000034261495
+    },
+    {
+      "data_id": "confidential_144",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.368200014345348
+    },
+    {
+      "data_id": "public_112",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 7.165400020312518
+    },
+    {
+      "data_id": "public_122",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 16.292900021653622
+    },
+    {
+      "data_id": "restricted_99",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.876700015505776
+    },
+    {
+      "data_id": "confidential_37",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.792099993210286
+    },
+    {
+      "data_id": "public_169",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.869399999734014
+    },
+    {
+      "data_id": "restricted_88",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.191900010686368
+    },
+    {
+      "data_id": "confidential_26",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.227400000672787
+    },
+    {
+      "data_id": "restricted_57",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 6.267599994316697
+    },
+    {
+      "data_id": "confidential_54",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.403999995905906
+    },
+    {
+      "data_id": "confidential_58",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.195300018182024
+    },
+    {
+      "data_id": "public_104",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 7.2428999992553145
+    },
+    {
+      "data_id": "confidential_79",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.502299998421222
+    },
+    {
+      "data_id": "public_48",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.289100004825741
+    },
+    {
+      "data_id": "confidential_18",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.658000009134412
+    },
+    {
+      "data_id": "restricted_37",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.3314999784342945
+    },
+    {
+      "data_id": "public_126",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.085699998540804
+    },
+    {
+      "data_id": "public_88",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.5507999893743545
+    },
+    {
+      "data_id": "confidential_103",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.621400003088638
+    },
+    {
+      "data_id": "restricted_90",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.722600016975775
+    },
+    {
+      "data_id": "public_78",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.867000010563061
+    },
+    {
+      "data_id": "confidential_117",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.324700003257021
+    },
+    {
+      "data_id": "restricted_82",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.1551000031176955
+    },
+    {
+      "data_id": "restricted_34",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.3197000049985945
+    },
+    {
+      "data_id": "public_189",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.211200022837147
+    },
+    {
+      "data_id": "confidential_6",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.37680002162233
+    },
+    {
+      "data_id": "public_38",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.8523000257555395
+    },
+    {
+      "data_id": "public_73",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.054899996845052
+    },
+    {
+      "data_id": "confidential_42",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.733799985842779
+    },
+    {
+      "data_id": "confidential_108",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.7657999966759235
+    },
+    {
+      "data_id": "restricted_45",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.0092999988701195
+    },
+    {
+      "data_id": "public_85",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.962999995565042
+    },
+    {
+      "data_id": "confidential_149",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.488299997523427
+    },
+    {
+      "data_id": "public_93",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.438200005097315
+    },
+    {
+      "data_id": "confidential_76",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 3.859500022372231
+    },
+    {
+      "data_id": "restricted_87",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.500300012296066
+    },
+    {
+      "data_id": "public_33",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.494000001111999
+    },
+    {
+      "data_id": "restricted_138",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.799900023499504
+    },
+    {
+      "data_id": "public_94",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.955700016580522
+    },
+    {
+      "data_id": "restricted_71",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.627199978334829
+    },
+    {
+      "data_id": "confidential_110",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.24479997693561
+    },
+    {
+      "data_id": "confidential_118",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.1797999874688685
+    },
+    {
+      "data_id": "confidential_96",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.457599996589124
+    },
+    {
+      "data_id": "restricted_110",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.237599991029128
+    },
+    {
+      "data_id": "public_101",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.9923999866005033
+    },
+    {
+      "data_id": "confidential_73",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 23.632499971427023
+    },
+    {
+      "data_id": "confidential_27",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.143999995198101
+    },
+    {
+      "data_id": "public_132",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.515600012382492
+    },
+    {
+      "data_id": "public_25",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.336500005796552
+    },
+    {
+      "data_id": "confidential_136",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 17.970999993849546
+    },
+    {
+      "data_id": "restricted_144",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.3823999769520015
+    },
+    {
+      "data_id": "restricted_86",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.002100002253428
+    },
+    {
+      "data_id": "restricted_114",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.9183999944943935
+    },
+    {
+      "data_id": "restricted_69",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.177100014407188
+    },
+    {
+      "data_id": "public_43",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.080899991095066
+    },
+    {
+      "data_id": "public_141",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.854799986584112
+    },
+    {
+      "data_id": "public_194",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.183500004932284
+    },
+    {
+      "data_id": "restricted_73",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.879300006199628
+    },
+    {
+      "data_id": "public_199",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.266000003553927
+    },
+    {
+      "data_id": "public_1",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.31299997237511
+    },
+    {
+      "data_id": "restricted_146",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.051000014645979
+    },
+    {
+      "data_id": "confidential_80",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.199199989670888
+    },
+    {
+      "data_id": "confidential_81",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 3.992599988123402
+    },
+    {
+      "data_id": "confidential_41",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 20.26399999158457
+    },
+    {
+      "data_id": "confidential_7",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.656999983126298
+    },
+    {
+      "data_id": "public_116",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.293399979360402
+    },
+    {
+      "data_id": "public_124",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.5335000031627715
+    },
+    {
+      "data_id": "public_145",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.536600016057491
+    },
+    {
+      "data_id": "public_171",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.683200008003041
+    },
+    {
+      "data_id": "confidential_1",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.039000021293759
+    },
+    {
+      "data_id": "public_134",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.947500012349337
+    },
+    {
+      "data_id": "public_150",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 7.1807999920565635
+    },
+    {
+      "data_id": "restricted_121",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.0791000064928085
+    },
+    {
+      "data_id": "confidential_38",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.891299991868436
+    },
+    {
+      "data_id": "public_42",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.166500021005049
+    },
+    {
+      "data_id": "public_36",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.519999987678602
+    },
+    {
+      "data_id": "restricted_36",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.23890000092797
+    },
+    {
+      "data_id": "restricted_42",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.747899995185435
+    },
+    {
+      "data_id": "public_80",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.545000003417954
+    },
+    {
+      "data_id": "confidential_148",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.576399980578572
+    },
+    {
+      "data_id": "confidential_101",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.237100005615503
+    },
+    {
+      "data_id": "restricted_43",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.736200004117563
+    },
+    {
+      "data_id": "public_158",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.646000015782192
+    },
+    {
+      "data_id": "restricted_124",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.412900016177446
+    },
+    {
+      "data_id": "confidential_94",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.857299994910136
+    },
+    {
+      "data_id": "confidential_105",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.0972999995574355
+    },
+    {
+      "data_id": "public_154",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.289400007110089
+    },
+    {
+      "data_id": "restricted_59",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.073399981483817
+    },
+    {
+      "data_id": "public_28",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.681299993535504
+    },
+    {
+      "data_id": "public_148",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.2397000070195645
+    },
+    {
+      "data_id": "public_61",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.1862999787554145
+    },
+    {
+      "data_id": "confidential_107",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 21.998299984261394
+    },
+    {
+      "data_id": "restricted_24",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.202999978791922
+    },
+    {
+      "data_id": "public_84",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.132500005653128
+    },
+    {
+      "data_id": "confidential_75",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.998799995519221
+    },
+    {
+      "data_id": "restricted_105",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.863400012254715
+    },
+    {
+      "data_id": "public_165",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.8693000096827745
+    },
+    {
+      "data_id": "confidential_134",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.281999979866669
+    },
+    {
+      "data_id": "public_161",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 6.275599997024983
+    },
+    {
+      "data_id": "restricted_70",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.512500017881393
+    },
+    {
+      "data_id": "public_179",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.877100010868162
+    },
+    {
+      "data_id": "confidential_85",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.092999985208735
+    },
+    {
+      "data_id": "confidential_142",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.796799999894574
+    },
+    {
+      "data_id": "restricted_63",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.1424000228289515
+    },
+    {
+      "data_id": "public_151",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.706100007751957
+    },
+    {
+      "data_id": "restricted_31",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.363899977179244
+    },
+    {
+      "data_id": "confidential_95",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.433599988464266
+    },
+    {
+      "data_id": "confidential_130",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.604000016115606
+    },
+    {
+      "data_id": "public_90",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.070700000738725
+    },
+    {
+      "data_id": "restricted_41",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.664800002705306
+    },
+    {
+      "data_id": "confidential_11",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.730399989057332
+    },
+    {
+      "data_id": "public_163",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.243900009896606
+    },
+    {
+      "data_id": "public_35",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.267500004265457
+    },
+    {
+      "data_id": "confidential_111",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.201799998758361
+    },
+    {
+      "data_id": "public_95",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 3.932599996915087
+    },
+    {
+      "data_id": "confidential_72",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.298499989090487
+    },
+    {
+      "data_id": "confidential_128",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.872100020293146
+    },
+    {
+      "data_id": "public_128",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.293199977837503
+    },
+    {
+      "data_id": "restricted_14",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.150099994149059
+    },
+    {
+      "data_id": "public_63",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.750699998112395
+    },
+    {
+      "data_id": "restricted_67",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.894099984085187
+    },
+    {
+      "data_id": "public_152",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.143900005146861
+    },
+    {
+      "data_id": "confidential_124",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 3.856900002574548
+    },
+    {
+      "data_id": "public_162",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.578799988143146
+    },
+    {
+      "data_id": "restricted_16",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.197700007352978
+    },
+    {
+      "data_id": "public_170",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.570399993099272
+    },
+    {
+      "data_id": "restricted_79",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.126200015889481
+    },
+    {
+      "data_id": "public_102",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 19.782000017585233
+    },
+    {
+      "data_id": "public_181",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.232699982821941
+    },
+    {
+      "data_id": "restricted_115",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.053399985423312
+    },
+    {
+      "data_id": "confidential_97",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.440899996552616
+    },
+    {
+      "data_id": "public_8",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.271200003335252
+    },
+    {
+      "data_id": "restricted_101",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.095000011147931
+    },
+    {
+      "data_id": "confidential_17",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.267600015737116
+    },
+    {
+      "data_id": "public_187",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.933600012212992
+    },
+    {
+      "data_id": "public_136",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.993099981220439
+    },
+    {
+      "data_id": "restricted_131",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.44779999088496
+    },
+    {
+      "data_id": "restricted_111",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.437800002051517
+    },
+    {
+      "data_id": "restricted_109",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.911399999400601
+    },
+    {
+      "data_id": "restricted_104",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.165699996519834
+    },
+    {
+      "data_id": "restricted_93",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.175400012172759
+    },
+    {
+      "data_id": "confidential_20",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.93970001116395
+    },
+    {
+      "data_id": "restricted_72",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.627799993613735
+    },
+    {
+      "data_id": "public_34",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.257799999322742
+    },
+    {
+      "data_id": "confidential_126",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.261800000676885
+    },
+    {
+      "data_id": "restricted_83",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.352300009690225
+    },
+    {
+      "data_id": "public_185",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.174600006081164
+    },
+    {
+      "data_id": "confidential_32",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.340299987234175
+    },
+    {
+      "data_id": "confidential_89",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.328700004611164
+    },
+    {
+      "data_id": "confidential_112",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.9340999976266176
+    },
+    {
+      "data_id": "confidential_145",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.331700009061024
+    },
+    {
+      "data_id": "restricted_127",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.387300024973229
+    },
+    {
+      "data_id": "public_55",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 21.442199999000877
+    },
+    {
+      "data_id": "public_172",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 15.06040000822395
+    },
+    {
+      "data_id": "restricted_147",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 18.283399986103177
+    },
+    {
+      "data_id": "public_153",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 8.789899991825223
+    },
+    {
+      "data_id": "restricted_103",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 10.0527000031434
+    },
+    {
+      "data_id": "public_186",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 26.009199995314702
+    },
+    {
+      "data_id": "confidential_122",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 5.6038000038824975
+    },
+    {
+      "data_id": "confidential_31",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 3.9926000172272325
+    },
+    {
+      "data_id": "restricted_128",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.025700007332489
+    },
+    {
+      "data_id": "public_75",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.962199978763238
+    },
+    {
+      "data_id": "public_68",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 17.198999994434416
+    },
+    {
+      "data_id": "public_177",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.208300019148737
+    },
+    {
+      "data_id": "public_100",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 13.287900015711784
+    },
+    {
+      "data_id": "confidential_109",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.200900002615526
+    },
+    {
+      "data_id": "confidential_140",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 13.149100006558001
+    },
+    {
+      "data_id": "public_70",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.1720999870449305
+    },
+    {
+      "data_id": "public_197",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.877600003965199
+    },
+    {
+      "data_id": "public_37",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 5.845199979376048
+    },
+    {
+      "data_id": "confidential_2",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.853600024944171
+    },
+    {
+      "data_id": "public_83",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 26.685700024245307
+    },
+    {
+      "data_id": "public_173",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 18.930999998701736
+    },
+    {
+      "data_id": "public_139",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 4.981600010069087
+    },
+    {
+      "data_id": "confidential_92",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 11.28830001107417
+    },
+    {
+      "data_id": "confidential_70",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 10.263999982271343
+    },
+    {
+      "data_id": "restricted_56",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 19.99580001574941
+    },
+    {
+      "data_id": "confidential_57",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 4.540199995972216
+    },
+    {
+      "data_id": "public_99",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 13.372100016567856
+    },
+    {
+      "data_id": "confidential_48",
+      "true_sensitivity": "sensitive",
+      "predicted_sensitivity": "sensitive",
+      "confidence": 0.95,
+      "routed_to": "fabric_ethereum",
+      "is_misrouted": false,
+      "processing_time_ms": 16.254099988145754
+    },
+    {
+      "data_id": "public_0",
+      "true_sensitivity": "public",
+      "predicted_sensitivity": "public",
+      "confidence": 0.5,
+      "routed_to": "fabric_only",
+      "is_misrouted": false,
+      "processing_time_ms": 14.964000001782551
     }
   ],
   "threshold_results": [
     {
       "threshold": 0.1,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.2,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.3,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.4,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.5,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.6,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.7,
-      "total_samples": 100,
-      "misroute_count": 30,
-      "misroute_probability": 0.3,
-      "false_public_rate": 0.5,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.8,
-      "total_samples": 100,
-      "misroute_count": 60,
-      "misroute_probability": 0.6,
-      "false_public_rate": 1.0,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     },
     {
       "threshold": 0.9,
-      "total_samples": 100,
-      "misroute_count": 60,
-      "misroute_probability": 0.6,
-      "false_public_rate": 1.0,
+      "total_samples": 500,
+      "misroute_count": 0,
+      "misroute_probability": 0.0,
+      "false_public_rate": 0.0,
       "false_private_rate": 0.0,
-      "accuracy": 0.7,
+      "accuracy": 1.0,
       "precision_sensitive": 1.0,
-      "recall_sensitive": 0.5
+      "recall_sensitive": 1.0
     }
   ],
   "confusion_matrix": [
     [
-      40,
+      200,
       0
     ],
     [
-      30,
-      30
+      0,
+      300
     ]
   ],
   "privacy_budget_epsilon": 0.05,
-  "achieved_epsilon": 0.5,
-  "budget_respected": false,
+  "achieved_epsilon": 0.0,
+  "budget_respected": true,
   "summary": {
-    "total_samples": 100,
-    "accuracy": 0.7,
+    "total_samples": 500,
+    "accuracy": 1.0,
     "precision_sensitive": 1.0,
-    "recall_sensitive": 0.5,
-    "f1_sensitive": 0.6666666666666666,
-    "misroute_count": 30,
-    "misroute_rate": 0.3,
+    "recall_sensitive": 1.0,
+    "f1_sensitive": 1.0,
+    "misroute_count": 0,
+    "misroute_rate": 0.0,
     "privacy_budget_epsilon": 0.05,
-    "achieved_epsilon": 0.5,
-    "budget_respected": false
+    "achieved_epsilon": 0.0,
+    "budget_respected": true
   }
 }

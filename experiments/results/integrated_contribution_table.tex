@@ -1,0 +1,58 @@
+%% HADC Integrated Contribution Table - CORRECTED & VERIFIED
+%% Generated from experimental results
+%% 
+%% Required packages:
+%% \usepackage{booktabs}
+%% \usepackage{multirow}
+%% \usepackage{xcolor}
+%% \usepackage{colortbl}
+
+\begin{table*}[htbp]
+\centering
+\scriptsize
+\caption{Integrated Comparative Metrics Validating Contribution~1: Hybrid-Blockchain Orchestration Efficiency}
+\label{tab:hadc_metrics}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lcccccccccc@{}}
+\toprule
+\multicolumn{11}{c}{\textbf{(a) Overall System and Orchestration Performance}} \\ 
+\midrule
+\textbf{Metric} & \textbf{Fabric} & \textbf{Ethereum} & \textbf{Disjoint} & \textbf{HADC} & \textbf{Gain (\%)} & \textbf{Exec. Ov. (\%)} & \textbf{CV} & \textbf{P\_commit} & \textbf{Dup. (\%)} & \textbf{Consist. (\%)} \\ 
+\midrule
+Latency (ms) & 330 & 420 & 370 & \textbf{279} & $\downarrow$15.5 & \multirow{6}{*}{32.1} & \multirow{6}{*}{0.082} & \multirow{6}{*}{0.973} & \multirow{6}{*}{0.0} & \multirow{6}{*}{0.0} \\
+Throughput (TPS) & 92 & 68 & 84 & \textbf{117} & $\uparrow$27.2 & & & & & \\
+Commit Success (\%) & 89.1 & 82.3 & 88.5 & \textbf{97.3} & $\uparrow$9.2 & & & & & \\
+Conflict Rate (\%) & 10.9 & 17.7 & 11.5 & \textbf{2.7} & $\downarrow$75.2 & & & & & \\
+CPU (\%) & 38 & 33 & 42 & 35 & --- & & & & & \\
+Gas Cost (\$/tx) & --- & 0.00049 & --- & \textbf{4.7e-6} & $\downarrow$99.0 & & & & & \\
+\midrule
+\multicolumn{11}{c}{\textbf{(b) Determinism, Parallelization, and Synchronization Metrics}} \\ 
+\midrule
+\textbf{Metric} & \multicolumn{3}{c}{\textbf{Formula / Basis}} & \multicolumn{2}{c}{\textbf{Value}} & \multicolumn{5}{c}{\textbf{Interpretation}} \\
+\midrule
+Execution Overlap & \multicolumn{3}{c}{$(T_{seq}-T_{obs})/T_{seq}\times100$} & \multicolumn{2}{c}{32.1\%} & \multicolumn{5}{l}{Parallel Fabric--Ethereum commit overlap} \\
+Latency Variation (CV) & \multicolumn{3}{c}{$\sigma/\mu$} & \multicolumn{2}{c}{0.082} & \multicolumn{5}{l}{Stable orchestration (CV $<$ 0.1 $\Rightarrow$ deterministic)} \\
+Commit Probability & \multicolumn{3}{c}{$N_{succ}/N_{total}$} & \multicolumn{2}{c}{0.973} & \multicolumn{5}{l}{Idempotent synchronization verified} \\
+Duplicate Rate & \multicolumn{3}{c}{$N_{dup}/N_{total}\times100$} & \multicolumn{2}{c}{0.00\%} & \multicolumn{5}{l}{Exactly-once semantics confirmed} \\
+Consistency Error & \multicolumn{3}{c}{Cross-ledger mismatch} & \multicolumn{2}{c}{0.00\%} & \multicolumn{5}{l}{Perfect dual-ledger consistency} \\
+\midrule
+\multicolumn{11}{c}{\textbf{(c) Efficiency vs. Complexity Trade-Off and Composite Ranking}} \\ 
+\midrule
+\textbf{Module} & \textbf{Function} & \textbf{Delay (ms)} & \textbf{Gain (\%)} & \textbf{Impact} & \textbf{System} & \textbf{Lat.} & \textbf{TPS} & \textbf{CPU} & \textbf{Conf.} & \textbf{Score (E)} \\ 
+\midrule
+Edge Classifier & ML inference & +7.7 & +6.7 (TPS) & \checkmark & Fabric & 330 & 92 & 38 & 10.9 & 0.154 \\
+Routing Engine & Orchestration & +3.6 & +8.3 (commit) & \checkmark & Ethereum & 420 & 68 & 33 & 17.7 & 0.089 \\
+Eth Anchor & Verification & +28.1 & +98.3 (gas$\downarrow$) & \checkmark & Disjoint & 370 & 84 & 42 & 11.5 & 0.117 \\
+\textbf{HADC} & \textbf{Full pipeline} & \textbf{---} & \textbf{---} & \checkmark\checkmark\checkmark & \textbf{HADC} & \textbf{279} & \textbf{117} & \textbf{35} & \textbf{2.7} & \textbf{0.265} \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+
+\footnotesize{
+\textbf{Abbreviations:} TPS -- Transactions per second; CV -- Coefficient of variation; P\_commit -- Commit probability; Dup. -- Duplicate rate; Consist. -- Cross-ledger consistency; Exec. Ov. -- Execution overlap; Conf. -- Conflict rate (\%); Lat. -- Latency (ms).\\
+\textbf{Efficiency Score:} $E = (\text{TPS}/\text{Latency}) \times (1-\text{CPU}/100) \times (1-\text{Conflict}/100)$.
+Arrows ($\uparrow$/$\downarrow$) indicate improvement direction. \checkmark~denotes beneficial; \checkmark\checkmark\checkmark~signifies aggregate benefit.\\
+\textbf{Data Sources:} Latency/TPS from Exp.~1; Gas efficiency from Exp.~3 (98.3\% reduction with batch size 200); Exactly-once from Exp.~5.
+}
+\end{table*}

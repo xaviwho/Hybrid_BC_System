@@ -1,0 +1,2701 @@
+{
+  "experiment": "exp8_recovery_strategy",
+  "schema_version": 2,
+  "timestamp": "2026-08-10T14:53:25",
+  "provenance": {
+    "data_source": "real twin_manager version histories built in exp8_recovery_strategy.py:build_history(); deltas derived from consecutive real snapshots",
+    "state_models": [
+      "dense",
+      "sparse"
+    ],
+    "reps_per_point": 100,
+    "warmups_discarded": 20,
+    "state_fields": 20,
+    "sparse_fields_changed_per_update": 2,
+    "implementation_note": "twin_manager stores FULL SNAPSHOTS only \u2014 no checkpoint interval, no delta store, no inverse-delta application. Both recovery strategies are implemented in THIS EXPERIMENT, not in the production twin manager. Algorithm 2's branching must NOT be described as implemented in twin_manager."
+  },
+  "by_state_model": {
+    "dense": {
+      "state_model": "dense",
+      "head_index_n": 1000,
+      "total_versions": 1001,
+      "mean_fields_changed_per_version": {
+        "kind": "measured",
+        "value": 20.0,
+        "of_total_fields": 20
+      },
+      "storage": {
+        "full_snapshots_bytes": {
+          "kind": "measured",
+          "value": 425970
+        },
+        "forward_deltas_bytes": {
+          "kind": "measured",
+          "value": 425620
+        },
+        "inverse_deltas_bytes": {
+          "kind": "measured",
+          "value": 425540
+        },
+        "delta_vs_snapshot_ratio": {
+          "kind": "derived",
+          "value": 1.001,
+          "derivation": "full_snapshots_bytes / forward_deltas_bytes",
+          "note": "degenerate: every field changes every version, so a delta IS a full snapshot and delta encoding saves nothing"
+        }
+      },
+      "measurements": [
+        {
+          "target_version": 1,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.013068,
+              "p50": 0.013,
+              "p95": 0.0134,
+              "ci95": 4.8e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 1
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.467962,
+              "p50": 1.4179,
+              "p95": 1.6649,
+              "ci95": 0.019832
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 999
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 1
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 1,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 50,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011841,
+              "p50": 0.0118,
+              "p95": 0.012,
+              "ci95": 7.2e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.422957,
+              "p50": 1.3529,
+              "p95": 1.6441,
+              "ci95": 0.032835
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 950
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 100,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011847,
+              "p50": 0.0118,
+              "p95": 0.0121,
+              "ci95": 7.5e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.346832,
+              "p50": 1.2758,
+              "p95": 1.5519,
+              "ci95": 0.027188
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 900
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 250,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011871,
+              "p50": 0.0118,
+              "p95": 0.0122,
+              "ci95": 8.9e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.109977,
+              "p50": 1.0671,
+              "p95": 1.2349,
+              "ci95": 0.024101
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 750
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 500,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011871,
+              "p50": 0.0118,
+              "p95": 0.0123,
+              "ci95": 0.00012
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.724111,
+              "p50": 0.7093,
+              "p95": 0.7906,
+              "ci95": 0.008008
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 500
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 750,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012094,
+              "p50": 0.012,
+              "p95": 0.0126,
+              "ci95": 6.3e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.366476,
+              "p50": 0.3613,
+              "p95": 0.3806,
+              "ci95": 0.002856
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 250
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1000,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011886,
+              "p50": 0.0118,
+              "p95": 0.0121,
+              "ci95": 0.000123
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011797,
+              "p50": 0.0118,
+              "p95": 0.0119,
+              "ci95": 2e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.013057,
+              "p50": 0.013,
+              "p95": 0.0132,
+              "ci95": 4.3e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 1
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.491152,
+              "p50": 1.4054,
+              "p95": 1.6658,
+              "ci95": 0.050107
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 999
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 1
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 1,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 50,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.081165,
+              "p50": 0.0805,
+              "p95": 0.0848,
+              "ci95": 0.000514
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.440368,
+              "p50": 1.3433,
+              "p95": 1.922,
+              "ci95": 0.0544
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 950
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 100,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012044,
+              "p50": 0.0118,
+              "p95": 0.0123,
+              "ci95": 0.000242
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.325719,
+              "p50": 1.2931,
+              "p95": 1.4745,
+              "ci95": 0.015652
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 900
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 250,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.083294,
+              "p50": 0.0811,
+              "p95": 0.09,
+              "ci95": 0.001978
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.142825,
+              "p50": 1.0896,
+              "p95": 1.3452,
+              "ci95": 0.035285
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 750
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 500,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011905,
+              "p50": 0.0118,
+              "p95": 0.0125,
+              "ci95": 5.8e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.74125,
+              "p50": 0.709,
+              "p95": 0.8159,
+              "ci95": 0.01958
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 500
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 750,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.082517,
+              "p50": 0.0795,
+              "p95": 0.1003,
+              "ci95": 0.001531
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.366077,
+              "p50": 0.3558,
+              "p95": 0.3964,
+              "ci95": 0.006227
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 250
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1000,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012684,
+              "p50": 0.0119,
+              "p95": 0.0177,
+              "ci95": 0.000382
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.021046,
+              "p50": 0.0214,
+              "p95": 0.022,
+              "ci95": 0.000296
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.013666,
+              "p50": 0.0134,
+              "p95": 0.0151,
+              "ci95": 0.000124
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 1
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.459817,
+              "p50": 1.4088,
+              "p95": 1.622,
+              "ci95": 0.016648
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 999
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 1
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 1,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 50,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.083201,
+              "p50": 0.0818,
+              "p95": 0.088,
+              "ci95": 0.001304
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.435633,
+              "p50": 1.3821,
+              "p95": 1.6062,
+              "ci95": 0.029194
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 950
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 100,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.156209,
+              "p50": 0.1538,
+              "p95": 0.1646,
+              "ci95": 0.001228
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 100
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.365266,
+              "p50": 1.3069,
+              "p95": 1.5722,
+              "ci95": 0.020747
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 900
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 100
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 250,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011861,
+              "p50": 0.0118,
+              "p95": 0.0122,
+              "ci95": 9.8e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 1.095316,
+              "p50": 1.0592,
+              "p95": 1.2402,
+              "ci95": 0.014784
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 750
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 500,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.013551,
+              "p50": 0.012,
+              "p95": 0.0204,
+              "ci95": 0.000762
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.786369,
+              "p50": 0.7064,
+              "p95": 1.4634,
+              "ci95": 0.044734
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 500
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 750,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011845,
+              "p50": 0.0118,
+              "p95": 0.012,
+              "ci95": 4.5e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.364718,
+              "p50": 0.3553,
+              "p95": 0.399,
+              "ci95": 0.006456
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 250
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1000,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011861,
+              "p50": 0.0118,
+              "p95": 0.012,
+              "ci95": 3.1e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011905,
+              "p50": 0.0118,
+              "p95": 0.0121,
+              "ci95": 0.000119
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        }
+      ],
+      "eq36_validation": {
+        "kind": "derived",
+        "equality_holds_at": "3/21",
+        "bound_holds_at": "21/21",
+        "exact_formula_holds_at": "21/21",
+        "conclusion": "Eq (36) u = min{n-k, q} is VALID AS AN UPPER BOUND and INVALID AS AN EQUALITY. Checkpoint restore costs (k mod q) delta applications, not q; q is the supremum over k, attained only in the worst case. The exact cost is u = min{n-k, k mod q}. The manuscript should state Eq (36) as u <= min{n-k, q}, or replace it with the exact form."
+      }
+    },
+    "sparse": {
+      "state_model": "sparse",
+      "head_index_n": 1000,
+      "total_versions": 1001,
+      "mean_fields_changed_per_version": {
+        "kind": "measured",
+        "value": 1.991,
+        "of_total_fields": 20
+      },
+      "storage": {
+        "full_snapshots_bytes": {
+          "kind": "measured",
+          "value": 425440
+        },
+        "forward_deltas_bytes": {
+          "kind": "measured",
+          "value": 42383
+        },
+        "inverse_deltas_bytes": {
+          "kind": "measured",
+          "value": 42303
+        },
+        "delta_vs_snapshot_ratio": {
+          "kind": "derived",
+          "value": 10.038,
+          "derivation": "full_snapshots_bytes / forward_deltas_bytes",
+          "note": "delta encoding is meaningfully smaller than full snapshots"
+        }
+      },
+      "measurements": [
+        {
+          "target_version": 1,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012001,
+              "p50": 0.012,
+              "p95": 0.0122,
+              "ci95": 4.1e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 1
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.331913,
+              "p50": 0.3218,
+              "p95": 0.381,
+              "ci95": 0.005027
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 999
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 1
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 1,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 50,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011803,
+              "p50": 0.0118,
+              "p95": 0.0119,
+              "ci95": 4.2e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.32448,
+              "p50": 0.3083,
+              "p95": 0.3734,
+              "ci95": 0.009848
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 950
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 100,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012226,
+              "p50": 0.0117,
+              "p95": 0.0122,
+              "ci95": 0.000669
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.311827,
+              "p50": 0.2943,
+              "p95": 0.3829,
+              "ci95": 0.010264
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 900
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 250,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.019077,
+              "p50": 0.0118,
+              "p95": 0.0185,
+              "ci95": 0.008703
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.271793,
+              "p50": 0.2476,
+              "p95": 0.3974,
+              "ci95": 0.015186
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 750
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 500,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012097,
+              "p50": 0.012,
+              "p95": 0.0127,
+              "ci95": 0.00012
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.170408,
+              "p50": 0.1675,
+              "p95": 0.1759,
+              "ci95": 0.002135
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 500
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 750,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011758,
+              "p50": 0.0117,
+              "p95": 0.0119,
+              "ci95": 3e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.089437,
+              "p50": 0.0883,
+              "p95": 0.0936,
+              "ci95": 0.001257
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 250
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1000,
+          "checkpoint_interval_q": 50,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011927,
+              "p50": 0.0118,
+              "p95": 0.0121,
+              "ci95": 0.000107
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012237,
+              "p50": 0.012,
+              "p95": 0.013,
+              "ci95": 0.000217
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012054,
+              "p50": 0.012,
+              "p95": 0.0123,
+              "ci95": 9.7e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 1
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.328916,
+              "p50": 0.3215,
+              "p95": 0.3741,
+              "ci95": 0.003552
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 999
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 1
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 1,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 50,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.026833,
+              "p50": 0.0258,
+              "p95": 0.0274,
+              "ci95": 0.000806
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.314583,
+              "p50": 0.3073,
+              "p95": 0.3462,
+              "ci95": 0.0038
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 950
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 100,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011839,
+              "p50": 0.0118,
+              "p95": 0.012,
+              "ci95": 9.8e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.297098,
+              "p50": 0.2923,
+              "p95": 0.3166,
+              "ci95": 0.002711
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 900
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 250,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.026375,
+              "p50": 0.0262,
+              "p95": 0.0267,
+              "ci95": 0.000239
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.251646,
+              "p50": 0.2469,
+              "p95": 0.2704,
+              "ci95": 0.002326
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 750
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 500,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011804,
+              "p50": 0.0118,
+              "p95": 0.012,
+              "ci95": 2.9e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.17702,
+              "p50": 0.1679,
+              "p95": 0.2662,
+              "ci95": 0.005301
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 500
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 750,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.027631,
+              "p50": 0.027,
+              "p95": 0.0297,
+              "ci95": 0.000262
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.089032,
+              "p50": 0.088,
+              "p95": 0.0921,
+              "ci95": 0.001049
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 250
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1000,
+          "checkpoint_interval_q": 100,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011754,
+              "p50": 0.0117,
+              "p95": 0.0119,
+              "ci95": 2.4e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011924,
+              "p50": 0.0117,
+              "p95": 0.0119,
+              "ci95": 0.000232
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011988,
+              "p50": 0.012,
+              "p95": 0.0122,
+              "ci95": 3.4e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 1
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.328456,
+              "p50": 0.3233,
+              "p95": 0.3509,
+              "ci95": 0.002564
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 999
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 1
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 1,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 50,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.025905,
+              "p50": 0.0258,
+              "p95": 0.026,
+              "ci95": 0.000171
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 50
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.313764,
+              "p50": 0.3093,
+              "p95": 0.3349,
+              "ci95": 0.002201
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 950
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 50
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 50,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 100,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.04032,
+              "p50": 0.0402,
+              "p95": 0.0409,
+              "ci95": 0.000128
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 100
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.304284,
+              "p50": 0.2937,
+              "p95": 0.3251,
+              "ci95": 0.007755
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 900
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 100
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 100,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 250,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011677,
+              "p50": 0.0117,
+              "p95": 0.0118,
+              "ci95": 2.7e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.259539,
+              "p50": 0.2481,
+              "p95": 0.3175,
+              "ci95": 0.007112
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 750
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 500,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011709,
+              "p50": 0.0116,
+              "p95": 0.0119,
+              "ci95": 9.1e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.181963,
+              "p50": 0.1686,
+              "p95": 0.2734,
+              "ci95": 0.006318
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 500
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 750,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011709,
+              "p50": 0.0117,
+              "p95": 0.0118,
+              "ci95": 2.5e-05
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.088163,
+              "p50": 0.0877,
+              "p95": 0.0916,
+              "ci95": 0.000258
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 250
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 250,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": false,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        },
+        {
+          "target_version": 1000,
+          "checkpoint_interval_q": 250,
+          "head_n": 1000,
+          "checkpoint_restore": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.012794,
+              "p50": 0.0117,
+              "p95": 0.0192,
+              "ci95": 0.000871
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "delta_inversion_from_head": {
+            "latency_ms": {
+              "kind": "measured",
+              "n": 100,
+              "mean": 0.011966,
+              "p50": 0.0118,
+              "p95": 0.0124,
+              "ci95": 0.000214
+            },
+            "delta_applications_u": {
+              "kind": "measured",
+              "value": 0
+            }
+          },
+          "u_optimal_measured": {
+            "kind": "measured",
+            "value": 0
+          },
+          "u_eq36_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, q}"
+          },
+          "u_exact_predicted": {
+            "kind": "modeled",
+            "value": 0,
+            "formula": "min{n-k, k mod q}"
+          },
+          "eq36_equality_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, q}"
+          },
+          "eq36_bound_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured <= min{n-k, q}"
+          },
+          "exact_formula_holds": {
+            "kind": "derived",
+            "value": true,
+            "derivation": "u_measured == min{n-k, k mod q}"
+          }
+        }
+      ],
+      "eq36_validation": {
+        "kind": "derived",
+        "equality_holds_at": "3/21",
+        "bound_holds_at": "21/21",
+        "exact_formula_holds_at": "21/21",
+        "conclusion": "Eq (36) u = min{n-k, q} is VALID AS AN UPPER BOUND and INVALID AS AN EQUALITY. Checkpoint restore costs (k mod q) delta applications, not q; q is the supremum over k, attained only in the worst case. The exact cost is u = min{n-k, k mod q}. The manuscript should state Eq (36) as u <= min{n-k, q}, or replace it with the exact form."
+      }
+    }
+  }
+}

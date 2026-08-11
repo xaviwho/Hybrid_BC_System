@@ -1,0 +1,75 @@
+{
+  "experiment": "exp3_gas_real",
+  "measured": true,
+  "chain_id": 1337,
+  "contract_address": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+  "reps_per_point": 5,
+  "single_anchor_gas_samples": [
+    273695,
+    273695,
+    273695,
+    273695,
+    273695
+  ],
+  "single_anchor_gas_avg": 273695.0,
+  "root_anchor_gas_samples": [
+    273623,
+    273623,
+    273623,
+    273623,
+    273623
+  ],
+  "root_anchor_gas_avg": 273623.0,
+  "gas_per_record_by_batch": [
+    {
+      "batch_size": 1,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 273623.0,
+      "gas_reduction_pct": 0.03
+    },
+    {
+      "batch_size": 2,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 136811.5,
+      "gas_reduction_pct": 50.01
+    },
+    {
+      "batch_size": 5,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 54724.6,
+      "gas_reduction_pct": 80.01
+    },
+    {
+      "batch_size": 10,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 27362.3,
+      "gas_reduction_pct": 90.0
+    },
+    {
+      "batch_size": 20,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 13681.1,
+      "gas_reduction_pct": 95.0
+    },
+    {
+      "batch_size": 50,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 5472.5,
+      "gas_reduction_pct": 98.0
+    },
+    {
+      "batch_size": 100,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 2736.2,
+      "gas_reduction_pct": 99.0
+    },
+    {
+      "batch_size": 200,
+      "single_gas_per_record": 273695.0,
+      "batched_gas_per_record": 1368.1,
+      "gas_reduction_pct": 99.5
+    }
+  ],
+  "max_reduction_pct": 99.5,
+  "conclusion": "Single-record anchoring costs ~273695 gas/record (measured). Merkle-batching amortizes one ~273623-gas root-anchor tx across the batch, so gas/record falls as 1/N -> at N=200 the reduction is 99.5%. All values are real receipt.gasUsed."
+}

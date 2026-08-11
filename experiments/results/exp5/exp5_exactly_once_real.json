@@ -1,0 +1,27 @@
+{
+  "experiment": "exp5_exactly_once_real",
+  "measured": true,
+  "sequential_duplicates": {
+    "requests": 6,
+    "unique_anchor_txs": 1,
+    "first_replay": false,
+    "num_replays_true": 5,
+    "pass": true
+  },
+  "concurrent_duplicates": {
+    "concurrent_requests": 25,
+    "ok_responses": 25,
+    "unique_anchor_txs": 1,
+    "non_replay_count": 1,
+    "pass": true
+  },
+  "distinct_requests": {
+    "distinct_payloads": 40,
+    "ok_responses": 40,
+    "unique_anchor_txs": 40,
+    "duplicate_anchor_txs": [],
+    "pass": true
+  },
+  "exactly_once_holds": true,
+  "note": "Verified via REAL Ethereum tx hashes returned by the live orchestrator over 71 requests. Duplicates (sequential and concurrent) collapse to exactly one on-chain anchor via the content-hash idempotency slot; distinct requests each get a unique anchor. Orchestrator crash-recovery is a separate test requiring process-kill mid-commit and is noted as future hardening, not claimed here."
+}

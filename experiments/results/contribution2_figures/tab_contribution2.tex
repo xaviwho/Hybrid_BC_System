@@ -1,0 +1,20 @@
+% Auto-generated from RESULTS.json (config=3fa584dfbfc2 generated_at=2026-08-10T15:00:14)
+\begin{table}[htbp]\centering
+\caption{Deterministic privacy-routing policy: per-case results. Routing accuracy 100\%, 0 sensitive-field leaks, 96.5\% explicit field coverage (55/57).}
+\label{tab:c2_policy}
+\begin{tabular}{llllcl}\toprule
+Case & Expected & Predicted & Max sens. & OK & Redacted fields \\\midrule
+env\_sensor & public & public & public & \checkmark & -- \\
+industrial\_telemetry & public & public & public & \checkmark & -- \\
+healthcare\_patient & sensitive & sensitive & critical & \checkmark & patientId, diagnosis, heartRate \\
+ssn\_record & sensitive & sensitive & critical & \checkmark & ssn \\
+contact\_pii & sensitive & sensitive & critical & \checkmark & email, phone \\
+payment & sensitive & sensitive & critical & \checkmark & creditCard, cvv \\
+bank & sensitive & sensitive & critical & \checkmark & bankAccount, salary \\
+secrets & sensitive & sensitive & critical & \checkmark & password, apiKey \\
+gdpr\_special & sensitive & sensitive & critical & \checkmark & genetic, religion \\
+precise\_geo & sensitive & sensitive & critical & \checkmark & exactLocation \\
+quasi\_ids & sensitive & sensitive & restricted & \checkmark & dateOfBirth, zipCode \\
+hidden\_ssn\_in\_note & sensitive & sensitive & critical & \checkmark & note \\
+unknown\_field & sensitive & sensitive & critical & \checkmark & mysteryReading \\
+\bottomrule\end{tabular}\end{table}

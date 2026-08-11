@@ -1,0 +1,22 @@
+
+\begin{table}[htbp]
+\centering
+\caption{ML Classifier Comparison for Sensitivity Classification (NSL-KDD Dataset)}
+\label{tab:ml_ablation}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Classifier} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} & \textbf{ROC-AUC} & \textbf{Time (s)} \\
+\midrule
+\textbf{Random Forest} & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & nan$\pm$nan & 1.96 \\
+Decision Tree & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & nan$\pm$nan & 0.40 \\
+AdaBoost & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & nan$\pm$nan & 0.63 \\
+K-Nearest Neighbors & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & nan$\pm$nan & 0.32 \\
+Naive Bayes & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & nan$\pm$nan & 0.85 \\
+MLP Neural Network & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & 1.0000$\pm$0.000 & nan$\pm$nan & 13.46 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item Results from 5-fold stratified cross-validation. Best results in bold.
+\end{tablenotes}
+\end{table}
