@@ -475,17 +475,21 @@ def anchor_status(record_id):
         if outbox.get_dedup(record_id):
             return jsonify({"outbox_id": record_id, "anchor_state": "not_required"}), 200
         return jsonify({"error": "unknown record"}), 404
-    completion_ms = None
-    if row.get("delivered_at"):
-        completion_ms = round((row["delivered_at"] - row["created_at"]) * 1000, 3)
+    timing = outbox.timing_of(record_id) or {}
     return jsonify({
         "outbox_id": record_id,
         "anchor_state": row["state"],
         "attempts": row["attempts"],
         "eth_tx_hash": row["eth_tx_hash"],
         "created_at": row["created_at"],
+        "delivery_started_at": row["delivery_started_at"],
         "delivered_at": row["delivered_at"],
-        "delivery_latency_ms": completion_ms,
+        # total = queue_wait + anchor. Keep them separate: queue wait is relay
+        # scheduling under load, anchor is the chain. Their sum is not "anchor
+        # latency".
+        "delivery_latency_ms": timing.get("total_ms"),
+        "queue_wait_ms": timing.get("queue_wait_ms"),
+        "anchor_ms": timing.get("anchor_ms"),
         "last_error": row["last_error"],
     }), 200
 

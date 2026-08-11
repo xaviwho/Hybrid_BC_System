@@ -174,6 +174,55 @@ def test_request_thread_isolation(db):
           f"enqueue={enqueue_ms:.2f} ms vs anchor={ANCHOR_DELAY_S*1000:.0f} ms")
 
 
+def test_queue_wait_vs_anchor_cost(db):
+    print("\n[9] completion decomposes into queue wait + anchor cost")
+    chain = StubChain()                       # each anchor costs ANCHOR_DELAY_S
+    ob = Outbox(db, anchor_fn=chain)
+
+    # Enqueue a backlog BEFORE starting the relay, so later rows must wait behind
+    # earlier ones. This is the regime the decomposition exists to separate.
+    n = 6
+    for i in range(n):
+        ob.commit_and_enqueue(f"q-{i}", f"c-{i}", f"f-{i}",
+                              payload={"data_id": f"t-{i}", "metadata": {"i": i}})
+    check("queue depth reflects the backlog", ob.stats()["queue_depth"] == n,
+          f"depth={ob.stats()['queue_depth']}")
+
+    ob.start_relay()
+    ok = _wait(lambda: ob.stats()["queue_depth"] == 0, timeout=30)
+    ob.stop_relay()
+    check("relay drains the backlog", ok)
+
+    first = ob.timing_of("q-0")
+    last = ob.timing_of(f"q-{n-1}")
+    for label, t in (("first", first), ("last", last)):
+        check(f"{label} row decomposes",
+              t and t["queue_wait_ms"] is not None and t["anchor_ms"] is not None)
+        check(f"{label}: queue_wait + anchor == total (±1 ms)",
+              abs((t["queue_wait_ms"] + t["anchor_ms"]) - t["total_ms"]) < 1.0,
+              f"{t['queue_wait_ms']:.1f} + {t['anchor_ms']:.1f} vs {t['total_ms']:.1f}")
+
+    # The point of the split: anchor cost is flat, queue wait is what grows.
+    check("anchor cost is ~constant across backlog position",
+          abs(last["anchor_ms"] - first["anchor_ms"]) < ANCHOR_DELAY_S * 1000 * 0.5,
+          f"first {first['anchor_ms']:.1f} ms vs last {last['anchor_ms']:.1f} ms")
+    check("queue wait grows with backlog position",
+          last["queue_wait_ms"] > first["queue_wait_ms"] + ANCHOR_DELAY_S * 1000,
+          f"first {first['queue_wait_ms']:.1f} ms vs last {last['queue_wait_ms']:.1f} ms")
+    check("conflating them would overstate anchor cost",
+          last["total_ms"] > last["anchor_ms"] * 2,
+          f"total {last['total_ms']:.1f} ms vs anchor {last['anchor_ms']:.1f} ms")
+
+    rt = ob.relay_throughput()
+    check("relay reports a drain rate", rt["drain_rate_per_s"] is not None,
+          f"{rt['drain_rate_per_s']} anchors/s over {rt['span_s']} s")
+    # A single-threaded relay doing ANCHOR_DELAY_S per anchor cannot exceed 1/delay.
+    ceiling = 1.0 / ANCHOR_DELAY_S
+    check("drain rate does not exceed the single-threaded ceiling",
+          rt["drain_rate_per_s"] <= ceiling * 1.15,
+          f"{rt['drain_rate_per_s']:.2f} /s vs ceiling {ceiling:.2f} /s")
+
+
 def test_wal_guard(db):
     print("\n[7] startup guard: refuses to run without WAL")
     ob = Outbox(db, anchor_fn=StubChain())
@@ -251,6 +300,7 @@ def main():
         test_all_sensitive_no_outbox_row(os.path.join(tmp, "t4.db"))
         test_retry_and_failure(os.path.join(tmp, "t5.db"))
         test_request_thread_isolation(os.path.join(tmp, "t6.db"))
+        test_queue_wait_vs_anchor_cost(os.path.join(tmp, "t9.db"))
         test_wal_guard(os.path.join(tmp, "t7.db"))
         test_contract_registry()
     finally:

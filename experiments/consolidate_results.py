@@ -117,6 +117,48 @@ def main(stamp):
                 M(f"stage_fabric_{cls}_mean", block["stage_fabric_ms"].get("mean"), "ms",
                   "exp1", "measured"),
             ]
+        for cls, block in e["latency"].items():
+            # Completion decomposed. Kept as separate metrics so the paper cannot
+            # quote queue wait as anchor latency: the first is relay scheduling
+            # under load, the second is the chain.
+            qw, anc = block.get("queue_wait_ms", {}), block.get("anchor_ms", {})
+            if anc.get("n"):
+                metrics += [
+                    M(f"anchor_cost_{cls}_mean", anc.get("mean"), "ms", "exp1",
+                      "measured", "chain call only, excludes queue wait"),
+                    M(f"anchor_cost_{cls}_p95", anc.get("p95"), "ms", "exp1", "measured"),
+                ]
+            if qw.get("n"):
+                metrics += [
+                    M(f"queue_wait_{cls}_mean", qw.get("mean"), "ms", "exp1",
+                      "measured", "relay scheduling delay; grows with backlog"),
+                    M(f"queue_wait_{cls}_p95", qw.get("p95"), "ms", "exp1", "measured"),
+                ]
+            qd = block.get("queue_depth_at_submit", {})
+            if qd.get("n"):
+                metrics.append(
+                    M(f"queue_depth_at_submit_{cls}_mean", qd.get("mean"), "rows",
+                      "exp1", "measured",
+                      "outbox backlog when the sample was submitted"))
+
+        drain = e.get("relay_drain") or {}
+        if drain:
+            metrics += [
+                M("relay_drain_rate", drain["drain_rate_per_s"].get("value"),
+                  "anchors/s", "exp1", "derived",
+                  "sustained public-anchoring ceiling of the single-threaded relay; "
+                  "NOT 1/anchor_latency",
+                  derivation=drain["drain_rate_per_s"].get("derivation")),
+                M("relay_ingest_rate", drain["ingest_rate_per_s"].get("value"),
+                  "records/s", "exp1", "derived",
+                  "rate the API accepts work, bounded by ack latency",
+                  derivation=drain["ingest_rate_per_s"].get("derivation")),
+                M("relay_backlog_forms", drain["backlog_forms"].get("value"), "bool",
+                  "exp1", "derived",
+                  "ingest outruns the relay, so completion latency is queue-dominated",
+                  derivation=drain["backlog_forms"].get("derivation")),
+            ]
+
         for cls, sat in e.get("saturation", {}).items():
             metrics.append(M(f"throughput_{cls}_peak", sat.get("peak_tps"), "tps", "exp1",
                              "derived", sat.get("note", ""),

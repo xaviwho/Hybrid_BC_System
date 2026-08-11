@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS outbox (
   next_attempt_at REAL NOT NULL DEFAULT 0,
   payload       TEXT,
   created_at    REAL NOT NULL,
+  delivery_started_at REAL,
   delivered_at  REAL
 );
 CREATE INDEX IF NOT EXISTS idx_outbox_state ON outbox(state, next_attempt_at);
@@ -105,6 +106,9 @@ class Outbox:
             os.makedirs(d, exist_ok=True)
         with self._conn() as c:
             c.executescript(_SCHEMA)
+            cols = {r[1] for r in c.execute("PRAGMA table_info(outbox)")}
+            if "delivery_started_at" not in cols:
+                c.execute("ALTER TABLE outbox ADD COLUMN delivery_started_at REAL")
         self._assert_wal()
 
     def _assert_wal(self):
@@ -210,6 +214,9 @@ class Outbox:
         out["dedup_records"] = c.execute("SELECT COUNT(*) n FROM dedup").fetchone()["n"]
         out["unanchored"] = len(self.find_unanchored())
         out["relay_running"] = bool(self._worker and self._worker.is_alive())
+        # queue depth is what exp1 samples alongside each completion-latency sample
+        out["queue_depth"] = out[STATE_PENDING]
+        out["relay"] = self.relay_throughput()
         return out
 
     def drain_stats(self):
@@ -219,6 +226,60 @@ class Outbox:
             " WHERE state=? AND delivered_at IS NOT NULL", (STATE_DELIVERED,)
         ).fetchall()
         return [r["ms"] for r in rows]
+
+    def timing_of(self, record_id):
+        """Decompose one row's delivery into queue wait and anchor cost.
+
+        total = delivered_at - created_at
+              = queue_wait  (created_at -> delivery_started_at)
+              + anchor      (delivery_started_at -> delivered_at)
+
+        The split matters: queue wait is a property of relay SCHEDULING and grows
+        with offered load against a single-threaded relay; anchor cost is a
+        property of the CHAIN. Reporting their sum as "anchor latency" would
+        attribute a queueing artifact to Ethereum.
+        """
+        r = self.get(record_id)
+        if not r or not r.get("delivered_at"):
+            return None
+        created, started, done = r["created_at"], r.get("delivery_started_at"), r["delivered_at"]
+        out = {"total_ms": round((done - created) * 1000.0, 3),
+               "queue_wait_ms": None, "anchor_ms": None, "attempts": r["attempts"]}
+        if started is not None:
+            out["queue_wait_ms"] = round((started - created) * 1000.0, 3)
+            out["anchor_ms"] = round((done - started) * 1000.0, 3)
+        return out
+
+    def relay_throughput(self):
+        """Observed drain rate of the relay — deliveries per second.
+
+        This is a real system property: the public-anchoring throughput ceiling
+        of a single-threaded relay. It is NOT the inverse of anchor latency once
+        the relay is saturated, and it must not be conflated with it.
+
+        Measured over the span of delivered rows, so it reflects sustained rate
+        rather than a single sample.
+        """
+        r = self._conn().execute(
+            "SELECT COUNT(*) n, MIN(delivered_at) lo, MAX(delivered_at) hi,"
+            "       AVG((delivered_at - delivery_started_at) * 1000.0) anchor_ms,"
+            "       AVG((delivery_started_at - created_at) * 1000.0) queue_ms"
+            "  FROM outbox WHERE state=? AND delivered_at IS NOT NULL"
+            "   AND delivery_started_at IS NOT NULL", (STATE_DELIVERED,)
+        ).fetchone()
+        n = r["n"] or 0
+        span = (r["hi"] - r["lo"]) if (n > 1 and r["hi"] and r["lo"]) else 0.0
+        return {
+            "delivered": n,
+            "span_s": round(span, 4),
+            # n-1 intervals across n deliveries
+            "drain_rate_per_s": round((n - 1) / span, 4) if span > 0 else None,
+            "mean_anchor_ms": round(r["anchor_ms"], 3) if r["anchor_ms"] else None,
+            "mean_queue_wait_ms": round(r["queue_ms"], 3) if r["queue_ms"] else None,
+            "note": ("drain_rate_per_s is the relay's sustained delivery rate — the "
+                     "single-threaded public-anchoring ceiling. Distinct from "
+                     "1/mean_anchor_ms, which ignores queueing."),
+        }
 
     # --- relay worker (background thread; never touches the request thread) ---
 
@@ -285,6 +346,15 @@ class Outbox:
             # Already delivered (or permanently failed). Idempotent no-op.
             return current["eth_tx_hash"]
 
+        # Stamp when the chain call actually begins. delivered_at - created_at
+        # conflates two very different things: how long the row sat in the queue
+        # behind other work, and how long the anchor itself took. Only the second
+        # is a property of the chain; the first is a property of relay
+        # scheduling and scales with offered load.
+        started = time.time()
+        with self._conn() as c:
+            c.execute("UPDATE outbox SET delivery_started_at=? WHERE id=?",
+                      (started, rid))
         try:
             tx_hash = self.anchor_fn(row)
             now = time.time()

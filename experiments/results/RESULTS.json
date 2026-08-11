@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-11T15:32:46",
+  "generated_at": "2026-08-11T15:49:12",
   "config": {
     "fabric": "2.5.0 / CA 1.5.5, channel hiot, chaincode iot-data seq2",
     "ethereum": "Ganache chainId 1337, IoTDataRegistry",

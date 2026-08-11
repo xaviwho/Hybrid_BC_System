@@ -270,6 +270,49 @@ exp1 exiting **2** means the reconciliation gate failed: it writes
 throughput numbers. That is the gate working — investigate, do not rerun until
 it passes.
 
+### What exp1 now reports about the relay
+
+Completion latency is **decomposed**, not reported as a single number:
+
+```
+completion = ack + queue_wait + anchor
+```
+
+`queue_wait` is time the row sat pending behind other work — a property of relay
+scheduling that grows with offered load. `anchor` is the chain call. Their sum is
+not "anchor latency", and under backlog the queue term dominates: in the offline
+relay test a row with a 50.6 ms anchor showed a 314 ms completion, so quoting the
+total would overstate the chain by 6×.
+
+Each completion sample also records `queue_depth_at_submit`, so a latency figure
+can be read against the backlog it actually queued behind. Depth is sampled
+outside the timed region, and only during the sequential latency phase — sampling
+per request during the throughput sweep would double the request count and
+perturb the measurement.
+
+exp1 additionally runs a **drain-rate phase**: burst 100 records without following
+their anchors, then watch the queue empty. That yields
+
+* `relay_ingest_rate` — how fast the API accepts work (bounded by ack latency)
+* `relay_drain_rate` — the sustained public-anchoring ceiling of the
+  single-threaded relay
+* `relay_backlog_forms` — true when ingest outruns the relay
+
+The drain rate is a genuine system property and belongs in the results: it bounds
+how current the public ledger can be kept, independent of API throughput. It is
+strictly below `1/anchor_latency` once the queue is non-empty, and must not be
+quoted as anchor latency's inverse.
+
+Sanity check while the run is in flight:
+
+```bash
+curl -s http://127.0.0.1:5002/outbox_stats | python3 -m json.tool
+```
+
+`relay.drain_rate_per_s`, `relay.mean_anchor_ms` and `relay.mean_queue_wait_ms`
+are computed by the orchestrator from the outbox itself, so they cross-check
+exp1's numbers from a second source.
+
 ---
 
 # The three things to check
