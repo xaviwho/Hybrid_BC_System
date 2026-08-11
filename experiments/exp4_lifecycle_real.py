@@ -125,7 +125,7 @@ def measure_rollback_by_target(model="dense", total_versions=1000,
 
     PHASE 3: the cost model changed. Rollback now reconstructs the target
     (Algorithm 2) and appends a new head, so cost tracks the delta-application
-    count u = min{n-k, k mod q} — which is SAWTOOTH in k, not monotonic. Comparing
+    count u = min{n-k, (k-1) mod q} — which is SAWTOOTH in k, not monotonic. Comparing
     only target=1 against target=N is therefore no longer a valid probe for
     constant time: those two targets can land on similar u by coincidence and make
     a bounded-but-varying cost look flat. We record u alongside every latency and
@@ -210,7 +210,7 @@ def run_model(model):
             "u_bounded_by_q": u_max <= q,
             "latency_ratio_high_u_over_low_u": round(spread, 4),
             "varies_with_u": bool(varies_with_u),
-            "note": ("u = min{n-k, k mod q} is SAWTOOTH in k, so a target=1 vs "
+            "note": ("u = min{n-k, (k-1) mod q} is SAWTOOTH in k, so a target=1 vs "
                      "target=N comparison is not a valid constant-time probe under "
                      "this storage model. Cost is BOUNDED by q, not constant."),
         },
@@ -262,7 +262,7 @@ def main():
         "is_constant_time": primary["is_constant_time"],
         "conclusion": (
             "Rollback is NOT constant time, but it is now BOUNDED: cost tracks the "
-            "delta-application count u = min{n-k, k mod q} plus the append, rather "
+            "delta-application count u = min{n-k, (k-1) mod q} plus the append, rather "
             "than a linear scan over the version list. Because u is sawtooth in k, "
             "the old target=1 vs target=N probe no longer detects the variation — "
             "the characterization is against u, and u is capped by the checkpoint "

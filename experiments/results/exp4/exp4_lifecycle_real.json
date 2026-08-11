@@ -1,7 +1,7 @@
 {
   "experiment": "exp4_lifecycle_real",
   "schema_version": 2,
-  "timestamp": "2026-08-11T13:21:14",
+  "timestamp": "2026-08-11T13:54:07",
   "provenance": {
     "data_source": "deterministic synthetic states, exp4_lifecycle_real.py:make_state()",
     "component": "orchestrator/twin_manager.py (in-process)",
@@ -23,10 +23,10 @@
     "dense": {
       "state_model": "dense",
       "update_latency": {
-        "mean_ms": 0.11389800580218434,
-        "p95_ms": 0.1251001376658678,
-        "stdev_ms": 0.016018616250702486,
-        "ci95_ms": 0.002220066946514964,
+        "mean_ms": 0.11545998742803931,
+        "p95_ms": 0.13560010120272636,
+        "stdev_ms": 0.02324449726477496,
+        "ci95_ms": 0.003221522961674127,
         "n": 200
       },
       "storage_growth": [
@@ -112,78 +112,78 @@
       "compression_vs_snapshots_at_max": 0.9962,
       "rollback_latency_by_target_version": [
         {
-          "mean_ms": 0.1786399888806045,
-          "p95_ms": 0.20560016855597496,
-          "stdev_ms": 0.05448352824956328,
-          "ci95_ms": 0.010678771536914402,
+          "mean_ms": 0.10139899561181664,
+          "p95_ms": 0.1159000676125288,
+          "stdev_ms": 0.007046895346801191,
+          "ci95_ms": 0.0013811914879730334,
           "n": 100,
           "target_version": 1,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 0.17324900021776557,
-          "p95_ms": 0.19609997980296612,
-          "stdev_ms": 0.02261006827543355,
-          "ci95_ms": 0.004431573381984976,
+          "mean_ms": 0.10395901277661324,
+          "p95_ms": 0.1097000204026699,
+          "stdev_ms": 0.00734098852341014,
+          "ci95_ms": 0.0014388337505883875,
           "n": 100,
           "target_version": 50,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 0.18012000946328044,
-          "p95_ms": 0.21629990078508854,
-          "stdev_ms": 0.03009222933800646,
-          "ci95_ms": 0.005898076950249266,
+          "mean_ms": 0.10341300163418055,
+          "p95_ms": 0.11070002801716328,
+          "stdev_ms": 0.004210544500382267,
+          "ci95_ms": 0.0008252667220749243,
           "n": 100,
           "target_version": 100,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 0.18059700727462769,
-          "p95_ms": 0.23440015502274036,
-          "stdev_ms": 0.039130822137498335,
-          "ci95_ms": 0.007669641138949673,
+          "mean_ms": 0.11340699624270201,
+          "p95_ms": 0.18550013191998005,
+          "stdev_ms": 0.02484281234044851,
+          "ci95_ms": 0.0048691912187279075,
           "n": 100,
           "target_version": 250,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 0.1936150062829256,
-          "p95_ms": 0.2367000561207533,
-          "stdev_ms": 0.10651108491699911,
-          "ci95_ms": 0.020876172643731823,
+          "mean_ms": 0.1260870066471398,
+          "p95_ms": 0.14399993233382702,
+          "stdev_ms": 0.12640553108127395,
+          "ci95_ms": 0.024775484091929693,
           "n": 100,
           "target_version": 500,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 0.1781889912672341,
-          "p95_ms": 0.19509997218847275,
-          "stdev_ms": 0.014311136776824501,
-          "ci95_ms": 0.002804982808257602,
+          "mean_ms": 0.11194598395377398,
+          "p95_ms": 0.11860020458698273,
+          "stdev_ms": 0.008045693575529082,
+          "ci95_ms": 0.0015769559408037002,
           "n": 100,
           "target_version": 750,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 0.18468301044777036,
-          "p95_ms": 0.23470004089176655,
-          "stdev_ms": 0.03017397842160429,
-          "ci95_ms": 0.005914099770634441,
+          "mean_ms": 0.11304799932986498,
+          "p95_ms": 0.1167000737041235,
+          "stdev_ms": 0.018678805282152235,
+          "ci95_ms": 0.0036610458353018385,
           "n": 100,
           "target_version": 1000,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         }
       ],
-      "rollback_min_ms": 0.17324900021776557,
-      "rollback_max_ms": 0.1936150062829256,
+      "rollback_min_ms": 0.10139899561181664,
+      "rollback_max_ms": 0.1260870066471398,
       "rollback_cost_model": {
         "u_by_target": {
           "1": 0,
@@ -199,7 +199,7 @@
         "u_bounded_by_q": true,
         "latency_ratio_high_u_over_low_u": 1.0,
         "varies_with_u": false,
-        "note": "u = min{n-k, k mod q} is SAWTOOTH in k, so a target=1 vs target=N comparison is not a valid constant-time probe under this storage model. Cost is BOUNDED by q, not constant."
+        "note": "u = min{n-k, (k-1) mod q} is SAWTOOTH in k, so a target=1 vs target=N comparison is not a valid constant-time probe under this storage model. Cost is BOUNDED by q, not constant."
       },
       "rollback_scales_with_target_index": false,
       "is_constant_time": false,
@@ -208,10 +208,10 @@
     "sparse": {
       "state_model": "sparse",
       "update_latency": {
-        "mean_ms": 0.07197849685326219,
-        "p95_ms": 0.07830001413822174,
-        "stdev_ms": 0.02189821391364296,
-        "ci95_ms": 0.003034937608625266,
+        "mean_ms": 0.07239049300551414,
+        "p95_ms": 0.0801000278443098,
+        "stdev_ms": 0.008016532699286408,
+        "ci95_ms": 0.0011110347481207469,
         "n": 200
       },
       "storage_growth": [
@@ -297,78 +297,78 @@
       "compression_vs_snapshots_at_max": 4.0131,
       "rollback_latency_by_target_version": [
         {
-          "mean_ms": 0.9948670119047165,
-          "p95_ms": 1.0836999863386154,
-          "stdev_ms": 0.06496140660312168,
-          "ci95_ms": 0.01273243569421185,
+          "mean_ms": 0.10389599716290832,
+          "p95_ms": 0.11580018326640129,
+          "stdev_ms": 0.0068293880587292945,
+          "ci95_ms": 0.0013385600595109417,
           "n": 100,
           "target_version": 1,
           "delta_applications_u": 0,
           "reconstruction_path": "direct"
         },
         {
-          "mean_ms": 1.0825090110301971,
-          "p95_ms": 1.3348001521080732,
-          "stdev_ms": 0.16700249423258848,
-          "ci95_ms": 0.03273248886958734,
+          "mean_ms": 0.17575500765815377,
+          "p95_ms": 0.21249987185001373,
+          "stdev_ms": 0.05114421345891207,
+          "ci95_ms": 0.010024265837946765,
           "n": 100,
           "target_version": 50,
           "delta_applications_u": 49,
           "reconstruction_path": "checkpoint"
         },
         {
-          "mean_ms": 1.1473610019311309,
-          "p95_ms": 1.4859000220894814,
-          "stdev_ms": 0.22858683053281625,
-          "ci95_ms": 0.044803018784431985,
+          "mean_ms": 0.22513000294566154,
+          "p95_ms": 0.26320014148950577,
+          "stdev_ms": 0.022386186344253035,
+          "ci95_ms": 0.004387692523473595,
           "n": 100,
           "target_version": 100,
           "delta_applications_u": 99,
           "reconstruction_path": "checkpoint"
         },
         {
-          "mean_ms": 1.0227239900268614,
-          "p95_ms": 1.1746000964194536,
-          "stdev_ms": 0.10954782053387212,
-          "ci95_ms": 0.021471372824638936,
+          "mean_ms": 0.17449198057875037,
+          "p95_ms": 0.19120005890727043,
+          "stdev_ms": 0.0230661368928917,
+          "ci95_ms": 0.004520962831006773,
           "n": 100,
           "target_version": 250,
           "delta_applications_u": 49,
           "reconstruction_path": "checkpoint"
         },
         {
-          "mean_ms": 1.0861499980092049,
-          "p95_ms": 1.3182999100536108,
-          "stdev_ms": 0.12976767005743411,
-          "ci95_ms": 0.025434463331257085,
+          "mean_ms": 0.24609700310975313,
+          "p95_ms": 0.27989991940557957,
+          "stdev_ms": 0.052329993684938216,
+          "ci95_ms": 0.01025667876224789,
           "n": 100,
           "target_version": 500,
           "delta_applications_u": 99,
           "reconstruction_path": "checkpoint"
         },
         {
-          "mean_ms": 1.0574660124257207,
-          "p95_ms": 1.2788998428732157,
-          "stdev_ms": 0.20912317913120615,
-          "ci95_ms": 0.04098814310971641,
+          "mean_ms": 0.18379600252956152,
+          "p95_ms": 0.2288001123815775,
+          "stdev_ms": 0.03153014456030241,
+          "ci95_ms": 0.006179908333819273,
           "n": 100,
           "target_version": 750,
           "delta_applications_u": 49,
           "reconstruction_path": "checkpoint"
         },
         {
-          "mean_ms": 0.9715920058079064,
-          "p95_ms": 1.0694998782128096,
-          "stdev_ms": 0.14034271246596008,
-          "ci95_ms": 0.027507171643328176,
+          "mean_ms": 0.12015498941764235,
+          "p95_ms": 0.12520002201199532,
+          "stdev_ms": 0.005307869861094624,
+          "ci95_ms": 0.0010403424927745463,
           "n": 100,
           "target_version": 1000,
           "delta_applications_u": 0,
           "reconstruction_path": "inversion"
         }
       ],
-      "rollback_min_ms": 0.9715920058079064,
-      "rollback_max_ms": 1.1473610019311309,
+      "rollback_min_ms": 0.10389599716290832,
+      "rollback_max_ms": 0.24609700310975313,
       "rollback_cost_model": {
         "u_by_target": {
           "1": 0,
@@ -382,9 +382,9 @@
         "u_max_observed": 99,
         "checkpoint_interval_q": 100,
         "u_bounded_by_q": true,
-        "latency_ratio_high_u_over_low_u": 1.1358,
+        "latency_ratio_high_u_over_low_u": 2.1032,
         "varies_with_u": true,
-        "note": "u = min{n-k, k mod q} is SAWTOOTH in k, so a target=1 vs target=N comparison is not a valid constant-time probe under this storage model. Cost is BOUNDED by q, not constant."
+        "note": "u = min{n-k, (k-1) mod q} is SAWTOOTH in k, so a target=1 vs target=N comparison is not a valid constant-time probe under this storage model. Cost is BOUNDED by q, not constant."
       },
       "rollback_scales_with_target_index": false,
       "is_constant_time": false,
@@ -392,10 +392,10 @@
     }
   },
   "update_latency": {
-    "mean_ms": 0.07197849685326219,
-    "p95_ms": 0.07830001413822174,
-    "stdev_ms": 0.02189821391364296,
-    "ci95_ms": 0.003034937608625266,
+    "mean_ms": 0.07239049300551414,
+    "p95_ms": 0.0801000278443098,
+    "stdev_ms": 0.008016532699286408,
+    "ci95_ms": 0.0011110347481207469,
     "n": 200
   },
   "storage_growth": [
@@ -480,79 +480,79 @@
   "approx_bytes_per_version": 137.9,
   "rollback_latency_by_target_version": [
     {
-      "mean_ms": 0.9948670119047165,
-      "p95_ms": 1.0836999863386154,
-      "stdev_ms": 0.06496140660312168,
-      "ci95_ms": 0.01273243569421185,
+      "mean_ms": 0.10389599716290832,
+      "p95_ms": 0.11580018326640129,
+      "stdev_ms": 0.0068293880587292945,
+      "ci95_ms": 0.0013385600595109417,
       "n": 100,
       "target_version": 1,
       "delta_applications_u": 0,
       "reconstruction_path": "direct"
     },
     {
-      "mean_ms": 1.0825090110301971,
-      "p95_ms": 1.3348001521080732,
-      "stdev_ms": 0.16700249423258848,
-      "ci95_ms": 0.03273248886958734,
+      "mean_ms": 0.17575500765815377,
+      "p95_ms": 0.21249987185001373,
+      "stdev_ms": 0.05114421345891207,
+      "ci95_ms": 0.010024265837946765,
       "n": 100,
       "target_version": 50,
       "delta_applications_u": 49,
       "reconstruction_path": "checkpoint"
     },
     {
-      "mean_ms": 1.1473610019311309,
-      "p95_ms": 1.4859000220894814,
-      "stdev_ms": 0.22858683053281625,
-      "ci95_ms": 0.044803018784431985,
+      "mean_ms": 0.22513000294566154,
+      "p95_ms": 0.26320014148950577,
+      "stdev_ms": 0.022386186344253035,
+      "ci95_ms": 0.004387692523473595,
       "n": 100,
       "target_version": 100,
       "delta_applications_u": 99,
       "reconstruction_path": "checkpoint"
     },
     {
-      "mean_ms": 1.0227239900268614,
-      "p95_ms": 1.1746000964194536,
-      "stdev_ms": 0.10954782053387212,
-      "ci95_ms": 0.021471372824638936,
+      "mean_ms": 0.17449198057875037,
+      "p95_ms": 0.19120005890727043,
+      "stdev_ms": 0.0230661368928917,
+      "ci95_ms": 0.004520962831006773,
       "n": 100,
       "target_version": 250,
       "delta_applications_u": 49,
       "reconstruction_path": "checkpoint"
     },
     {
-      "mean_ms": 1.0861499980092049,
-      "p95_ms": 1.3182999100536108,
-      "stdev_ms": 0.12976767005743411,
-      "ci95_ms": 0.025434463331257085,
+      "mean_ms": 0.24609700310975313,
+      "p95_ms": 0.27989991940557957,
+      "stdev_ms": 0.052329993684938216,
+      "ci95_ms": 0.01025667876224789,
       "n": 100,
       "target_version": 500,
       "delta_applications_u": 99,
       "reconstruction_path": "checkpoint"
     },
     {
-      "mean_ms": 1.0574660124257207,
-      "p95_ms": 1.2788998428732157,
-      "stdev_ms": 0.20912317913120615,
-      "ci95_ms": 0.04098814310971641,
+      "mean_ms": 0.18379600252956152,
+      "p95_ms": 0.2288001123815775,
+      "stdev_ms": 0.03153014456030241,
+      "ci95_ms": 0.006179908333819273,
       "n": 100,
       "target_version": 750,
       "delta_applications_u": 49,
       "reconstruction_path": "checkpoint"
     },
     {
-      "mean_ms": 0.9715920058079064,
-      "p95_ms": 1.0694998782128096,
-      "stdev_ms": 0.14034271246596008,
-      "ci95_ms": 0.027507171643328176,
+      "mean_ms": 0.12015498941764235,
+      "p95_ms": 0.12520002201199532,
+      "stdev_ms": 0.005307869861094624,
+      "ci95_ms": 0.0010403424927745463,
       "n": 100,
       "target_version": 1000,
       "delta_applications_u": 0,
       "reconstruction_path": "inversion"
     }
   ],
-  "rollback_min_ms": 0.9715920058079064,
-  "rollback_max_ms": 1.1473610019311309,
+  "rollback_min_ms": 0.10389599716290832,
+  "rollback_max_ms": 0.24609700310975313,
   "rollback_scales_with_target_index": false,
   "is_constant_time": false,
-  "conclusion": "Rollback is NOT constant time, but it is now BOUNDED: cost tracks the delta-application count u = min{n-k, k mod q} plus the append, rather than a linear scan over the version list. Because u is sawtooth in k, the old target=1 vs target=N probe no longer detects the variation \u2014 the characterization is against u, and u is capped by the checkpoint interval q. Storage is no longer one full snapshot per version: under sparse updates the delta/checkpoint format is materially smaller than the snapshot equivalent, while under dense updates the min(delta, snapshot) fallback keeps it at parity instead of regressing. Both conditions are reported; a dense-only result would be predetermined."
+  "conclusion": "Rollback is NOT constant time, but it is now BOUNDED: cost tracks the delta-application count u = min{n-k, (k-1) mod q} plus the append, rather than a linear scan over the version list. Because u is sawtooth in k, the old target=1 vs target=N probe no longer detects the variation \u2014 the characterization is against u, and u is capped by the checkpoint interval q. Storage is no longer one full snapshot per version: under sparse updates the delta/checkpoint format is materially smaller than the snapshot equivalent, while under dense updates the min(delta, snapshot) fallback keeps it at parity instead of regressing. Both conditions are reported; a dense-only result would be predetermined."
 }

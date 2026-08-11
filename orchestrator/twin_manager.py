@@ -21,12 +21,37 @@ snapshot per version. Each version entry is one of:
 
 Hybrid delta retention
 ----------------------
-Deltas in the OPEN checkpoint window (after the most recent checkpoint) keep their
-`old` values, so Eq (34)'s inversion-from-head path is available where it is
-actually cheaper. Once a window closes, its deltas are compacted to forward-only
-(`old` dropped): every target then has a preceding checkpoint, so inversion across
-a closed window is never needed and the `old` values are dead weight — they cost
-about 3x the payload.
+The last R versions behind head (REVERSIBLE_WINDOW, default R = q) keep their
+`old` values, so Eq (34)'s inversion-from-head path is available in the near-head
+region where it is genuinely cheaper. Older deltas are compacted to forward-only:
+they always have a preceding checkpoint to roll forward from, so their reverse
+payload is dead weight — it costs about 3x the delta size.
+
+Retention is a TRAILING WINDOW, not "the open checkpoint window". The latter was
+tried first and is wrong: it strips every version before the most recent
+checkpoint, so whenever head sits on or just after a checkpoint the entire history
+becomes forward-only and inversion is unavailable for every target — killing
+Eq (34) exactly where it wins.
+
+Version numbering and the Eq (36) index convention
+--------------------------------------------------
+Versions are numbered from 1 (v1, v2, ...); internally they sit at 0-based
+positions p = version_number - 1. A checkpoint is written wherever p mod q == 0,
+i.e. at VERSION NUMBERS 1, q+1, 2q+1, ... (for q=100: 1, 101, 201, ...).
+
+So for a target version k with head version n, the delta-application count is
+
+    u = min{ n - k , (k-1) mod q }
+
+which is Eq (36) verbatim once k and n are read as 0-based indices (k' = k-1,
+n' = n-1). Stated with 1-based version numbers the literal form min{n-k, k mod q}
+is wrong: measured against the shipped manager it matches u at 1 of 7 sampled
+targets, while the index form matches 7 of 7.
+
+NOTE for the text pass: Algorithm 2 line 42 checkpoints at (n+1) mod q == 0,
+placing checkpoints at 0-based positions q-1, 2q-1, ... — a different convention
+from this implementation, and one that leaves positions 0..q-2 with no preceding
+checkpoint, contradicting "version 0 is always a checkpoint".
 
 Reconstruction (Algorithm 2, both branches)
 -------------------------------------------
@@ -68,6 +93,10 @@ from copy import deepcopy
 # --- Configuration -----------------------------------------------------------
 
 CHECKPOINT_INTERVAL = 100   # q. Mid-range of exp8's tested {50, 100, 250}.
+REVERSIBLE_WINDOW = None    # R: versions kept invertible behind head. None -> q.
+                            # Set to 0 to disable the inversion path entirely and
+                            # store forward-only deltas everywhere (cheapest, but
+                            # Eq (34) / Algorithm 2's second branch goes away).
 STORAGE_FORMAT = 2          # 1 = full snapshot per version (pre-Phase-3)
 
 KIND_CHECKPOINT = 'checkpoint'
@@ -219,7 +248,8 @@ class DigitalTwin:
 
     def __init__(self, twin_id: str, twin_type: str, initial_state: Dict,
                  metadata: Dict = None, parent_id: Optional[str] = None,
-                 checkpoint_interval: int = CHECKPOINT_INTERVAL):
+                 checkpoint_interval: int = CHECKPOINT_INTERVAL,
+                 reversible_window: Optional[int] = REVERSIBLE_WINDOW):
         self.twin_id = twin_id
         self.twin_type = twin_type
         self.parent_id = parent_id
@@ -231,6 +261,9 @@ class DigitalTwin:
 
         self.storage_format = STORAGE_FORMAT
         self.checkpoint_interval = max(1, int(checkpoint_interval))
+        self.reversible_window = (self.checkpoint_interval
+                                  if reversible_window is None
+                                  else max(0, int(reversible_window)))
 
         # Version control
         self.current_version = 1
@@ -282,29 +315,33 @@ class DigitalTwin:
         self._prev_state = deepcopy(state)
         self.updated_at = datetime.now().isoformat()
 
-        if kind == KIND_CHECKPOINT:
-            self._compact_closed_windows()
+        self._age_out_reversibility()
 
-    def _compact_closed_windows(self):
-        """Drop `old` from deltas that precede the most recent checkpoint.
+    def _age_out_reversibility(self):
+        """Strip `old` from the version that just fell out of the trailing
+        reversible window.
 
-        Those versions can always be reached forward from their own checkpoint, so
-        inversion across them is never required and the reverse payload is dead
-        weight (~3x the delta size). This is the hybrid retention policy: the open
-        window stays reversible, closed windows go forward-only.
+        Retention is a TRAILING WINDOW of the last R versions, not "the open
+        checkpoint window". The earlier checkpoint-window policy stripped every
+        version before the most recent checkpoint — and since a checkpoint is
+        itself a version, whenever the head sat on or just after one, the whole
+        history became forward-only and inversion-from-head was unavailable for
+        every target. That killed Eq (34) exactly in the near-head region where it
+        wins (measured: at k=990, q=100, inversion needs u=11 against the
+        checkpoint path's u=89, but the chain had been compacted away).
+
+        A trailing window keeps the inverse chain intact for the last R versions,
+        which is the near-head undo case, and costs the reverse payload only on
+        those R versions instead of on a whole checkpoint window.
         """
-        last_ckpt = 0
-        for i in range(len(self.versions) - 1, -1, -1):
-            if self.versions[i].kind == KIND_CHECKPOINT:
-                last_ckpt = i
-                break
-        for v in self.versions[:last_ckpt]:
-            if v.kind == KIND_DELTA and is_reversible(v.payload):
-                v.payload = strip_old(v.payload)
-            elif v.kind in MATERIALIZED_KINDS and v.link is not None:
-                # a materialized entry's inverse link is only needed while its
-                # window is open
-                v.link = None
+        idx = len(self.versions) - 1 - self.reversible_window
+        if idx < 0:
+            return
+        v = self.versions[idx]
+        if v.kind == KIND_DELTA and is_reversible(v.payload):
+            v.payload = strip_old(v.payload)
+        elif v.kind in MATERIALIZED_KINDS and v.link is not None:
+            v.link = None
 
     @staticmethod
     def _state_of(v: 'TwinVersion') -> Dict:
@@ -500,6 +537,7 @@ class DigitalTwin:
         return {
             'versions': len(self.versions),
             'checkpoint_interval': self.checkpoint_interval,
+            'reversible_window': self.reversible_window,
             'stored_bytes': stored,
             'snapshot_equivalent_bytes': snapshot_equivalent,
             'ratio_vs_snapshots': round(snapshot_equivalent / stored, 4) if stored else 0,
@@ -559,9 +597,11 @@ class DigitalTwin:
 class TwinManager:
     """Manages all digital twins with CRUD operations"""
 
-    def __init__(self, checkpoint_interval: int = CHECKPOINT_INTERVAL):
+    def __init__(self, checkpoint_interval: int = CHECKPOINT_INTERVAL,
+                 reversible_window: Optional[int] = REVERSIBLE_WINDOW):
         self.twins: Dict[str, DigitalTwin] = {}
         self.checkpoint_interval = checkpoint_interval
+        self.reversible_window = reversible_window
 
     def create_twin(self, twin_id: str, twin_type: str, initial_state: Dict,
                     metadata: Dict = None, parent_id: Optional[str] = None) -> DigitalTwin:
@@ -573,7 +613,8 @@ class TwinManager:
             raise ValueError(f"Parent twin '{parent_id}' does not exist")
 
         twin = DigitalTwin(twin_id, twin_type, initial_state, metadata, parent_id,
-                           checkpoint_interval=self.checkpoint_interval)
+                           checkpoint_interval=self.checkpoint_interval,
+                           reversible_window=self.reversible_window)
         self.twins[twin_id] = twin
 
         if parent_id:

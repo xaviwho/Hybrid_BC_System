@@ -21,7 +21,7 @@ What is measured, per state model and per checkpoint interval q:
   and the path the manager actually selects, with its u.
 
 Eq (36) is tested three ways: as the printed equality u = min{n-k, q}, as a bound,
-and against the exact form u = min{n-k, k mod q}.
+and against the exact form u = min{n-k, (k-1) mod q}.
 
 State models — the choice is not cosmetic. `dense` changes every field every
 version, so a delta is the size of a snapshot and the manager's min(delta,
@@ -50,7 +50,11 @@ from twin_manager import (  # noqa: E402
 OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp8")
 
 TOTAL_VERSIONS = 1001          # head version n = 1001, index 1000
-TARGETS = [1, 50, 100, 250, 500, 750, 1000]
+# Near-head targets {990, 995, 999} added in the Phase 3 follow-up. The original
+# set barely sampled the region where inversion wins (n-k < (k-1) mod q), so
+# Eq (34)'s branch was selected once in 301 reconstructions and looked vestigial.
+# Near-head undo is the common operational case.
+TARGETS = [1, 50, 100, 250, 500, 750, 990, 995, 999, 1000]
 Q_VALUES = [50, 100, 250]
 REPS = 100
 WARMUP = 20
@@ -160,13 +164,13 @@ def run_model(model):
                 "u_eq36_predicted": {"kind": "modeled", "value": eq36,
                                      "formula": "min{n-k, q}"},
                 "u_exact_predicted": {"kind": "modeled", "value": exact,
-                                      "formula": "min{n-k, k mod q}"},
+                                      "formula": "min{n-k, (k-1) mod q}"},
                 "eq36_equality_holds": {"kind": "derived", "value": u_sel == eq36,
                                         "derivation": "u_measured == min{n-k, q}"},
                 "eq36_bound_holds": {"kind": "derived", "value": u_sel <= eq36,
                                      "derivation": "u_measured <= min{n-k, q}"},
                 "exact_formula_holds": {"kind": "derived", "value": u_sel == exact,
-                                        "derivation": "u_measured == min{n-k, k mod q}"},
+                                        "derivation": "u_measured == min{n-k, (k-1) mod q}"},
             })
             ck_mean = ck_stats["mean"] if ck_stats else float("nan")
             inv_mean = inv_stats["mean"] if inv_stats else float("nan")
@@ -193,8 +197,8 @@ def run_model(model):
             "exact_formula_holds_at": f"{sum(exact_checks)}/{len(exact_checks)}",
             "conclusion": (
                 "Eq (36) u = min{n-k, q} is valid as an UPPER BOUND and invalid as an "
-                "EQUALITY: checkpoint restore costs (k mod q) applications, not q. "
-                "The exact cost is u = min{n-k, k mod q}. Measured here from the "
+                "EQUALITY: checkpoint restore costs ((k-1) mod q) applications, not q. "
+                "The exact cost is u = min{n-k, (k-1) mod q}. Measured here from the "
                 "shipped twin_manager, not from an experiment-local implementation."),
         },
     }

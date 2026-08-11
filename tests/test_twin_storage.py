@@ -119,15 +119,15 @@ def test_criterion_2():
           f"path={st['path']} u={st['u']}")
 
 
-# --- criterion 3: u == min(n-k, k mod q) from production code -----------------
+# --- criterion 3: u == min(n-k, (k-1) mod q) from production code -----------------
 
 def test_criterion_3():
-    print("\n[3] measured u == min{n-k, k mod q}, from the shipped manager")
+    print("\n[3] measured u == min{n-k, (k-1) mod q}, from the shipped manager")
     for q in (50, 100, 250):
         tm, twin = build(sparse_state, n=1001, q=q)
         n = len(twin.versions)
         mismatches = []
-        for k in (1, 50, 100, 250, 500, 750, 1000):
+        for k in (1, 50, 100, 250, 500, 750, 990, 995, 999, 1000):
             if k > n:
                 continue
             _, st = twin.reconstruct_with_stats(k)
@@ -136,7 +136,7 @@ def test_criterion_3():
             predicted = min(head - idx, idx % q)
             if st["u"] != predicted:
                 mismatches.append((k, st["u"], predicted, st["path"]))
-        check(f"q={q}: u matches min(n-k, k mod q) at all targets",
+        check(f"q={q}: u matches min(n-k, (k-1) mod q) at all targets",
               not mismatches, f"mismatches={mismatches}")
 
 

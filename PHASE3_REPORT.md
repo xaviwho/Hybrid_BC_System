@@ -54,7 +54,7 @@ q-th version. Verified at q ∈ {50, 100, 250}.
 
 ### 7e. Reconstruction — both branches
 
-Checkpoint path (nearest materialized base, then forward, `u = k mod q`) and
+Checkpoint path (nearest materialized base, then forward, `u = (k-1) mod q`) and
 inversion path (inverse deltas from head, `u = n − k`). The cheaper is selected;
 `reconstruct_with_stats()` returns the path taken and the actual `u`.
 
@@ -134,7 +134,7 @@ They break the inverse chain by design; targets below them use the forward path.
 |---|-----------|--------|
 | 1 | Every version reconstructs and verifies | **PASS** — 301/301 both models |
 | 2 | Both paths exercised and verified | **PASS** — checkpoint 296, inversion 1, direct 4 |
-| 3 | `u == min{n−k, k mod q}` from production code | **PASS (sparse)** 21/21 at q ∈ {50,100,250}. **Dense 3/21 — see below** |
+| 3 | `u == min{n−k, (k−1) mod q}` from production code | **PASS (sparse)** 30/30 at q ∈ {50,100,250}, target set extended with near-head k ∈ {990,995,999}. **Dense — see below** |
 | 4 | Storage ratio on reversible deltas, forward-only alongside | **PASS** — table below |
 | 5 | Rollback appends; history depth grows; nothing lost | **PASS** |
 | 6 | Corrupted digest → `IntegrityViolation` | **PASS** — both a corrupted digest and a tampered payload |
@@ -146,7 +146,7 @@ They break the inverse chain by design; targets below them use the forward path.
 **Criterion 3 under dense updates: 3/21, and that is correct behaviour, not a
 failure.** It is a direct consequence of the `min(delta, snapshot)` fallback you
 asked for. Snapshot entries are extra materialization points, so the forward path
-finds a nearer base and `u` comes out *smaller* than `min{n−k, k mod q}` predicts.
+finds a nearer base and `u` comes out *smaller* than `min{n−k, (k−1) mod q}` predicts.
 The bound `u ≤ min{n−k, q}` holds 21/21 in both models. The formula is exact
 whenever the delta path is actually in use.
 
@@ -158,17 +158,19 @@ whenever the delta path is actually in use.
 
 | condition | stored | snapshot-equivalent | ratio | entry mix |
 |-----------|-------:|--------------------:|------:|-----------|
-| sparse (~2/20 fields per version) | 92,965 B | 386,571 B | **4.16×** | 11 checkpoints, 990 deltas |
+| sparse (~2/20 fields per version) | 95,737 B | 386,571 B | **4.04×** | 11 checkpoints, 990 deltas (99 reversible) |
 | dense (all 20 fields per version) | 388,102 B | 386,931 B | **1.00×** | 11 checkpoints, 990 snapshots |
 
-exp4 at 800 versions agrees: sparse **4.01×**, dense **0.996×**.
+exp4 at 800 versions agrees: sparse ~**4.0×**, dense **0.996×**.
+
+(Storage was 4.16× under the first retention policy, which turned out to disable the inversion path — see the follow-up section. Making Eq (34) reachable costs 2.9%.)
 
 Two things worth carrying into the text:
 
 - The measured ratio **beat the 7a estimate** (3.13×) because hybrid retention
-  compacts closed windows to forward-only. Reversible-everywhere would have been
+  compacts old deltas to forward-only. Reversible-everywhere would have been
   3.2×; forward-only-everywhere ~9.9× but with no inversion branch. The hybrid
-  lands at 4.16× and keeps Eq (34).
+  lands at 4.04× and keeps Eq (34) live in the near-head region.
 - **The dense regression predicted in 7a did not materialise** — the
   `min(delta, snapshot)` fallback holds it at parity (0.996×) instead of the 0.32×
   a delta-only format would have produced. That was the right call.
@@ -179,7 +181,7 @@ exp4's first Phase 3 run reported **`O(1)? True`** for the sparse condition. Tha
 would have flipped Contribution 3's headline. It is an artifact, and I fixed the
 experiment rather than the number.
 
-Under checkpoints, `u = min{n−k, k mod q}` is **sawtooth in k**, not monotonic. The
+Under checkpoints, `u = min{n−k, (k−1) mod q}` is **sawtooth in k**, not monotonic. The
 old probe compared only target=1 against target=N — under the old linear-scan
 implementation that was a valid test, and under this one it is not: both endpoints
 happen to land on small `u`.
@@ -251,7 +253,7 @@ Recorded, not applied.
 
 **Eq (36).** Confirmed from production code: `u = min{n−k, q}` holds as an
 equality at 3/21 points and as a bound at 21/21. The exact form
-`u = min{n−k, k mod q}` holds at 21/21 wherever the delta path is in use. Replace
+`u = min{n−k, (k−1) mod q}` holds at 21/21 wherever the delta path is in use. Replace
 the equality, retain `q` as the worst-case bound in prose. Add the condition that
 snapshot-fallback entries can make `u` strictly smaller.
 
@@ -311,3 +313,125 @@ The orchestrator's HTTP layer could not be exercised here (`web3` and `flask` ar
 not installed in this interpreter). `twin_manager`'s full REST-facing surface is
 covered by criterion 10 at the module level, but the endpoints themselves have not
 been hit since the storage rewrite.
+
+---
+
+# Phase 3 follow-up (A, B, C)
+
+## A. Outstanding work committed
+
+Git identity was taken from the repository's own history — `Xaviwho
+<kanuxavier@gmail.com>` authored 9 of the 10 pre-existing commits — and set as
+repo-local config. The F-B commit was amended with `--reset-author` because it
+had been made under a different name and email.
+
+| Commit | Content |
+|--------|---------|
+| `aeb32e47` | F-B: track `experiments/results/` (amended from `e5f43a67`) |
+| `276e3a0f` | Phase 2: outbox + relay, unconditional private commit, harness gates |
+| `675744b9` | Phase 3: delta + checkpoint storage in `twin_manager` |
+
+Three files carry combined Phase 2 and Phase 3 edits and land in `675744b9`:
+`exp4_lifecycle_real.py`, `exp8_recovery_strategy.py`, `consolidate_results.py`.
+`276e3a0f` is therefore not independently runnable — noted in its message.
+
+**Not committed, deliberately:** a large amount of pre-Phase-2 work is still
+untracked (`PHASE0_FINDINGS.md`, `BRINGUP_STATUS.md`, the `gen_*.py` figure
+generators, `fabric_client.py`, `policy_engine.py`, `exp2/exp5/exp7_*_real.py`,
+and ~160 MB of `sample-data/` CSVs). Those are outside these two phases and were
+left alone. They should get their own commit decision — particularly the CSVs,
+which no canonical experiment reads (see `DATA_SOURCES.md`).
+
+## B. Eq (36) — the off-by-one was in my prose, not the assertion
+
+**The assertion is sound.** It evaluates
+
+```python
+idx, head = k - 1, n - 1
+predicted = min(head - idx, idx % q)      #  ==  min(n-k, (k-1) mod q)
+```
+
+It never computes `k % q`, so it was not passing spuriously. Verified against the
+shipped manager at q=100, n=1000:
+
+| k | 1 | 50 | 100 | 250 | 500 | 750 | 1000 |
+|---|---|----|-----|-----|-----|-----|------|
+| measured u | 0 | 49 | 99 | 49 | 99 | 49 | 0 |
+| `min{n−k, k mod q}` | 1 | 50 | 0 | 50 | 0 | 50 | 0 |
+| `min{n−k, (k−1) mod q}` | 0 | 49 | 99 | 49 | 99 | 49 | 0 |
+
+**literal form 1/7, index form 7/7** — exactly the arithmetic in the review.
+
+What was wrong is that `PHASE3_REPORT.md` and several code comments *stated* the
+formula as `min{n−k, k mod q}` while the code asserted the index form. Corrected
+in `twin_manager.py`, `exp4_lifecycle_real.py`, `exp8_recovery_strategy.py`,
+`consolidate_results.py`, `test_twin_storage.py` and this report.
+
+### The convention `twin_manager` uses
+
+Versions are numbered from **1**; internally they sit at 0-based positions
+`p = version_number − 1`. A checkpoint is written wherever `p mod q == 0` — i.e.
+at **version numbers 1, q+1, 2q+1, …** (for q=100: 1, 101, 201, …), confirmed by
+inspection of a built twin.
+
+So `u = min{n − k, (k−1) mod q}` **is Eq (36) verbatim** once k and n are read as
+0-based indices. The equation is not wrong; it is under-specified about indexing,
+and the text should say which convention it uses.
+
+### Algorithm 2 line 42 is a different convention, and an incompatible one
+
+Line 42 checkpoints at `(n+1) mod q == 0`, placing checkpoints at 0-based
+positions `q−1, 2q−1, …` (99, 199, … for q=100). That is offset from this
+implementation by `q−1`, and more importantly it leaves positions `0 … q−2` with
+**no preceding checkpoint** — which contradicts 7d's "version 0 is always a
+checkpoint" and would leave early targets reachable only by inversion from head.
+The implementation's convention is the coherent one; align line 42 to it.
+
+This is now documented in the `twin_manager` module docstring so the text pass
+has a single source.
+
+## C. Near-head targets — and the defect they exposed
+
+Adding k ∈ {990, 995, 999} did not merely improve sampling. It exposed a **real
+defect in the retention policy**, which is why Eq (34) looked vestigial.
+
+The first implementation compacted "everything before the most recent
+checkpoint". Since a checkpoint is itself a version, whenever head sat on or just
+after one, *the entire history* became forward-only and inversion was unavailable
+for every target. Criterion 3 failed at all three q values on the new targets:
+at k=990, q=100 the manager took the checkpoint path with u=89 when inversion
+needed u=11.
+
+**Fix:** retention is now a **trailing window** of the last R versions
+(`REVERSIBLE_WINDOW`, default R = q), not a checkpoint window. This keeps the
+inverse chain intact exactly in the near-head region.
+
+Results at q=100, sparse, n=1001:
+
+| k | checkpoint path | inversion path | selected | u |
+|---|----------------:|---------------:|----------|---|
+| 990 | 0.1240 ms (u=89) | **0.0605 ms (u=11)** | inversion | 11 |
+| 995 | 0.1287 ms (u=94) | **0.0582 ms (u=6)** | inversion | 6 |
+| 999 | 0.1337 ms (u=98) | **0.0483 ms (u=2)** | inversion | 2 |
+| 1000 | 0.1338 ms (u=99) | **0.0475 ms (u=1)** | inversion | 1 |
+
+Path selection over all sparse reconstructions is now **direct 3, checkpoint 15,
+inversion 12** — Eq (34) carries 40% of reconstructions, against 1 in 301 before.
+Near-head undo is ~2.2× faster than it was via the checkpoint path.
+
+**Cost:** storage 4.158× → **4.038×** (−2.9%). Reversible entries went from 0 to
+99 of 990 deltas. `REVERSIBLE_WINDOW = 0` reverts to forward-only everywhere and
+drops the inversion branch entirely, if that trade is ever unwanted.
+
+### Re-reported criterion 3
+
+| condition | equality `min{n−k, q}` | bound `≤` | exact `min{n−k, (k−1) mod q}` |
+|-----------|------------------------|-----------|-------------------------------|
+| sparse | 12/30 | **30/30** | **30/30** |
+| dense | 0/30 | **30/30** | 3/30 |
+
+Dense remains 3/30 on the exact form for the reason already documented: every
+version is a snapshot-fallback entry, so every reconstruction is `direct` with
+u=0, which is *below* the formula. The bound holds everywhere.
+
+59/59 storage tests, 21/21 outbox tests, `RESULTS.json` v2 exit 0.

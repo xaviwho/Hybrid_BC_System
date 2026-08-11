@@ -256,8 +256,8 @@ def main(stamp):
                   "derived", "u <= min{n-k, q}",
                   derivation="count of (k,q) points where u_measured <= min{n-k,q}"),
                 M(f"eq36_exact_formula_holds_{model}", val["exact_formula_holds_at"],
-                  "points", "exp8", "derived", "exact cost is min{n-k, k mod q}",
-                  derivation="count of (k,q) points where u_measured == min{n-k, k mod q}"),
+                  "points", "exp8", "derived", "exact cost is min{n-k, (k-1) mod q}",
+                  derivation="count of (k,q) points where u_measured == min{n-k, (k-1) mod q}"),
                 M(f"delta_vs_snapshot_ratio_{model}",
                   st["ratio_vs_snapshots"], "x", "exp8", "derived",
                   f"shipped storage format at q={st['checkpoint_interval']}; "
