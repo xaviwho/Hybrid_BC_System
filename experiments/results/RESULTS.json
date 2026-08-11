@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-11T15:49:12",
+  "generated_at": "2026-08-11T16:25:45",
   "config": {
     "fabric": "2.5.0 / CA 1.5.5, channel hiot, chaincode iot-data seq2",
     "ethereum": "Ganache chainId 1337, IoTDataRegistry",
@@ -11,23 +11,23 @@
   },
   "config_hash": "3fa584dfbfc2",
   "kind_counts": {
-    "measured": 8,
-    "derived": 18,
+    "measured": 7,
+    "derived": 17,
     "modeled": 0
   },
   "missing_sources": [],
   "not_measured": [
     {
       "source_exp": "exp1",
-      "reason": "result file predates Phase 2 (schema_version != 2): it reports the retired public-vs-sensitive split and carries the F4 throughput discrepancy. Rerun exp1_latency_real.py."
+      "reason": "result file predates the current architecture (no schema_version 2; found None). Its numbers describe a system that has since been replaced. Rerun the experiment."
     },
     {
       "source_exp": "exp3",
-      "reason": "result file predates Phase 2: 7 of 8 batch rows were division on a fixed 64-leaf root. Rerun exp3_gas_real.py."
+      "reason": "result file predates the current architecture (no schema_version 2; found None). Its numbers describe a system that has since been replaced. Rerun the experiment."
     },
     {
-      "source_exp": "exp1,exp3,exp5",
-      "reason": "no contract_addr in provenance, so the single-deployment cross-check could not be performed for these experiments"
+      "source_exp": "exp5",
+      "reason": "result file predates the current architecture (no schema_version 2; found None). Its numbers describe a system that has since been replaced. Rerun the experiment."
     }
   ],
   "metrics": [
@@ -116,23 +116,6 @@
       "source_exp": "exp4",
       "note": "sparse field updates: the condition under which III-F's claim holds",
       "derivation": "snapshot_equivalent_bytes / stored_bytes at the largest point"
-    },
-    {
-      "metric": "exactly_once_holds",
-      "value": true,
-      "unit": "bool",
-      "kind": "measured",
-      "source_exp": "exp5",
-      "note": "real Ethereum tx hashes over 71 requests"
-    },
-    {
-      "metric": "exactly_once_test_requests",
-      "value": 71,
-      "unit": "count",
-      "kind": "derived",
-      "source_exp": "exp5",
-      "note": "",
-      "derivation": "sequential + concurrent duplicates + distinct payloads"
     },
     {
       "metric": "compression_ratio_uniform",

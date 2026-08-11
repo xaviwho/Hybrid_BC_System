@@ -49,6 +49,43 @@ STACK_DEPENDENT = {"exp1": "orchestrator + policy + Fabric + Ganache",
                    "exp3": "Ganache + deployed IoTDataRegistry",
                    "exp5": "orchestrator + Fabric + Ganache"}
 
+# Experiments rebuilt to the v2 result schema. A v1 file from one of these is a
+# pre-rebuild run measuring an architecture that no longer exists, so its numbers
+# are withheld rather than reported.
+REQUIRE_SCHEMA_V2 = ("exp1", "exp3", "exp4", "exp5", "exp8")
+
+# Experiments whose numbers come from the chain. Each MUST record the contract it
+# used. Missing provenance FAILS CLOSED — the metrics are withheld, not merely
+# annotated — because "no address recorded" is indistinguishable from "recorded a
+# different address" as far as the single-deployment claim is concerned. A run we
+# cannot prove used one deployment must not be reported as if it did.
+REQUIRE_CONTRACT_ADDR = ("exp1", "exp3", "exp5")
+
+# exp2 and exp7 are deliberately ungated: both are deterministic and offline
+# (an in-source policy corpus, and twin_manager deltas). Neither touches the
+# chain, so neither has a contract address to record and neither can be
+# invalidated by an architecture change.
+
+
+def contract_addr_of(node):
+    """Address recorded by an experiment, from either provenance spelling."""
+    prov = (node or {}).get("provenance") or {}
+    return prov.get("contract_addr") or prov.get("contract_address")
+
+
+def gate(exp, node):
+    """Return a withholding reason for this experiment, or None to admit it."""
+    if exp in REQUIRE_SCHEMA_V2 and node.get("schema_version") != 2:
+        return (f"result file predates the current architecture "
+                f"(no schema_version 2; found {node.get('schema_version')!r}). "
+                f"Its numbers describe a system that has since been replaced. "
+                f"Rerun the experiment.")
+    if exp in REQUIRE_CONTRACT_ADDR and not contract_addr_of(node):
+        return ("no contract_addr in provenance, so this run cannot be shown to "
+                "have used the same deployment as the other chain-dependent "
+                "experiments. Withheld: unprovable is treated as failed.")
+    return None
+
 _errors = []
 
 
@@ -97,9 +134,23 @@ def main(stamp):
                        f"result file {SOURCES[k]} absent"),
         })
 
+    # --- GATE FIRST: decide what is admissible before building any metric ------
+    # Everything below reads `admitted`, never `raw` directly, so a withheld
+    # experiment cannot leak a metric through a code path that forgot to check.
+    withheld = {}
+    for exp, node in raw.items():
+        if node is None:
+            continue
+        reason = gate(exp, node)
+        if reason:
+            withheld[exp] = reason
+            not_measured.append({"source_exp": exp, "reason": reason})
+    admitted = {k: v for k, v in raw.items()
+                if v is not None and k not in withheld}
+
     # ---- exp1: acknowledgement / completion latency + throughput (v2 shape) ----
-    e = raw.get("exp1")
-    if e and e.get("schema_version") == 2:
+    e = admitted.get("exp1")
+    if e:
         if e.get("status") == "FAILED_RECONCILIATION_GATE":
             not_measured.append({
                 "source_exp": "exp1",
@@ -163,16 +214,9 @@ def main(stamp):
             metrics.append(M(f"throughput_{cls}_peak", sat.get("peak_tps"), "tps", "exp1",
                              "derived", sat.get("note", ""),
                              derivation="max over concurrency of completed/wall_clock_s"))
-    elif e:
-        not_measured.append({
-            "source_exp": "exp1",
-            "reason": ("result file predates Phase 2 (schema_version != 2): it reports "
-                       "the retired public-vs-sensitive split and carries the F4 "
-                       "throughput discrepancy. Rerun exp1_latency_real.py."),
-        })
 
     # ---- exp2: deterministic privacy policy ----
-    e = raw.get("exp2")
+    e = admitted.get("exp2")
     if e:
         metrics += [
             M("privacy_routing_accuracy", round(e["routing_accuracy"] * 100, 1), "%",
@@ -185,8 +229,8 @@ def main(stamp):
         ]
 
     # ---- exp3: gas, now measured per real N-leaf root ----
-    e = raw.get("exp3")
-    if e and e.get("schema_version") == 2:
+    e = admitted.get("exp3")
+    if e:
         last = e["gas_per_record_by_batch"][-1]
         metrics += [
             M("gas_per_record_single", e["single_anchor_gas"]["mean"], "gas", "exp3",
@@ -203,16 +247,10 @@ def main(stamp):
             M("gas_root_flat_in_N", e["root_gas_flat_in_N"]["value"], "bool", "exp3",
               "measured", e["root_gas_flat_in_N"]["note"]),
         ]
-    elif e:
-        not_measured.append({
-            "source_exp": "exp3",
-            "reason": ("result file predates Phase 2: 7 of 8 batch rows were division "
-                       "on a fixed 64-leaf root. Rerun exp3_gas_real.py."),
-        })
 
     # ---- exp4: twin lifecycle (Phase 3 delta/checkpoint storage) ----
-    e = raw.get("exp4")
-    if e and e.get("schema_version") == 2:
+    e = admitted.get("exp4")
+    if e:
         # The sparse condition is the representative one: dense makes delta
         # encoding a no-op by construction, so its numbers describe the fallback,
         # not the mechanism. Both are still emitted below, labelled.
@@ -246,16 +284,9 @@ def main(stamp):
                    if model == "dense" else
                    "sparse field updates: the condition under which III-F's claim holds"),
                   derivation="snapshot_equivalent_bytes / stored_bytes at the largest point"))
-    elif e:
-        not_measured.append({
-            "source_exp": "exp4",
-            "reason": ("result file predates Phase 3 (schema_version != 2): it reports "
-                       "the retired full-snapshot storage model. Rerun "
-                       "exp4_lifecycle_real.py."),
-        })
 
     # ---- exp5: exactly-once ----
-    e = raw.get("exp5")
+    e = admitted.get("exp5")
     if e:
         n = (e["sequential_duplicates"]["requests"]
              + e["concurrent_duplicates"]["concurrent_requests"]
@@ -268,7 +299,7 @@ def main(stamp):
         ]
 
     # ---- exp7: HADC compression ----
-    e = raw.get("exp7")
+    e = admitted.get("exp7")
     if e:
         metrics += [
             M("compression_ratio_uniform", e["overall_uniform_ratio"], "x", "exp7",
@@ -285,7 +316,7 @@ def main(stamp):
         ]
 
     # ---- exp8: recovery strategy, Eq (36) ----
-    e = raw.get("exp8")
+    e = admitted.get("exp8")
     if e:
         for model, block in e["by_state_model"].items():
             val = block["eq36_validation"]
@@ -318,14 +349,11 @@ def main(stamp):
     # address is recorded by each experiment from the chain/orchestrator it
     # actually used, so a mismatch is detectable here and only here.
     seen_contracts = {}
-    for exp, node in (("exp1", raw.get("exp1")), ("exp3", raw.get("exp3")),
-                      ("exp5", raw.get("exp5"))):
-        if not node:
-            continue
-        prov = node.get("provenance") or {}
-        addr = prov.get("contract_addr") or prov.get("contract_address")
-        if addr:
-            seen_contracts[exp] = str(addr).lower()
+    for exp in REQUIRE_CONTRACT_ADDR:
+        node = admitted.get(exp)
+        if node:
+            # gate() guarantees an address is present on anything admitted here
+            seen_contracts[exp] = str(contract_addr_of(node)).lower()
 
     distinct = set(seen_contracts.values())
     if len(distinct) > 1:
@@ -341,14 +369,6 @@ def main(stamp):
               "measured",
               f"identical across {sorted(seen_contracts)} — single-deployment run "
               f"confirmed"))
-    missing_prov = [e for e in ("exp1", "exp3", "exp5")
-                    if raw.get(e) and e not in seen_contracts]
-    if missing_prov:
-        not_measured.append({
-            "source_exp": ",".join(missing_prov),
-            "reason": ("no contract_addr in provenance, so the single-deployment "
-                       "cross-check could not be performed for these experiments"),
-        })
 
     # ---- mandatory kind validation ----
     for m in metrics:

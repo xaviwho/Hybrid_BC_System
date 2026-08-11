@@ -164,8 +164,13 @@ def main():
 
     results = {
         "experiment": "exp5_exactly_once_real",
+        "schema_version": 2,
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "measured": True,
         "provenance": {
+            "architecture": ("async: 202 after private commit, anchor delivered by "
+                             "the outbox relay; tx hashes collected from "
+                             "/anchor_status, not from the ingest response"),
             # Recorded so consolidate_results.py can prove every experiment in a
             # run anchored to the SAME contract. exp3 measuring gas on one
             # deployment while exp1/exp5 use another is otherwise undetectable.
