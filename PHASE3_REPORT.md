@@ -251,16 +251,30 @@ as designed.
 
 Recorded, not applied.
 
-**Eq (36).** Confirmed from production code: `u = min{n−k, q}` holds as an
-equality at 3/21 points and as a bound at 21/21. The exact form
-`u = min{n−k, (k−1) mod q}` holds at 21/21 wherever the delta path is in use. Replace
-the equality, retain `q` as the worst-case bound in prose. Add the condition that
-snapshot-fallback entries can make `u` strictly smaller.
+**Eq (36).** Measured from production code over 30 (k, q) points per state model:
+
+| form | sparse | dense |
+|------|--------|-------|
+| `u = min{n−k, q}` as an **equality** | 12/30 | 0/30 |
+| `u ≤ min{n−k, q}` as a **bound** | **30/30** | **30/30** |
+| `u = min{n−k, (k−1) mod q}` (exact, 1-based k) | **30/30** | 3/30 |
+
+Eq (36) is **wrong as an equality and correct as a bound**, and that is not an
+indexing artefact: as printed its second term is `q`, the worst case over k, where
+the actual cost is the distance back to the preceding checkpoint. No choice of
+convention makes `min{n−k, q}` equal the measured `u`.
+
+Replace the equality with the exact form and retain `q` as the worst-case bound in
+prose. State the indexing convention with it: with 1-based version numbers the
+exact form is `u = min{n−k, (k−1) mod q}`; with 0-based indices (`k' = k−1`,
+`n' = n−1`) it is `u = min{n'−k', k' mod q}`. Add the condition that
+snapshot-fallback entries can make `u` strictly smaller than either.
 
 **Section III-F / IV-D storage.** Replace "delta-based and full-snapshot storage
-coincide" with **4.16×** (sparse, q=100, shipped format), stating the condition it
-holds under (sparse field updates) and where it degenerates (dense updates make a
-delta the size of a snapshot; the fallback holds it at parity, 1.00×).
+coincide" with **4.04×** (sparse, q=100, R=q, shipped format), stating the
+condition it holds under (sparse field updates) and where it degenerates (dense
+updates make a delta the size of a snapshot; the fallback holds it at parity,
+1.00×).
 
 **Section III-E exactly-once.** From Phase 2: the effect comes from at-least-once
 relay delivery *plus* the on-chain uniqueness check in `registerData`, not from the
@@ -374,9 +388,25 @@ Versions are numbered from **1**; internally they sit at 0-based positions
 at **version numbers 1, q+1, 2q+1, …** (for q=100: 1, 101, 201, …), confirmed by
 inspection of a built twin.
 
-So `u = min{n − k, (k−1) mod q}` **is Eq (36) verbatim** once k and n are read as
-0-based indices. The equation is not wrong; it is under-specified about indexing,
-and the text should say which convention it uses.
+So the exact cost is `u = min{n − k, (k−1) mod q}` with 1-based version numbers,
+or equivalently `u = min{n' − k', k' mod q}` with 0-based indices
+(`k' = k−1`, `n' = n−1`).
+
+**Correction to an earlier claim in this report.** I wrote that this "is Eq (36)
+verbatim once k and n are read as 0-based indices, the equation is not wrong, it
+is under-specified about indexing." That was wrong, and it conflated two separate
+issues:
+
+1. **Eq (36) as printed has `q` as its second term, not `k mod q`.** No indexing
+   convention turns `min{n−k, q}` into the measured `u` — `q` is the supremum over
+   k, the actual cost is the distance back to the preceding checkpoint. Eq (36) is
+   wrong as an equality under *either* convention, and right as a bound under both.
+2. **The indexing convention matters only for the replacement formula** — whether
+   the exact second term is written `k mod q` or `(k−1) mod q` — not for whether
+   Eq (36) itself holds.
+
+So the text needs both fixes, not one: replace the equality with the exact form,
+*and* state the indexing convention that exact form assumes.
 
 ### Algorithm 2 line 42 is a different convention, and an incompatible one
 

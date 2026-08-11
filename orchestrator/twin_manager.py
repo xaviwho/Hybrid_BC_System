@@ -41,12 +41,19 @@ i.e. at VERSION NUMBERS 1, q+1, 2q+1, ... (for q=100: 1, 101, 201, ...).
 
 So for a target version k with head version n, the delta-application count is
 
-    u = min{ n - k , (k-1) mod q }
+    u = min{ n - k , (k-1) mod q }        (1-based version numbers)
+    u = min{ n' - k' , k' mod q }         (0-based indices, k' = k-1, n' = n-1)
 
-which is Eq (36) verbatim once k and n are read as 0-based indices (k' = k-1,
-n' = n-1). Stated with 1-based version numbers the literal form min{n-k, k mod q}
-is wrong: measured against the shipped manager it matches u at 1 of 7 sampled
-targets, while the index form matches 7 of 7.
+Two distinct points, which are easy to conflate:
+
+  * Eq (36) as printed is u = min{n-k, q}. Its second term is q — the WORST CASE
+    over k — where the actual cost is the distance back to the preceding
+    checkpoint. Eq (36) is therefore correct as a BOUND and wrong as an EQUALITY,
+    under either indexing convention. Measured: bound 30/30, equality 12/30.
+  * The indexing convention decides only how the exact second term is written,
+    (k-1) mod q or k' mod q. Writing it as `k mod q` against 1-based version
+    numbers is off by one: it matches the measured u at 1 of 7 sampled targets,
+    the corrected form at 7 of 7.
 
 NOTE for the text pass: Algorithm 2 line 42 checkpoints at (n+1) mod q == 0,
 placing checkpoints at 0-based positions q-1, 2q-1, ... — a different convention

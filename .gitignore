@@ -109,3 +109,8 @@ blockchain/setup/hyperledger/fabric-samples/
 # Test files
 test-*.js
 test-*.json
+
+# Sample datasets (~160 MB). Present on disk but consumed by NO canonical
+# experiment — see experiments/DATA_SOURCES.md section 2. Kept out of the repo
+# rather than committed, since nothing in RESULTS.json derives from them.
+sample-data/*.csv
