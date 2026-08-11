@@ -25,6 +25,8 @@ from datetime import datetime
 import threading
 import time
 from twin_manager import TwinManager
+from outbox import Outbox
+import fabric_client
 
 # Load environment variables from .env file
 load_dotenv()
@@ -102,13 +104,19 @@ FABRIC_USER_ORG = os.getenv('FABRIC_USER_ORG', 'Org1')
 FABRIC_ORG_NAME = os.getenv('FABRIC_ORG_NAME', 'Org1')
 
 def store_on_fabric(data_id, data):
-    """Store data on Hyperledger Fabric using REST API or CLI."""
+    """Store the full record on Hyperledger Fabric via a REAL chaincode invoke.
+
+    Delegates to fabric_client (peer CLI -> channel 'hiot', chaincode 'iot-data').
+    Returns the real Fabric transaction id on success, or None on failure. There
+    is no longer any simulated/fabricated transaction id (see PHASE0_FINDINGS.md).
+    """
     try:
-        # For now, we'll simulate Fabric storage
-        # In production, this would use the Fabric REST API or SDK
-        print(f"Storing data on Fabric with ID: {data_id}")
-        # Return a simulated transaction ID
-        return f"fabric_tx_{hashlib.sha256(json.dumps(data).encode()).hexdigest()[:16]}"
+        tx_id = fabric_client.store_iot_data(data_id, data)
+        if tx_id:
+            print(f"Stored on Fabric: id={data_id} txid={tx_id}")
+        else:
+            print(f"Fabric store returned no txid for id={data_id}")
+        return tx_id
     except Exception as e:
         print(f"Failed to store on Fabric: {e}")
         return None
@@ -124,6 +132,62 @@ twin_connections = set()
 
 # Initialize Twin Manager for lifecycle management
 twin_manager = TwinManager()
+
+# --- Transactional outbox + relay worker (Phase 2, Change 1) ---
+OUTBOX_DB = os.getenv("OUTBOX_DB", os.path.join(os.path.dirname(__file__), "outbox.db"))
+
+
+def _anchor_row(row):
+    """Deliver one outbox row to Ethereum. Runs ONLY on the relay worker thread.
+
+    NOTE: the deployed contract exposes registerData(bytes32,string,string); there
+    is no registerAnchor(id,h) on chain. The commitment H(m) is passed as
+    _dataHash and the redacted metadata as _metadata.
+    """
+    if iot_data_registry_contract is None:
+        raise RuntimeError("IoTDataRegistry contract not loaded; cannot anchor")
+    payload = json.loads(row["payload"]) if row["payload"] else {}
+    data_id_str = payload.get("data_id") or row["twin_key"] or row["id"]
+    metadata_str = json.dumps(payload.get("metadata", {}))
+    data_id_bytes32 = hashlib.sha256(data_id_str.encode()).digest()
+
+    # On-chain uniqueness guard. IoTDataRegistry.registerData REVERTS with
+    # "Data ID already registered" if this _dataId exists. That is what upgrades
+    # at-least-once relay delivery into an exactly-once EFFECT on the public
+    # ledger: even if this process dies after broadcasting but before recording
+    # the receipt, the retry cannot create a second anchor. Treat an existing
+    # record as success, not as a delivery failure — otherwise the recovery path
+    # would retry to exhaustion and mark a successfully anchored row 'failed'.
+    if iot_data_registry_contract.functions.getDataOwner(data_id_bytes32).call() != \
+            "0x0000000000000000000000000000000000000000":
+        print(f"[outbox] {row['id']}: anchor already on chain, idempotent no-op")
+        return "preexisting:already_registered"
+
+    sender_account = web3.eth.accounts[0]
+    web3.eth.default_account = sender_account
+    try:
+        tx_hash = iot_data_registry_contract.functions.registerData(
+            data_id_bytes32,    # _dataId
+            row["commitment"],  # _dataHash = H(m)
+            metadata_str,       # _metadata (redacted view)
+        ).transact()
+    except Exception as e:
+        if "already registered" in str(e).lower():
+            return "preexisting:already_registered"
+        raise
+    receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
+    return receipt.transactionHash.hex()
+
+
+outbox = Outbox(OUTBOX_DB, anchor_fn=_anchor_row)
+
+# Start the relay unless we are the Werkzeug reloader's parent process (which
+# would give two workers racing on the same queue).
+if os.getenv("RELAY_DISABLED", "").lower() not in ("1", "true", "yes"):
+    if not os.getenv("WERKZEUG_RUN_MAIN") or os.getenv("WERKZEUG_RUN_MAIN") == "true":
+        outbox.start_relay()
+        print(f"Outbox relay worker started (db={OUTBOX_DB}, "
+              f"poll={outbox.poll_interval_s}s, max_attempts={outbox.max_attempts})")
 
 # --- Idempotency Cache for Exactly-Once Semantics ---
 # Maps idempotency_key -> {response, timestamp, ethereum_tx_hash, status}
@@ -250,6 +314,10 @@ def ingest_data():
         release_idempotency_slot(idempotency_key)
         return jsonify({"error": "Request processing timed out"}), 503
 
+    # Per-stage timing at REAL boundaries (Stage 4 instrumentation; replaces
+    # exp1's fixed-fraction breakdown). Each stage is timed where it happens.
+    t_ingress = time.perf_counter()
+
     # Step 1: Call the ML Privacy Filter
     try:
         # For this integration, we'll assume a default access level.
@@ -270,95 +338,144 @@ def ingest_data():
         shareable_data = result.get('shareable_data')
         data_sensitivity = result.get('data_sensitivity')
 
-        if not shareable_data or not data_sensitivity:
+        if not data_sensitivity:
+            release_idempotency_slot(idempotency_key)
             return jsonify({"error": "Invalid or incomplete response from privacy filter"}), 500
+
+        # shareable_data may legitimately be empty/absent: an all-sensitive record
+        # has nothing publishable. That is NOT an error — it still commits
+        # privately (Step 2) and simply produces no anchor (Step 3).
+        if shareable_data is None:
+            shareable_data = {}
+
+        t_policy = time.perf_counter()
 
     except requests.exceptions.RequestException as e:
         print(f"ERROR: Could not connect to the Privacy Filter service: {e}")
+        release_idempotency_slot(idempotency_key)
         return jsonify({"error": "Failed to connect to privacy filter service"}), 500
 
-    # Step 2: Conditionally store sensitive data in Hyperledger Fabric
-    fabric_tx_id = None
-    if data_sensitivity == 'sensitive':
-        try:
-            print("Sensitive data detected. Storing on Hyperledger Fabric...")
-            
-            # Store data on Fabric
-            data_id_str = raw_iot_data.get('id', 'unknown_id')
-            fabric_tx_id = store_on_fabric(data_id_str, raw_iot_data)
-            
-            if fabric_tx_id:
-                print(f"Successfully stored sensitive data on Fabric. Transaction ID: {fabric_tx_id}")
-            else:
-                print("Warning: Failed to store on Fabric, continuing with Ethereum registration")
-
-        except Exception as e:
-            print(f"ERROR: An error occurred during the Fabric transaction: {e}")
-            # Continue with Ethereum registration even if Fabric fails
-
-    # Step 3: Register public metadata on Ethereum
+    # Step 2: Private commit — ALWAYS. Algorithm 1 line 21 / Eq (4) / Sec III-C:
+    # the full payload always goes to the permissioned ledger, regardless of
+    # sensitivity. The public/private distinction governs what enters the PUBLIC
+    # metadata (Step 3), not whether Fabric is touched. (Phase 2, Change 2 —
+    # the old `if data_sensitivity == 'sensitive'` guard meant non-sensitive
+    # records were never persisted at rest.)
+    data_id_str = raw_iot_data.get('id', 'unknown_id')
     try:
-        sender_account = web3.eth.accounts[0]
-        web3.eth.default_account = sender_account
-        print(f"Using sender account for Ethereum transaction: {sender_account}")
+        fabric_tx_id = store_on_fabric(data_id_str, raw_iot_data)
+    except Exception as e:
+        print(f"ERROR: Fabric commit raised for id={data_id_str}: {e}")
+        fabric_tx_id = None
 
-        # Use the shareable data for Ethereum registration
-        data_id_str = shareable_data['id']
-        data_id_bytes32 = hashlib.sha256(data_id_str.encode()).digest()
-        
-        # Create metadata JSON (excluding id)
-        metadata_obj = {key: val for key, val in shareable_data.items() if key != 'id'}
-        metadata_str = json.dumps(metadata_obj)
-        
-        # Create data hash (hash of the full raw data)
+    if not fabric_tx_id:
+        # Fail loudly. Anchoring a commitment for a record that is not stored at
+        # rest would publish a hash of data we cannot produce — worse than an
+        # error. No silent continue (Phase 2: fail loudly, never fabricate).
+        release_idempotency_slot(idempotency_key)
+        return jsonify({
+            "error": "Private commit to Fabric failed; record not persisted, nothing anchored",
+            "data_id": data_id_str,
+        }), 502
+
+    t_fabric = time.perf_counter()
+
+    # Step 3: Enqueue the public anchor in the transactional outbox and RETURN.
+    # The anchor itself is delivered asynchronously by the relay worker — there is
+    # no wait_for_transaction_receipt on this path (Phase 2, Change 1d).
+    try:
+        # Public metadata = redacted view only. An all-sensitive record has no
+        # publishable fields, so nothing is anchored (anchor_required=False).
+        metadata_obj = {k: v for k, v in shareable_data.items() if k != 'id'}
+        anchor_required = bool(metadata_obj)
+
+        # Commitment H(m) over the full raw record.
         data_hash = hashlib.sha256(json.dumps(raw_iot_data).encode()).hexdigest()
-        
-        # Add Fabric TX ID to metadata if available
-        if fabric_tx_id:
+        if anchor_required:
             metadata_obj['fabricTxId'] = fabric_tx_id
-            metadata_str = json.dumps(metadata_obj)
 
-        print(f"Registering data on Ethereum:")
-        print(f"  Data ID: {data_id_str}")
-        print(f"  Data Hash: {data_hash}")
-        print(f"  Metadata: {metadata_str}")
-        print(f"  Sensitivity: {data_sensitivity}")
-        
-        # Call smart contract with CORRECT parameter order
-        tx_hash = iot_data_registry_contract.functions.registerData(
-            data_id_bytes32,    # Parameter 1: _dataId
-            data_hash,          # Parameter 2: _dataHash (hash of full data)
-            metadata_str        # Parameter 3: _metadata (public metadata JSON)
-        ).transact()
+        outbox.commit_and_enqueue(
+            record_id=idempotency_key,
+            commitment=data_hash,
+            fabric_tx_id=fabric_tx_id,
+            twin_key=data_id_str,
+            version=raw_iot_data.get('version'),
+            tau=data_sensitivity,
+            payload={"data_id": data_id_str, "metadata": metadata_obj},
+            anchor_required=anchor_required,
+        )
 
-        print("Transaction sent. Waiting for receipt...")
-        receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
-        print("Transaction successful! Receipt:", receipt)
+        t_enqueue = time.perf_counter()
+        timing_ms = {
+            "policy_ms": round((t_policy - t_ingress) * 1000, 3),
+            "fabric_ms": round((t_fabric - t_policy) * 1000, 3),
+            "outbox_ms": round((t_enqueue - t_fabric) * 1000, 3),
+            # Acknowledgement latency: t0 -> 200 OK. The client-visible number.
+            "ack_ms": round((t_enqueue - t_ingress) * 1000, 3),
+            "fabric_invoked": True,
+            "anchor_enqueued": anchor_required,
+        }
 
         final_response = {
-            "status": "success",
-            "message": "Data processed and registered on the blockchain.",
-            "ethereum_tx_hash": receipt.transactionHash.hex(),
-            "block_number": receipt.blockNumber,
+            "status": "accepted",
+            "message": ("Record committed privately; public anchor enqueued."
+                        if anchor_required else
+                        "Record committed privately; no publishable fields, no anchor."),
             "data_id": data_id_str,
             "data_hash": data_hash,
             "data_sensitivity": data_sensitivity,
             "fabric_tx_id": fabric_tx_id,
             "metadata": metadata_obj,
+            "anchor_state": "pending" if anchor_required else "not_required",
+            "outbox_id": idempotency_key,
+            "timing_ms": timing_ms,
             "idempotency_key": idempotency_key,
-            "idempotency_replay": False
+            "idempotency_replay": False,
         }
-        
-        # Mark as complete in idempotency cache for exactly-once semantics
+
         complete_idempotency(idempotency_key, final_response)
-        
-        return jsonify(final_response), 200
+        return jsonify(final_response), 202
 
     except Exception as e:
-        print(f"ERROR: An error occurred during the Ethereum transaction: {e}")
-        # Release the idempotency slot so retries can work
+        print(f"ERROR: outbox enqueue failed after private commit: {e}")
+        # Reconciliation case: committed privately, never enqueued. Surfaced by
+        # outbox.find_unanchored(). Fail loudly rather than pretend it anchored.
         release_idempotency_slot(idempotency_key)
-        return jsonify({"error": "Failed to register data on the Ethereum blockchain"}), 500
+        return jsonify({
+            "error": "Committed to Fabric but failed to enqueue public anchor",
+            "data_id": data_id_str,
+            "fabric_tx_id": fabric_tx_id,
+            "reconciliation_required": True,
+        }), 500
+
+
+@app.route('/anchor_status/<record_id>', methods=['GET'])
+def anchor_status(record_id):
+    """Completion-latency probe: has the relay delivered this record's anchor?"""
+    row = outbox.get(record_id)
+    if not row:
+        if outbox.get_dedup(record_id):
+            return jsonify({"outbox_id": record_id, "anchor_state": "not_required"}), 200
+        return jsonify({"error": "unknown record"}), 404
+    completion_ms = None
+    if row.get("delivered_at"):
+        completion_ms = round((row["delivered_at"] - row["created_at"]) * 1000, 3)
+    return jsonify({
+        "outbox_id": record_id,
+        "anchor_state": row["state"],
+        "attempts": row["attempts"],
+        "eth_tx_hash": row["eth_tx_hash"],
+        "created_at": row["created_at"],
+        "delivered_at": row["delivered_at"],
+        "delivery_latency_ms": completion_ms,
+        "last_error": row["last_error"],
+    }), 200
+
+
+@app.route('/outbox_stats', methods=['GET'])
+def outbox_stats():
+    """Outbox health: queue depths, relay liveness, reconciliation set size."""
+    return jsonify(outbox.stats()), 200
 
 # --- Real-Time WebSocket Endpoints ---
 
