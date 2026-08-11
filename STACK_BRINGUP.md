@@ -144,25 +144,29 @@ npx truffle migrate --network development --reset
 
 `truffle-config.js` targets `127.0.0.1:8545` with `network_id: "*"`.
 
-**Health check** — the orchestrator resolves the address from the build artifact,
-so verify the artifact, and that code actually exists at that address:
+**Health check** — ask the resolver itself, so this check and the orchestrator
+cannot disagree:
 
 ```bash
 cd /mnt/e/Hybrid_BC_System
 python3 - <<'PY'
-import json
+import sys; sys.path.insert(0, 'orchestrator')
+import contract_registry as cr
 from web3 import Web3
-a = json.load(open('blockchain/setup/ethereum/build/contracts/IoTDataRegistry.json'))
 w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:8545'))
-nid = list(a['networks'].keys())[-1]          # exactly what orchestrator.py:81 does
-addr = Web3.to_checksum_address(a['networks'][nid]['address'])
-print('orchestrator will use network', nid, '->', addr)
-print('bytecode length at that address:', len(w3.eth.get_code(addr)))
-print('networks recorded in artifact:', len(a['networks']))
+r = cr.resolve('blockchain/setup/ethereum/build/contracts/IoTDataRegistry.json',
+               w3=w3, require_code=True)
+print('address    ', r['address'])
+print('network id ', r['network_id'], '  chain id', r['chain_id'])
+print('code bytes ', r['code_size'])
+print('artifact holds', r['networks_in_artifact'], 'network entries')
 PY
 ```
 
-Bytecode length must be > 2. If it is `2` (`0x`), the address is stale — see §B.
+This is the same call the orchestrator makes at startup
+(`orchestrator.py:85`), so if it prints an address the orchestrator will start;
+if it raises `ContractResolutionError` the orchestrator will refuse to, with the
+same message. A stale address (no bytecode) is an error here, not a warning.
 
 ---
 
@@ -212,16 +216,39 @@ mkdir -p /root/orbit-state
 /root/orbit-venv/bin/python orchestrator.py > /root/orchestrator.log 2>&1 &
 ```
 
+**Two ways it now refuses to start**, both deliberate — a failed start here is
+better than a run whose numbers cannot be trusted:
+
+| Log line | Meaning | Fix |
+|----------|---------|-----|
+| `FATAL: cannot resolve IoTDataRegistry` | Stale artifact: no bytecode at the resolved address | Redeploy (§3), then start |
+| `RuntimeError: outbox at … is in journal_mode='delete', not 'wal'` | `OUTBOX_DB` is on drvfs/FAT32 | Set `OUTBOX_DB` to an ext4 path (§A) |
+
 **Health checks**
 
 ```bash
-curl -s http://127.0.0.1:5002/health        # {"status":"healthy","ethereum_connected":true}
-curl -s http://127.0.0.1:5002/outbox_stats  # relay_running must be true
+curl -s http://127.0.0.1:5002/health
+curl -s http://127.0.0.1:5002/outbox_stats
 ```
 
+`/health` now reports what this process is actually bound to — record it, since
+the experiments cross-check against it:
+
+```json
+{"status":"healthy","ethereum_connected":true,
+ "contract_addr":"0x…","network_id":"1337","chain_id":1337,
+ "outbox_db":"/root/orbit-state/outbox.db"}
+```
+
+Check `outbox_db` is the ext4 path and `contract_addr` is what §3 printed.
+
+`/outbox_stats` must show `relay_running: true`. It also carries a `relay` block
+(`drain_rate_per_s`, `mean_anchor_ms`, `mean_queue_wait_ms`) which is empty until
+the first anchor is delivered.
+
 `ethereum_connected: false` means `GANACHE_URL` is wrong or Ganache died.
-`relay_running: false` means the relay thread did not start — check the log for the
-`Outbox relay worker started` line, and that `RELAY_DISABLED` is unset.
+`relay_running: false` means the relay thread did not start — check the log for
+the `Outbox relay worker started` line, and that `RELAY_DISABLED` is unset.
 
 **End-to-end smoke test** (one sensitive record):
 
@@ -238,7 +265,17 @@ Expect **202** with `fabric_tx_id` set, `anchor_state: "pending"`, and an
 curl -s http://127.0.0.1:5002/anchor_status/<outbox_id>
 ```
 
-Expect `anchor_state: "delivered"` with an `eth_tx_hash` within a second or two.
+Expect `anchor_state: "delivered"` with an `eth_tx_hash` within a second or two,
+plus the latency split:
+
+```json
+{"anchor_state":"delivered","eth_tx_hash":"0x…","attempts":1,
+ "delivery_latency_ms":118.4,"queue_wait_ms":2.1,"anchor_ms":116.3}
+```
+
+`delivery_latency_ms = queue_wait_ms + anchor_ms`. On an idle queue the wait is
+near zero and the two are nearly equal; under load they diverge sharply (§6).
+
 If it stays `pending`, the relay cannot reach Ganache; if it goes `failed`, read
 `last_error` in that response.
 
@@ -319,7 +356,7 @@ exp1's numbers from a second source.
 
 ## A. `outbox.db` lands on FAT32 — this will break WAL
 
-**Default path:** `orchestrator.py:137`
+**Default path:** `orchestrator.py:142`
 
 ```python
 OUTBOX_DB = os.getenv("OUTBOX_DB", os.path.join(os.path.dirname(__file__), "outbox.db"))
@@ -350,52 +387,63 @@ mkdir -p /root/orbit-state
 export OUTBOX_DB=/root/orbit-state/outbox.db
 ```
 
-**Verify WAL actually engaged** after the orchestrator starts:
+**Enforced in code — you cannot run without WAL.** `Outbox.__init__` calls
+`_assert_wal()`, which reads `PRAGMA journal_mode` back and raises if it is not
+`wal`, naming `OUTBOX_DB` and the fix in the error text. The orchestrator exits
+rather than starting, so a non-WAL outbox cannot reach a measurement run. Covered
+by `tests/test_outbox_relay.py` [7], which forces `journal_mode=DELETE` and
+asserts the guard fires.
 
-```bash
-sqlite3 /root/orbit-state/outbox.db 'PRAGMA journal_mode;'    # must print: wal
-ls /root/orbit-state/                                        # expect outbox.db, -wal, -shm
+So the failure mode is now a refused startup with this in
+`/root/orchestrator.log`:
+
+```
+RuntimeError: outbox at '/mnt/e/.../outbox.db' is in journal_mode='delete', not 'wal'.
 ```
 
-If it prints `delete`, the database is not where you think it is, or the
-filesystem rejected WAL. Do not run exp5 in that state — crash-recovery and
-exactly-once results from a non-WAL outbox are not trustworthy.
+Confirmation, if you want it independently of the guard:
 
-**This is now enforced in code.** `Outbox.__init__` calls `_assert_wal()`, which
-reads back `PRAGMA journal_mode` and raises if it is not `wal`, naming `OUTBOX_DB`
-and the fix in the error text. The orchestrator will not start against a non-WAL
-outbox, so the silent-fallback case cannot reach a measurement run. Covered by
-`tests/test_outbox_relay.py` [7], which forces `journal_mode=DELETE` and asserts
-the guard fires.
+```bash
+curl -s http://127.0.0.1:5002/health | grep -o '"outbox_db":"[^"]*"'   # must be the ext4 path
+sqlite3 /root/orbit-state/outbox.db 'PRAGMA journal_mode;'             # must print: wal
+ls /root/orbit-state/                                                  # outbox.db, -wal, -shm
+```
 
 ## B. The contract address, and what caches it
 
 **Where it is configured:** nowhere, explicitly. It is *derived* from the truffle
 build artifact `blockchain/setup/ethereum/build/contracts/IoTDataRegistry.json`,
-which truffle rewrites on every `migrate`.
+which truffle rewrites on every `migrate` and never prunes. The artifact currently
+holds **18 network entries**, all stale but one, because Ganache assigns a
+timestamp-based network id whenever one is not pinned.
 
-**Two consumers, and they disagree:**
+**What used to be wrong** (fixed; kept here because it explains the guards):
 
-| Consumer | Selection | Line |
-|----------|-----------|------|
-| Orchestrator | `list(artifact['networks'].keys())[-1]` — last in file order | `orchestrator.py:81` |
-| exp3 gas | `max(j["networks"], key=int)` — highest numeric network id | `exp3_gas_real.py:97` |
+| Consumer | Old selection | Risk |
+|----------|---------------|------|
+| Orchestrator | `list(networks.keys())[-1]` — last in file order | On divergence, exp3 measures gas against one contract while exp1/exp5 anchor to another, inside what the paper presents as one consolidated run |
+| exp3 gas | `max(networks, key=int)` — highest numeric id | — |
 
-These agree only by luck. Ganache assigns a **timestamp-based network id** when
-none is pinned, so each fresh Ganache adds a new key. The artifact currently holds
-**18 network entries**, all stale but one — old addresses are never pruned.
+The orchestrator also never checked that code existed at the address it picked, so
+a stale artifact surfaced later as an opaque failure inside the relay worker —
+after the request had already been acknowledged with 202.
 
-**What caches the old one:** the artifact itself. Nothing else does — I grepped
+**Now:** both call `orchestrator/contract_registry.py:select_network` (highest
+numeric network id, `contract_registry.py:59`). One implementation, so they cannot
+diverge. `resolve(..., require_code=True)` additionally rejects an address with no
+bytecode, and the orchestrator turns that into a `SystemExit` at startup
+(`orchestrator.py:85`); exp3 turns it into a non-zero exit before writing anything
+(`exp3_gas_real.py:101`).
+
+Checked against the current artifact: the two old rules happen to **agree** today —
+both select network `1782885038550` — so no existing result is invalidated. The
+risk was real but had not yet fired.
+
+**What caches the old address:** the artifact itself, and nothing else. I grepped
 `frontend/`, `orchestrator-js/` and the ethereum scripts for hardcoded `0x…`
-addresses and found none. The orchestrator reads the artifact once at import, so a
-redeploy after it has started leaves it holding a dead address for the process
-lifetime.
-
-**The dangerous part:** the orchestrator does **not** check that code exists at the
-address it picked. `exp3_gas_real.py:99` does (`get_code(addr) <= 2` → abort); the
-orchestrator constructs the contract object regardless and only fails later, at
-transaction time, with a confusing revert or "no contract code" error surfacing
-inside the *relay worker* rather than the request.
+addresses and found none. The orchestrator resolves once at import, so a redeploy
+after it has started leaves it holding a dead address for the process lifetime —
+which is why the rule below still matters.
 
 **Recommended sequence, every time Ganache restarts:**
 
@@ -404,7 +452,7 @@ inside the *relay worker* rather than the request.
 npx ganache --host 127.0.0.1 --port 8545 --chain.chainId 1337 \
             --networkId 1337 --wallet.deterministic &
 
-# 2. clear stale entries so [-1] and max() cannot diverge
+# 2. optional: prune stale entries so the artifact stays readable
 cd /mnt/e/Hybrid_BC_System/blockchain/setup/ethereum
 python3 - <<'PY'
 import json
@@ -421,22 +469,10 @@ npx truffle migrate --network development --reset
 
 Order matters: **always restart the orchestrator after a redeploy.**
 
-**Both problems are now fixed in code**, so the sequence above is a convenience
-rather than a discipline requirement:
-
-* `orchestrator/contract_registry.py` holds the single selection rule — highest
-  numeric network id — used by both the orchestrator and exp3. They cannot
-  diverge because there is only one implementation.
-* The orchestrator **refuses to start** when the resolved address holds no
-  bytecode (`SystemExit`, with the redeploy command in the message). A stale
-  artifact now fails at startup instead of surfacing later inside the relay
-  worker, after requests have already been acknowledged with 202.
-* Covered by `tests/test_outbox_relay.py` [8], including a case where file order
-  and highest-id disagree.
-
-Checked against the current artifact: the two old rules happen to agree today —
-both select network `1782885038550` — so no existing result is invalidated. The
-risk was real but had not yet fired.
+Because of the guards above this sequence is now a convenience rather than a
+discipline requirement — skipping it produces a refused startup, not a bad
+measurement. Covered by `tests/test_outbox_relay.py` [8], including a case where
+file order and highest-id disagree.
 
 ### After the run: prove it was one deployment
 
@@ -464,18 +500,19 @@ grep -h -o '"contract_addr[a-z]*": "[^"]*"' \
 ## C. Hardcoded `200` checks vs the new `202`
 
 The orchestrator now returns **202 Accepted** from `/ingest_data`
-(`orchestrator.py:419`). `/health`, `/anchor_status` and `/outbox_stats` still
+(`orchestrator.py:455`). `/health`, `/anchor_status` and `/outbox_stats` still
 return 200, and an idempotency replay served from cache also returns 200.
 
 Full grep of `experiments/`, `tests/` and `orchestrator/`:
 
 | File | Line | Verdict |
 |------|------|---------|
-| `exp5_exactly_once_real.py` | 51 | **WAS BROKEN — fixed** |
-| `exp1_latency_real.py` | 110 | OK — `not in (200, 202)` |
-| `exp1_latency_real.py` | 148 | OK — `/anchor_status`, still 200 |
-| `exp1_latency_real.py` | 283 | OK — `/health`, still 200 |
-| `exp5_exactly_once_real.py` | 110 (now ~148) | OK — `/health` |
+| `exp5_exactly_once_real.py` | 88 | **WAS `== 200`, BROKEN — fixed**, now `in (200, 202)` |
+| `exp5_exactly_once_real.py` | 71 | OK — `/anchor_status`, still 200 |
+| `exp5_exactly_once_real.py` | 150 | OK — `/health`, still 200 |
+| `exp1_latency_real.py` | 148 | OK — `not in (200, 202)` |
+| `exp1_latency_real.py` | 124, 200, 319 | OK — `/outbox_stats` and `/anchor_status`, still 200 |
+| `exp1_latency_real.py` | 425 | OK — `/health`, still 200 |
 | `tests/test_outbox_relay.py`, `tests/test_twin_storage.py` | — | no HTTP; unaffected |
 | `exp1_latency_throughput.py` | 103, 197, 258 | superseded (pre-Phase-2), not canonical |
 | `exp4_lifecycle_overhead.py` | 115, 181, 192, 207, 454 | superseded |
