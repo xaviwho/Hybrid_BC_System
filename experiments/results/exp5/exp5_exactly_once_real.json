@@ -1,6 +1,15 @@
 {
   "experiment": "exp5_exactly_once_real",
+  "schema_version": 2,
+  "timestamp": "2026-08-18T14:17:42",
   "measured": true,
+  "provenance": {
+    "architecture": "async: 202 after private commit, anchor delivered by the outbox relay; tx hashes collected from /anchor_status, not from the ingest response",
+    "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+    "chain_id": 1337,
+    "network_id": "1337",
+    "outbox_db": "/root/orbit-state/outbox.db"
+  },
   "sequential_duplicates": {
     "requests": 6,
     "unique_anchor_txs": 1,

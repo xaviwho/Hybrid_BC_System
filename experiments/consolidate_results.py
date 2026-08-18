@@ -384,7 +384,7 @@ def main(stamp):
         "policy": "deterministic policy_engine v1.0.0",
         "outbox": "SQLite WAL, async relay worker (Phase 2)",
         "architecture": "async anchor: 202 after private commit, relay delivers anchor",
-        "host": "WSL2 Ubuntu-22.04 + Docker Desktop",
+        "host": "WSL2 Ubuntu-22.04 + Docker Desktop (i5-8500 4c/7GB, ext4 rebuild 2026-08-18)",
     }
     config_hash = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()[:12]
 
