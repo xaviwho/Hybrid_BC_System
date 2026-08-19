@@ -76,7 +76,7 @@ NONCE = str(int(time.time()))
 WARMUP = 20                              # discarded, per class and per level
 LAT_REPS = 200                           # >= 200 per class (spec: RESULTS.json v2)
 CLASSES = ["all_public", "all_sensitive", "mixed"]
-TPUT_CONC = [1, 2, 4, 8, 16, 32]
+TPUT_CONC = [1, 2, 4, 8, 10, 12, 14, 16, 20, 24, 32]
 TPUT_N = 50                              # >= 50 per level
 ANCHOR_POLL_S = 0.05                     # completion-latency poll cadence
 ANCHOR_TIMEOUT_S = 120                   # give up waiting for an anchor
@@ -373,6 +373,19 @@ def reconciliation_gate(concurrency, observed_tps, mean_ack_ms):
     }
 
 
+def _error_detail(reqs):
+    """Group failed requests by (status_code, message) so a sweep level reports
+    WHY it failed, not just how many times."""
+    buckets = {}
+    for r in reqs:
+        if r.get("ok"):
+            continue
+        key = (r.get("status_code"), (r.get("error") or r.get("exc") or "")[:160])
+        buckets[key] = buckets.get(key, 0) + 1
+    return [{"status_code": k[0], "detail": k[1], "count": v}
+            for k, v in sorted(buckets.items(), key=lambda kv: -kv[1])]
+
+
 def measure_throughput(cls):
     rows_out, gate_failures = [], []
     for c in TPUT_CONC:
@@ -398,6 +411,14 @@ def measure_throughput(cls):
                                "derivation": "completed_requests / wall_clock_s"},
             "ack_latency_ms": ack,
             "client_rtt_ms": _stats([r.get("rtt_ms") for r in ok]),
+            # Stage decomposition per level: isolates WHERE the transition happens.
+            "stage_policy_ms": _stats([r.get("policy_ms") for r in ok]),
+            "stage_fabric_ms": _stats([r.get("fabric_ms") for r in ok]),
+            "stage_outbox_ms": _stats([r.get("outbox_ms") for r in ok]),
+            # outbox_ms spans commit_and_enqueue, so it absorbs any SQLite
+            "anchors_enqueued": {"kind": "measured",
+                                 "value": sum(1 for r in ok if r.get("anchor_enqueued"))},
+            "error_detail": _error_detail(reqs),
             "fabric_invoked_all": {"kind": "measured",
                                    "value": all(r.get("fabric_invoked") for r in ok) if ok else False},
             "reconciliation_gate": gate,
@@ -409,8 +430,8 @@ def measure_throughput(cls):
         if not gate["passed"]:
             gate_failures.append({"class": cls, "concurrency": c, **gate})
         if row["errors"] > 0:
-            print(f"        {row['errors']} errors at c={c}; stopping sweep for {cls}")
-            break
+            for e in row["error_detail"]:
+                print(f"        {e['count']}x error at c={c} status={e['status_code']}: {e['detail']}")
     return rows_out, gate_failures
 
 

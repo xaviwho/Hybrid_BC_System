@@ -1034,4 +1034,5 @@ if __name__ == '__main__':
     # Note: For production, use a proper WSGI server like Gunicorn or uWSGI
     print("Starting Orchestrator with WebSocket support...")
     print("Real-time twin updates enabled on ws://0.0.0.0:5002")
-    socketio.run(app, host='0.0.0.0', port=5002, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5002, debug=False, use_reloader=False,
+                 allow_unsafe_werkzeug=True)
