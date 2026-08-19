@@ -93,3 +93,37 @@ Retired assertions, all now false and removed: *"increasing monotonically"*,
 > engine selected, which is inversion at all four. Near-head targets are four of
 > the ten measured, so the second path is not a corner case, and Eq. (34) is
 > load-bearing rather than vestigial.
+
+---
+
+# Manuscript-side consequences
+
+Checked against `Completed_Result_Enhanced_OrBiT__…__Copy_.pdf` (16 pp., Section IV
+at pp. 12–15). The figures above are correct as drawn; these are the prose and
+table edits the same run implies, which the figure spec did not cover.
+
+| Item | Manuscript says | Run `d8ce50b9` says |
+|---|---|---|
+| Table IV | Public path 94.4 ms / 2.97 TPS; Sensitive 2247 ms / 1.65 TPS | **Structurally obsolete.** Phase 2 made the private commit unconditional, so no fast public path exists; every fixture is ~2.2 s at c=1. Four fixtures, not two paths |
+| Table VI | N=1 → 273,623.0 gas, 0.03% | N=1 → 296,267 gas, **−8.25%** |
+| Table VI | 99.50% at N=200, "the single figure that should be quoted" | **99.46%** |
+| Table VII | 0.0493 → 0.1123 ms, monotonic | 0.104 → 0.246 ms, **sawtooth in k, tracking u** |
+| Table VII caption | "scales with the target's position in history" | scales with **u**, bounded by `u ≤ q` |
+| §IV-D prose | "we report **no** storage reduction from delta encoding" | **4.01× measured** under sparse updates; parity under dense |
+| §IV-E summary | "sustained throughput is a few transactions per second" | **25.1 TPS** (`fabric_only`), 20.4 (`all_sensitive`) |
+| §IV-E summary | "bounded, **index-dependent** cost" | **u-dependent**; index is the wrong variable |
+| §IV-A prose | "public anchoring (106 ms)" as a latency stage | anchoring is off the acknowledgement path; it has no stage in ack latency |
+| Fig. 6 / Table V | 100% accuracy, 0 leaks, 96.5% (55/57) | **Unchanged — confirmed against RESULTS.json** |
+
+**Why Table VI's sign flipped.** The old values are exact `273,623/N` multiples,
+so the old method took root-anchor gas to equal single-record gas and derived
+reduction as `1 − 1/N` — which is why 90.00% / 95.00% / 99.50% are round. The
+current run measures root gas independently: 296,267, flat in `N` to 3 × 10⁻⁵, and
+**higher** than the 273,695 single-record anchor. Hence a real loss at `N = 1`. The
+change is methodological, not noise.
+
+**The storage claim needs writing, not correcting.** §IV-D currently disclaims a
+saving. Fig. 8(b) now measures 4.01× at 800 versions, conditional on sparsity, with
+dense updates at parity because `min(delta, snapshot)` declines a delta larger than
+the snapshot it replaces. That is a Contribution 3 result the paper does not yet
+claim.
