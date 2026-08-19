@@ -46,7 +46,12 @@ OUTDIR = os.path.join(_REPO, "experiments", "results", "figures_section4")
 RUN_COMMIT = "d8ce50b9"
 RUN_HASH = "bb85df0d7803"
 
-COL = 3.5                      # IEEE single column, inches
+COL = 3.5                      # IEEE single column, inches (88.9 mm)
+DOUBLE = 7.16                  # IEEE double column, inches (181.6 mm)
+#
+# Figs 5, 7 and 8 are landscape and therefore span both columns: three panels
+# side by side inside 88.9 mm would be 30 mm each, which no axis survives.
+# Fig 9 is a single panel and stays single-column.
 
 INK = "#111111"
 INK_SOFT = "#555555"
@@ -152,8 +157,8 @@ def fig5(raw):
             raise MissingMetric("raw.exp1.throughput has no %r -- Fig 5. Present: %s"
                                 % (name, sorted(tp)))
 
-    fig, (a, b, c) = plt.subplots(3, 1, figsize=(COL, 5.35),
-                                  gridspec_kw={"height_ratios": [1.0, 0.82, 1.0]})
+    fig, (a, b, c) = plt.subplots(1, 3, figsize=(DOUBLE, 2.45),
+                                  gridspec_kw={"width_ratios": [1.0, 0.74, 1.0]})
     XT = [1, 8, 16, 24, 32]
 
     # --- (a) throughput -----------------------------------------------------
@@ -221,7 +226,7 @@ def fig5(raw):
     c.legend(frameon=False, loc="upper left", handlelength=2.2, borderpad=0.0,
              labelspacing=0.18, handletextpad=0.5, borderaxespad=0.2)
 
-    fig.subplots_adjust(hspace=0.52)
+    fig.subplots_adjust(wspace=0.38, bottom=0.20)
     save(fig, "fig5_orchestration")
 
 
@@ -241,7 +246,7 @@ def fig7(raw):
     red = [num(r["gas_reduction_pct"], where=where) for r in rows]
     proof = [r["proof_size_bytes"] for r in rows]
 
-    fig, (a, b, c) = plt.subplots(3, 1, figsize=(COL, 5.55))
+    fig, (a, b, c) = plt.subplots(1, 3, figsize=(DOUBLE, 2.35))
 
     # (a) The dashed baseline is the single-record anchor. The N=1 point lying
     # ABOVE it is the panel's claim; the sign is quantified in (b) and stated in
@@ -279,7 +284,7 @@ def fig7(raw):
     panel_tag(c, "(c)")
     axes_style(c)
 
-    fig.subplots_adjust(hspace=0.55)
+    fig.subplots_adjust(wspace=0.32, bottom=0.20)
     save(fig, "fig7_batching")
     return spread
 
@@ -300,7 +305,7 @@ def fig8(raw):
             raise MissingMetric("no style for reconstruction_path %r -- Fig 8(a)"
                                 % r["reconstruction_path"])
 
-    fig, (a, b) = plt.subplots(2, 1, figsize=(COL, 3.9))
+    fig, (a, b) = plt.subplots(1, 2, figsize=(DOUBLE, 2.55))
 
     ks = [r["target_version"] for r in rb]
     ms = [r["mean_ms"] for r in rb]
@@ -356,7 +361,7 @@ def fig8(raw):
     b.legend(frameon=False, loc="upper left", handlelength=2.2, borderpad=0.0,
              labelspacing=0.18, handletextpad=0.5, borderaxespad=0.2)
 
-    fig.subplots_adjust(hspace=0.60)
+    fig.subplots_adjust(wspace=0.26, bottom=0.19)
     save(fig, "fig8_lifecycle")
 
 

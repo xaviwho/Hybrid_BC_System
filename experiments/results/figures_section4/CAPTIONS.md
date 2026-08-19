@@ -3,7 +3,8 @@
 Run `d8ce50b9`, `config_hash bb85df0d7803`. Built by `experiments/build_all_figures.py`
 from `RESULTS.json` only.
 
-**Format.** 88.9 mm (3.5 in) single-column, panels stacked. Every series carries
+**Format.** Figs 5, 7 and 8 are landscape and span both columns, 181.6 mm (7.16 in),
+panels side by side. Fig 9 is a single panel at single-column width, 88.9 mm. Every series carries
 colour **and** line style **and** marker, so the figures read in grayscale. Nothing
 appears inside the axes except data, axis labels, tick labels and a legend — which
 means these captions are load-bearing and must ship with the figures.
