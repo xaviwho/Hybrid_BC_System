@@ -3,9 +3,14 @@
 Exact commands to bring the measurement stack up in dependency order, then run the
 three experiments that need it (exp1, exp3, exp5).
 
-Everything here is read from the repo or from `BRINGUP_STATUS.md`, which records
-the last known-good bring-up (2026-07-01, Stage 3 gate passed). Anything I could
-not determine from the repo is marked **UNVERIFIED**.
+Everything here is read from the repo, or was carried over from a bring-up log
+(`BRINGUP_STATUS.md`) that recorded the last known-good run of 2026-07-01. **That
+log no longer exists.** It was deliberately left untracked (`PHASE3_REPORT.md`,
+"Not committed, deliberately") and was lost with the WSL distro contents, so it
+cannot be produced or re-read. Claims that once cited it are stated below as
+plain assertions, unattributed. Anything I could not determine from the repo is
+marked **UNVERIFIED**; anything re-confirmed on 2026-08-18 is marked
+**VERIFIED 2026-08-18**.
 
 **The layout is unusual and you need to know it before starting.** Three
 directories are in play:
@@ -49,8 +54,10 @@ mkdir -p /mnt/e && mount -t drvfs E: /mnt/e
 ```
 
 **If `/root/fabric-clean` is missing** the network has to be rebuilt from a
-pristine `fabric-samples` — see `BRINGUP_STATUS.md` "The bundled fabric-samples was
-corrupted". Do not substitute the repo copy.
+pristine `fabric-samples`: the bundled copy is corrupted. Do not substitute the
+repo copy. (Asserted, not verified — the 2026-08-18 rebuild used a pristine clone
+and never exercised the repo copy. Note the pristine clone must come from `main`;
+`fabric-samples` has no `v2.5.x` tag. **VERIFIED 2026-08-18**.)
 
 ---
 
@@ -102,7 +109,8 @@ chaincode is committed and queryable. A TLS or connection error does not.
 ## 2. Ganache
 
 Ganache must run **inside WSL**. A Ganache on the Windows side is not reachable
-from WSL (recorded in `BRINGUP_STATUS.md`).
+from WSL. (Asserted; not re-tested on 2026-08-18, which ran Ganache inside the
+distro throughout.)
 
 ```bash
 cd /mnt/e/Hybrid_BC_System/blockchain/setup/ethereum
@@ -127,9 +135,17 @@ Expect `{"jsonrpc":"2.0","id":1,"result":"0x539"}` (0x539 = 1337).
 **If it fails:** check `/root/ganache.log`; if port 8545 is taken,
 `ss -lptn 'sport = :8545'`.
 
-> **Do not use `docker-compose-hybrid.yml` for Ganache.** Its command is
-> `npx ganache --host 0.0.0.0` with no chainId, no deterministic wallet and no
-> networkId, and it attaches to an `external: true` network named `fabric_test`
+> **Do not use `docker-compose-hybrid.yml` for Ganache.** **Corrected 2026-08-18:**
+> the claim that it sets no chainId, no deterministic wallet and no networkId is
+> **wrong** — the running container was inspected and its command is
+> `--wallet.mnemonic="test test ... junk" --chain.chainId=1337 --chain.networkId=1337
+> --wallet.totalAccounts=10 --wallet.defaultBalance=1000 --miner.blockGasLimit=12000000`,
+> so it sets all three. The real differences are a 12M block gas limit against the
+> npx default of 30M, and a different mnemonic — its account 0 is
+> `0xf39Fd6e5...` where `--wallet.deterministic` gives `0x90F8bf6A...`. Avoid it
+> anyway: it binds `0.0.0.0:8545`, which silently steals the port from the
+> documented instance (§7 of MIGRATION_PLAN.md), and it attaches to an
+> `external: true` network named `fabric_test`
 > which the `/root/fabric-clean` network does not create. It also runs an
 > `ethereum-deployer` container that re-migrates on every `up`.
 
@@ -364,8 +380,11 @@ OUTBOX_DB = os.getenv("OUTBOX_DB", os.path.join(os.path.dirname(__file__), "outb
 
 `os.path.dirname(__file__)` is the orchestrator package directory. Run as
 documented, that resolves to **`/mnt/e/Hybrid_BC_System/orchestrator/outbox.db`**
-— on the drvfs-mounted FAT32 stick, per `BRINGUP_STATUS.md`: *"Relocated Fabric
-runtime to WSL ext4 (`/root/...`); the repo stays on the FAT32 stick."*
+— on the drvfs-mounted FAT32 stick, under the older layout that put the Fabric
+runtime on WSL ext4 (`/root/...`) while the repo stayed on the stick. The
+2026-08-18 rebuild abandons that split: the repo is cloned to ext4 as well, which
+removes the cause rather than working around it. **VERIFIED 2026-08-18** —
+`PRAGMA journal_mode` returned `wal` on the first attempt.
 
 That is the bad case. `outbox.py` opens the database with:
 
@@ -553,20 +572,24 @@ treatment. Those two fields no longer exist there.
 ## Unverified / could not determine from the repo
 
 - **`/root/hybrid-fabric`, `/root/fabric-clean`, `/root/orbit-venv` contents.**
-  Recorded in `BRINGUP_STATUS.md` but they live outside the repo and outside this
-  Windows filesystem, so I could not inspect them. If any is missing, §1's
-  fallback applies.
+  These live outside the repo and outside the Windows filesystem, so they could
+  not be inspected from here. **Resolved 2026-08-18:** all three were absent and
+  were rebuilt from upstream; §1's fallback is now the documented path, not a
+  contingency.
 - **Whether port 5001 is still occupied by the foreign service.** It answered
   `404 page not found` during this session, so 5011 is the safer choice, but the
   occupant may be transient. Check before assuming.
-- **Ganache invocation last used.** `BRINGUP_STATUS.md` says "Ganache in WSL
-  (`node`), chainId 1337, deterministic" but does not record the exact flags. The
-  §2 command reconstructs that description; `--networkId 1337` is my addition for
-  the reason in §B.
-- **Exact `network.sh up` flags.** `BRINGUP_STATUS.md` records the `createChannel`
-  and `deployCC` invocations verbatim but not the preceding `up`. The `-ca -s
-  couchdb -i 2.5.0 -cai 1.5.5` in §1 is inferred from the recorded container list
-  (CAs + CouchDB) and the pinned tags. If `up` rejects a flag, drop to
+- **Ganache invocation last used.** The prior run is described only as Ganache in
+  WSL (`node`), chainId 1337, deterministic; the exact flags were never recorded.
+  The §2 command reconstructs that description; `--networkId 1337` is an addition,
+  for the reason in §B. **VERIFIED 2026-08-18** — the §2 command brings up a
+  working chain (`eth_chainId` = `0x539`) and the contract deploys against it.
+- **Exact `network.sh up` flags.** The `createChannel` and `deployCC` invocations
+  were recorded verbatim; the preceding `up` was not. The `-ca -s couchdb -i 2.5.0
+  -cai 1.5.5` in §1 was inferred from the container list (CAs + CouchDB) and the
+  pinned tags. **VERIFIED 2026-08-18** — that exact `up` succeeded, producing 8
+  containers with `peer version` v2.5.0 and `fabric-ca-server` 1.5.5. No longer
+  inferred. If `up` rejects a flag, drop to
   `./network.sh up -ca -s couchdb` with the two `IMAGE_TAG` exports already set.
 - **`orchestrator/.venv`** is a WSL Python 3.10 venv inside the repo. Whether it is
   still functional after the phase changes is untested — §5 uses `/root/orbit-venv`,

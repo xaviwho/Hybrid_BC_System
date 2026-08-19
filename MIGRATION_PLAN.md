@@ -207,10 +207,11 @@ curl -sSL https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/inst
 ```
 
 > **Do not copy `blockchain/setup/hyperledger/fabric-samples` from the repo.**
-> `BRINGUP_STATUS.md` records three defects in it that made the network
-> un-bringable: a wrong CA volume path, an untagged CA image that pulled
-> `:latest`, and `ca_orderer` on port 11054 while `registerEnroll.sh` enrols at
-> 9054. It is the reason the network "was never really run" before.
+> Three defects in it made the network un-bringable: a wrong CA volume path, an
+> untagged CA image that pulled `:latest`, and `ca_orderer` on port 11054 while
+> `registerEnroll.sh` enrols at 9054. It is the reason the network was never
+> really run before. (Asserted; the 2026-08-18 rebuild used a pristine clone and
+> did not re-test the repo copy.)
 
 ### C2. Chaincode source
 
@@ -230,10 +231,11 @@ python3 -m venv /root/orbit-venv
 ```
 
 > **`orchestrator/requirements.txt` is stale — do not use it.** It pins
-> `web3==6.0.0` and `Flask==2.3.0`, but the run that actually worked used
-> **web3 7.16 and flask 3.1.3** (`BRINGUP_STATUS.md`). `start-system.sh` installs
-> the stale pins too — one more reason not to use it (§6). Consider updating
-> `requirements.txt` to match reality as a follow-up.
+> `web3==6.0.0` and `Flask==2.3.0`, but the versions that actually work are
+> **web3 7.16 and flask 3.1.3** — **VERIFIED 2026-08-18**, installed and exercised
+> end to end. `start-system.sh` installs the stale pins too — one more reason not
+> to use it (§6). **Resolved 2026-08-19:** both requirements files now carry
+> ranges matching what runs.
 
 ### C4. State directory (ext4 — see §7.1)
 
@@ -262,8 +264,10 @@ and failure table, and it is current as of `489b3d41`. Deltas for a fresh WSL
 machine:
 
 1. **§2 Ganache** — the "must run **inside WSL**" caveat **applies**. A Ganache
-   started on the Windows side is not reachable from the distro
-   (`BRINGUP_STATUS.md`). Keep `--networkId 1337` and `--wallet.deterministic`.
+   started on the Windows side is not reachable from the distro. Keep
+   `--networkId 1337` and `--wallet.deterministic` — the latter matters more than
+   it looks: a stray container on 8545 uses a different mnemonic, so the deployer
+   account is the tell (§7.2).
 2. **§3 contract** — the artifact carries 18 stale network entries and a dead
    address. Optionally prune (`networks = {}`) before `truffle migrate --reset`
    so the file stays readable.
@@ -563,11 +567,17 @@ most of Phase A.
 - **Parameterize the host string** in `consolidate_results.py:387` — reading it
   from an env var would remove a manual pre-consolidation edit that is easy to
   forget, and easier still to miss here because the rebuilt host is *also* WSL2.
-- **`BRINGUP_STATUS.md` does not exist.** It is cited 7x in `STACK_BRINGUP.md`,
-  once in `PHASE3_REPORT.md`, and several times above — but it is absent from the
-  working tree, from every branch, and from history. The facts it is cited for
-  (the three `fabric-samples` defects, the CA port mismatch 11054 vs 9054, the
-  web3 7.16 / flask 3.1.3 versions, "Ganache must run inside WSL") are restated
+- **`BRINGUP_STATUS.md` is gone — resolved 2026-08-19.** It was not a phantom: it
+  existed as an untracked file recording the 2026-07-01 known-good bring-up, and
+  `PHASE3_REPORT.md` names it under "Not committed, deliberately". Being untracked,
+  it was destroyed with the distro contents and is absent from the working tree,
+  every branch, and history. All 11 citations of it (7 in `STACK_BRINGUP.md`, 4
+  here) have been downgraded to plain assertions, with the claims re-verified this
+  session marked **VERIFIED 2026-08-18**. The reference in `PHASE3_REPORT.md` is
+  left intact: it is not a citation but the record explaining the loss. Nothing was
+  reconstructed. The facts it was cited for (the three `fabric-samples` defects,
+  the CA port mismatch 11054 vs 9054, the web3 7.16 / flask 3.1.3 versions,
+  "Ganache must run inside WSL") are restated
   inline wherever they matter, so no instruction here depends on retrieving it —
   but the provenance is unverifiable. Either restore the file or downgrade the
   citations to plain assertions.
