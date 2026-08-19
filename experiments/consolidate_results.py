@@ -73,6 +73,11 @@ def contract_addr_of(node):
     return prov.get("contract_addr") or prov.get("contract_address")
 
 
+def server_mode_of(node):
+    """Server mode recorded by an experiment, or None if it predates the field."""
+    return ((node or {}).get("provenance") or {}).get("server_mode")
+
+
 def gate(exp, node):
     """Return a withholding reason for this experiment, or None to admit it."""
     if exp in REQUIRE_SCHEMA_V2 and node.get("schema_version") != 2:
@@ -385,6 +390,12 @@ def main(stamp):
         "outbox": "SQLite WAL, async relay worker (Phase 2)",
         "architecture": "async anchor: 202 after private commit, relay delivers anchor",
         "host": "WSL2 Ubuntu-22.04 + Docker Desktop (i5-8500 4c/7GB, ext4 rebuild 2026-08-18)",
+        # Added 2026-08-19. Runs before this date carry hashes computed WITHOUT
+        # this field and are NOT recomputed -- a hash is a record of what was
+        # known when it was taken. It is here because debug=True and
+        # debug=False hashed identically while differing 131% in all_public
+        # throughput, which made the hash unable to separate runs it should.
+        "server_mode": server_mode_of(admitted.get("exp1")) or "unrecorded",
     }
     config_hash = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()[:12]
 

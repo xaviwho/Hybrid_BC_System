@@ -32,7 +32,13 @@ single-threaded relay — a real system property, and strictly below
 and three record classes are reported, not two:
 
   all_public     every field publishable  -> Fabric commit + anchor
-  all_sensitive  no field publishable     -> Fabric commit only, NO anchor
+  all_sensitive  named for intent, but still anchors: it carries deviceId, which
+                 policy_engine rules PUBLIC, so metadata_obj is non-empty. Kept
+                 unchanged for comparability with prior runs (2026-08-19).
+  fabric_only    genuinely no publishable field -> Fabric commit only, NO anchor.
+                 The class that actually exercises Algorithm 1's FABRIC_ONLY
+                 branch; added 2026-08-19 after anchors_enqueued showed 50/50 on
+                 all three original classes.
   mixed          some of each             -> Fabric commit + redacted anchor
                                              (the realistic case; never measured before)
 
@@ -75,7 +81,7 @@ NONCE = str(int(time.time()))
 # --- Measurement configuration ---
 WARMUP = 20                              # discarded, per class and per level
 LAT_REPS = 200                           # >= 200 per class (spec: RESULTS.json v2)
-CLASSES = ["all_public", "all_sensitive", "mixed"]
+CLASSES = ["all_public", "all_sensitive", "mixed", "fabric_only"]
 TPUT_CONC = [1, 2, 4, 8, 10, 12, 14, 16, 20, 24, 32]
 TPUT_N = 50                              # >= 50 per level
 ANCHOR_POLL_S = 0.05                     # completion-latency poll cadence
@@ -98,6 +104,18 @@ def session():
 
 def payload(cls, i):
     """Deterministic payload per record class. No randomness."""
+    if cls == "fabric_only":
+        # Algorithm 1 FABRIC_ONLY branch: nothing publishable at all, so
+        # metadata_obj is empty and anchor_required is False -- private commit
+        # with no public anchor. Deliberately omits deviceId, which
+        # policy_engine rules PUBLIC (PUB-DEVICEID) and which every other class
+        # carries; that field is why the other three all anchor despite their
+        # names. Returned before `base` so the existing three classes are
+        # byte-identical to previous runs and stay comparable.
+        return {"id": f"{cls}-{NONCE}-{i}",
+                "patientId": f"P{i:05d}", "diagnosis": f"cond_{i % 7}",
+                "ssn": f"{i%900+100}-{i%90+10}-{i%9000+1000}",
+                "homeAddress": f"{i} Main St"}
     base = {"id": f"{cls}-{NONCE}-{i}", "deviceId": f"d{i % 50}"}
     if cls == "all_public":
         # Every field publishable: telemetry only.
@@ -507,6 +525,8 @@ def main():
             "chain_id": health.get("chain_id"),
             "network_id": health.get("network_id"),
             "outbox_db": health.get("outbox_db"),
+            # Server mode is part of the config vector from 2026-08-19 on.
+            "server_mode": health.get("server_mode"),
         },
         "latency": latency,
         "relay_drain": drain,

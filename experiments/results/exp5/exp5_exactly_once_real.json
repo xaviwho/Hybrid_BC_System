@@ -1,7 +1,7 @@
 {
   "experiment": "exp5_exactly_once_real",
   "schema_version": 2,
-  "timestamp": "2026-08-19T13:56:32",
+  "timestamp": "2026-08-19T19:26:06",
   "measured": true,
   "provenance": {
     "architecture": "async: 202 after private commit, anchor delivered by the outbox relay; tx hashes collected from /anchor_status, not from the ingest response",

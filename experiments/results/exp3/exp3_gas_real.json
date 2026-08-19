@@ -1,7 +1,7 @@
 {
   "experiment": "exp3_gas_real",
   "schema_version": 2,
-  "timestamp": "2026-08-19T13:56:09",
+  "timestamp": "2026-08-19T19:25:44",
   "provenance": {
     "data_source": "real transactions against deployed IoTDataRegistry",
     "chain_id": 1337,
@@ -19,51 +19,51 @@
     ],
     "total_transactions": 27,
     "all_tx_hashes": [
-      "4505b307378ffe1f2e33b4fcfaff4e1c3a2020b603577bc65504d93695976d95",
-      "d2922642161153bc085d8d7361741528cd3994c05f125e63eb1f7bcc64ca7a05",
-      "42803227943fa1e69fa31e5548cf4ad19f359f29df62a893dcc9bc62a688c617",
-      "329edd38c4ad71eec69ba06903e48219b0f0d68a55a672970b3bfc2ce46a9bc9",
-      "b6c83935e8a4bcfe6125f9d0fdd062db83e2b021b84162220702ce01e70db2de",
-      "1ca06c339a105c30bbfd2695e551ce298869f3d68e30c78380b520c42a69e6b4",
-      "b3d993682e5da7e302201902eafeb9d3988eafb1d45b69b6568c6de6543a0956",
-      "4063844a918c1c42b04ec19846d0180521c9a10edb69a5b3a9ba0a44e027bf7a",
-      "ea794cc1fa76e7ce54cab5f04b782d3ef42de0f78b434573e2fab4faed0c956a",
-      "888a6f46b7507a6a9f6fd41732c959a7debe5da77f1051d8401279cea8828919",
-      "e7e3b2faa4c55aef776af1c3de9d2af02190d9610e0274a37f9c3de221213458",
-      "34642f812b41e03949afd286cfe06ef580fec12e0be721c7ff2997cfe838d4cd",
-      "8da70c1077e6825b0b39c8df34ef49a914f7df27ad3a401294f994fd0073242c",
-      "1c2fd7ce21a04861ae60a4a504fc6fc1d181f6ebb27f98ee6e58677052043425",
-      "714e4f375cc1e39860ae6e04e2be4c9092412801bbe111a0bffc2150341d3640",
-      "2ba498818af27aa4efa54416c089c3d88e7d45824a6ef5b9e85a8119b6c7168a",
-      "321a3da0046f2c886f6673e7b83c1ac9c7888e58567c4c3594b8a7c9dd60d9f5",
-      "e86542b17598f94154cdbd4f579a2184d77c321e278c89b1fcad4fa06e375bde",
-      "1777ba888d53eec61ff5d343ac5999abaa2aafc7505bab255ac5c5da172a7f5d",
-      "599bfb1d3b4e270410412dffba546b082025f1e18960a72b58685d0b3d26bba5",
-      "9ae5fd106990c143a4c0e0855a0c746acb45c073dc1063e38558088e72e1df65",
-      "e48aab81bd4d6864c0f7510865a4a64a02f47fcc67e27a8caf4d64b754f8f850",
-      "1d7fa0e78e2f3763c63048294a5d1093be1001b7a32485160482a31788629276",
-      "872bb46f7c0897a47cf6ef05c2b19b7eed7dc3ba8ccae00f2d8c5f880884284a",
-      "db24afa9bcc9fefd8ab0017b7a692a803b9efd46286505a91c8db75ff2d089ad",
-      "efa34b332443f1eef967bf1f1255877051428a259542411b84eea138a1a08fe9",
-      "aae63dad59b2b2e80afe2322bdbbd4cfe98c45d02fb7c6230f5232d361340e14"
+      "d4d094015b766432d3e95e226332514dcae8d83794121376a6948d1fcf47ff57",
+      "94403e91fdc3a8bc6fadb328e2f8c224a4f4cbfc5175fc7f22949cbdc42ed4e9",
+      "c2c6910e6a86400fab7383f9278beb364443e6dca17bb18fbb0e161ea9ebabb8",
+      "d521b357edbfafee43330c6b70aa4aa73ebe5259576a113527ef13b1f774b965",
+      "bfbbeaa7c60041dfb42f56a5d80a03361800c8701d3bbf4d2805d08ce7897061",
+      "54e510515d24e1b1c6a6d79a41aa01b6d4fa6e0eeb9fa18276fe6de85b2edf28",
+      "d60363b2bd62c8399f7f1e1681d7d72f2c2431181103894f8f2ad1daab101a08",
+      "1d35a38527f6328241aea6e0c1471c7025c3eaf2d0cd54d2e5df61b4ab6ac4a3",
+      "175e3adcd5e89df3bd4210d366308403cc771e7bda51294ceb21fcc865fc814e",
+      "d47a14e538b9cf2185b967a751335b13de4aff45b2a60a3bc2e5d8c9046c3057",
+      "4e99a674e15e8d48756aced3ffeb552c36470e4d64b739f7bb2f88e24397a991",
+      "fa3d95c4d40662fddfd59320d0aa143bbf04a263f3aec8b6cf026ba6fe74e4f2",
+      "e1303a980b0a6df47b6b9306847918d394076b91d73a302f58b1afa3419aa4e6",
+      "39247bfe2fea3dc88ef7ebfd7f0177abb5890d0c30686076dea0d0b9918a0b70",
+      "485e28b7f59eb775e27c755398d76b983cf8bc4fe46c6aa2d4a438611a1ee1e7",
+      "e5845d2289341a7b253571337b2a4976f6876afdfc77cc36f2f51e4e23cd476f",
+      "7dac1a57677321a38ffefa6d2f3697c1ee0c016bd9cc300ae0c41ca99d3cd86c",
+      "0a5209565ec95955a2a0546bc940d8d18da31914e27b7e7f856768043483e054",
+      "11e6a2eb8f5d56a6fc316654800e9da2816decbc404a7c2862c2842b5d26901b",
+      "f3676fd4a07c9771db40d9f54a2df19c694865bee992f7e4af532d00f6f08ba0",
+      "80964ab31a46d9c13e0a996dccec3ffb91ae631bb8244f66f5b2c0e933e029ae",
+      "d48229e2571fee0ac6ebb587f5d25a39fa82c06292dbb4e67b6fe664ea86cf7a",
+      "50060f3740b903d1384e131d35ab0b36f40c791d14fb26933a691af54b535cbb",
+      "dd07580b5118d9ac25d69ef754ac37620474d28bb4cd5c7d1f7826fe6edd9edb",
+      "11ed38eaf5c5ba969bdb6e33f5b0eede62a9661ca9260477309e97b3dfcabdb9",
+      "b49bd8e20448dfe31d1a8d8d8715eb245ce978e7dc0c07e033ece9bb65521da6",
+      "6fc0448be3b9a14de6149203c073f9d5a47a5f2e5b4c360b178bd5c12fe7ce02"
     ]
   },
   "single_anchor_gas": {
     "kind": "measured",
     "n": 3,
-    "mean": 273691.0,
-    "min": 273683,
+    "mean": 273695.0,
+    "min": 273695,
     "max": 273695,
-    "stdev": 5.657,
+    "stdev": 0.0,
     "samples": [
       273695,
       273695,
-      273683
+      273695
     ],
     "tx_hashes": [
-      "4505b307378ffe1f2e33b4fcfaff4e1c3a2020b603577bc65504d93695976d95",
-      "d2922642161153bc085d8d7361741528cd3994c05f125e63eb1f7bcc64ca7a05",
-      "42803227943fa1e69fa31e5548cf4ad19f359f29df62a893dcc9bc62a688c617"
+      "d4d094015b766432d3e95e226332514dcae8d83794121376a6948d1fcf47ff57",
+      "94403e91fdc3a8bc6fadb328e2f8c224a4f4cbfc5175fc7f22949cbdc42ed4e9",
+      "c2c6910e6a86400fab7383f9278beb364443e6dca17bb18fbb0e161ea9ebabb8"
     ],
     "note": "zero variance is expected: registerData writes a fixed-size struct and the metadata string is the same length for every single-record sample"
   },
@@ -78,30 +78,30 @@
       "root_anchor_gas": {
         "kind": "measured",
         "n": 3,
-        "mean": 296255.0,
-        "min": 296243,
+        "mean": 296267.0,
+        "min": 296267,
         "max": 296267,
-        "stdev": 9.798,
+        "stdev": 0.0,
         "samples": [
-          296243,
-          296255,
+          296267,
+          296267,
           296267
         ]
       },
       "batched_gas_per_record": {
         "kind": "derived",
-        "value": 296255.0,
+        "value": 296267.0,
         "derivation": "measured_root_gas(N=1).mean / 1"
       },
       "gas_reduction_pct": {
         "kind": "derived",
-        "value": -8.24,
+        "value": -8.25,
         "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
       },
       "tx_hashes": [
-        "329edd38c4ad71eec69ba06903e48219b0f0d68a55a672970b3bfc2ce46a9bc9",
-        "b6c83935e8a4bcfe6125f9d0fdd062db83e2b021b84162220702ce01e70db2de",
-        "1ca06c339a105c30bbfd2695e551ce298869f3d68e30c78380b520c42a69e6b4"
+        "d521b357edbfafee43330c6b70aa4aa73ebe5259576a113527ef13b1f774b965",
+        "bfbbeaa7c60041dfb42f56a5d80a03361800c8701d3bbf4d2805d08ce7897061",
+        "54e510515d24e1b1c6a6d79a41aa01b6d4fa6e0eeb9fa18276fe6de85b2edf28"
       ]
     },
     {
@@ -114,19 +114,19 @@
       "root_anchor_gas": {
         "kind": "measured",
         "n": 3,
-        "mean": 296263.0,
-        "min": 296255,
+        "mean": 296267.0,
+        "min": 296267,
         "max": 296267,
-        "stdev": 5.657,
+        "stdev": 0.0,
         "samples": [
-          296255,
+          296267,
           296267,
           296267
         ]
       },
       "batched_gas_per_record": {
         "kind": "derived",
-        "value": 148131.5,
+        "value": 148133.5,
         "derivation": "measured_root_gas(N=2).mean / 2"
       },
       "gas_reduction_pct": {
@@ -135,9 +135,9 @@
         "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
       },
       "tx_hashes": [
-        "b3d993682e5da7e302201902eafeb9d3988eafb1d45b69b6568c6de6543a0956",
-        "4063844a918c1c42b04ec19846d0180521c9a10edb69a5b3a9ba0a44e027bf7a",
-        "ea794cc1fa76e7ce54cab5f04b782d3ef42de0f78b434573e2fab4faed0c956a"
+        "d60363b2bd62c8399f7f1e1681d7d72f2c2431181103894f8f2ad1daab101a08",
+        "1d35a38527f6328241aea6e0c1471c7025c3eaf2d0cd54d2e5df61b4ab6ac4a3",
+        "175e3adcd5e89df3bd4210d366308403cc771e7bda51294ceb21fcc865fc814e"
       ]
     },
     {
@@ -171,9 +171,9 @@
         "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
       },
       "tx_hashes": [
-        "888a6f46b7507a6a9f6fd41732c959a7debe5da77f1051d8401279cea8828919",
-        "e7e3b2faa4c55aef776af1c3de9d2af02190d9610e0274a37f9c3de221213458",
-        "34642f812b41e03949afd286cfe06ef580fec12e0be721c7ff2997cfe838d4cd"
+        "d47a14e538b9cf2185b967a751335b13de4aff45b2a60a3bc2e5d8c9046c3057",
+        "4e99a674e15e8d48756aced3ffeb552c36470e4d64b739f7bb2f88e24397a991",
+        "fa3d95c4d40662fddfd59320d0aa143bbf04a263f3aec8b6cf026ba6fe74e4f2"
       ]
     },
     {
@@ -186,19 +186,19 @@
       "root_anchor_gas": {
         "kind": "measured",
         "n": 3,
-        "mean": 296267.0,
-        "min": 296267,
+        "mean": 296263.0,
+        "min": 296255,
         "max": 296267,
-        "stdev": 0.0,
+        "stdev": 5.657,
         "samples": [
           296267,
-          296267,
+          296255,
           296267
         ]
       },
       "batched_gas_per_record": {
         "kind": "derived",
-        "value": 29626.7,
+        "value": 29626.3,
         "derivation": "measured_root_gas(N=10).mean / 10"
       },
       "gas_reduction_pct": {
@@ -207,9 +207,9 @@
         "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
       },
       "tx_hashes": [
-        "8da70c1077e6825b0b39c8df34ef49a914f7df27ad3a401294f994fd0073242c",
-        "1c2fd7ce21a04861ae60a4a504fc6fc1d181f6ebb27f98ee6e58677052043425",
-        "714e4f375cc1e39860ae6e04e2be4c9092412801bbe111a0bffc2150341d3640"
+        "e1303a980b0a6df47b6b9306847918d394076b91d73a302f58b1afa3419aa4e6",
+        "39247bfe2fea3dc88ef7ebfd7f0177abb5890d0c30686076dea0d0b9918a0b70",
+        "485e28b7f59eb775e27c755398d76b983cf8bc4fe46c6aa2d4a438611a1ee1e7"
       ]
     },
     {
@@ -243,9 +243,9 @@
         "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
       },
       "tx_hashes": [
-        "2ba498818af27aa4efa54416c089c3d88e7d45824a6ef5b9e85a8119b6c7168a",
-        "321a3da0046f2c886f6673e7b83c1ac9c7888e58567c4c3594b8a7c9dd60d9f5",
-        "e86542b17598f94154cdbd4f579a2184d77c321e278c89b1fcad4fa06e375bde"
+        "e5845d2289341a7b253571337b2a4976f6876afdfc77cc36f2f51e4e23cd476f",
+        "7dac1a57677321a38ffefa6d2f3697c1ee0c016bd9cc300ae0c41ca99d3cd86c",
+        "0a5209565ec95955a2a0546bc940d8d18da31914e27b7e7f856768043483e054"
       ]
     },
     {
@@ -254,78 +254,6 @@
       "tree_depth": 6,
       "proof_len_hashes": 6,
       "proof_size_bytes": 192,
-      "calldata_bytes": 66,
-      "root_anchor_gas": {
-        "kind": "measured",
-        "n": 3,
-        "mean": 296263.0,
-        "min": 296255,
-        "max": 296267,
-        "stdev": 5.657,
-        "samples": [
-          296267,
-          296267,
-          296255
-        ]
-      },
-      "batched_gas_per_record": {
-        "kind": "derived",
-        "value": 5925.3,
-        "derivation": "measured_root_gas(N=50).mean / 50"
-      },
-      "gas_reduction_pct": {
-        "kind": "derived",
-        "value": 97.84,
-        "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
-      },
-      "tx_hashes": [
-        "1777ba888d53eec61ff5d343ac5999abaa2aafc7505bab255ac5c5da172a7f5d",
-        "599bfb1d3b4e270410412dffba546b082025f1e18960a72b58685d0b3d26bba5",
-        "9ae5fd106990c143a4c0e0855a0c746acb45c073dc1063e38558088e72e1df65"
-      ]
-    },
-    {
-      "batch_size": 100,
-      "leaf_count": 100,
-      "tree_depth": 7,
-      "proof_len_hashes": 7,
-      "proof_size_bytes": 224,
-      "calldata_bytes": 66,
-      "root_anchor_gas": {
-        "kind": "measured",
-        "n": 3,
-        "mean": 296263.0,
-        "min": 296255,
-        "max": 296267,
-        "stdev": 5.657,
-        "samples": [
-          296267,
-          296255,
-          296267
-        ]
-      },
-      "batched_gas_per_record": {
-        "kind": "derived",
-        "value": 2962.6,
-        "derivation": "measured_root_gas(N=100).mean / 100"
-      },
-      "gas_reduction_pct": {
-        "kind": "derived",
-        "value": 98.92,
-        "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
-      },
-      "tx_hashes": [
-        "e48aab81bd4d6864c0f7510865a4a64a02f47fcc67e27a8caf4d64b754f8f850",
-        "1d7fa0e78e2f3763c63048294a5d1093be1001b7a32485160482a31788629276",
-        "872bb46f7c0897a47cf6ef05c2b19b7eed7dc3ba8ccae00f2d8c5f880884284a"
-      ]
-    },
-    {
-      "batch_size": 200,
-      "leaf_count": 200,
-      "tree_depth": 8,
-      "proof_len_hashes": 8,
-      "proof_size_bytes": 256,
       "calldata_bytes": 66,
       "root_anchor_gas": {
         "kind": "measured",
@@ -342,6 +270,78 @@
       },
       "batched_gas_per_record": {
         "kind": "derived",
+        "value": 5925.3,
+        "derivation": "measured_root_gas(N=50).mean / 50"
+      },
+      "gas_reduction_pct": {
+        "kind": "derived",
+        "value": 97.84,
+        "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
+      },
+      "tx_hashes": [
+        "11e6a2eb8f5d56a6fc316654800e9da2816decbc404a7c2862c2842b5d26901b",
+        "f3676fd4a07c9771db40d9f54a2df19c694865bee992f7e4af532d00f6f08ba0",
+        "80964ab31a46d9c13e0a996dccec3ffb91ae631bb8244f66f5b2c0e933e029ae"
+      ]
+    },
+    {
+      "batch_size": 100,
+      "leaf_count": 100,
+      "tree_depth": 7,
+      "proof_len_hashes": 7,
+      "proof_size_bytes": 224,
+      "calldata_bytes": 66,
+      "root_anchor_gas": {
+        "kind": "measured",
+        "n": 3,
+        "mean": 296267.0,
+        "min": 296267,
+        "max": 296267,
+        "stdev": 0.0,
+        "samples": [
+          296267,
+          296267,
+          296267
+        ]
+      },
+      "batched_gas_per_record": {
+        "kind": "derived",
+        "value": 2962.7,
+        "derivation": "measured_root_gas(N=100).mean / 100"
+      },
+      "gas_reduction_pct": {
+        "kind": "derived",
+        "value": 98.92,
+        "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
+      },
+      "tx_hashes": [
+        "d48229e2571fee0ac6ebb587f5d25a39fa82c06292dbb4e67b6fe664ea86cf7a",
+        "50060f3740b903d1384e131d35ab0b36f40c791d14fb26933a691af54b535cbb",
+        "dd07580b5118d9ac25d69ef754ac37620474d28bb4cd5c7d1f7826fe6edd9edb"
+      ]
+    },
+    {
+      "batch_size": 200,
+      "leaf_count": 200,
+      "tree_depth": 8,
+      "proof_len_hashes": 8,
+      "proof_size_bytes": 256,
+      "calldata_bytes": 66,
+      "root_anchor_gas": {
+        "kind": "measured",
+        "n": 3,
+        "mean": 296259.0,
+        "min": 296255,
+        "max": 296267,
+        "stdev": 5.657,
+        "samples": [
+          296255,
+          296267,
+          296255
+        ]
+      },
+      "batched_gas_per_record": {
+        "kind": "derived",
         "value": 1481.3,
         "derivation": "measured_root_gas(N=200).mean / 200"
       },
@@ -351,16 +351,16 @@
         "derivation": "100 * (1 - batched_gas_per_record / measured_single_gas)"
       },
       "tx_hashes": [
-        "db24afa9bcc9fefd8ab0017b7a692a803b9efd46286505a91c8db75ff2d089ad",
-        "efa34b332443f1eef967bf1f1255877051428a259542411b84eea138a1a08fe9",
-        "aae63dad59b2b2e80afe2322bdbbd4cfe98c45d02fb7c6230f5232d361340e14"
+        "11ed38eaf5c5ba969bdb6e33f5b0eede62a9661ca9260477309e97b3dfcabdb9",
+        "b49bd8e20448dfe31d1a8d8d8715eb245ce978e7dc0c07e033ece9bb65521da6",
+        "6fc0448be3b9a14de6149203c073f9d5a47a5f2e5b4c360b178bd5c12fe7ce02"
       ]
     }
   ],
   "root_gas_flat_in_N": {
     "kind": "measured",
     "value": true,
-    "relative_spread": 4e-05,
+    "relative_spread": 3e-05,
     "tolerance": 0.01,
     "note": "Root gas is independent of N because only the 32-byte root is stored on chain \u2014 this is WHY batching works, and it is now measured rather than assumed."
   },

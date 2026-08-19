@@ -300,6 +300,11 @@ def health_check():
         "network_id": (CONTRACT_RESOLUTION or {}).get("network_id"),
         "chain_id": (CONTRACT_RESOLUTION or {}).get("chain_id"),
         "outbox_db": OUTBOX_DB,
+        # Measured, not asserted: a dev server with the reloader and a
+        # production-mode server produced a 131% throughput difference on
+        # 2026-08-19 while hashing identically. The config vector now records
+        # this so the two are distinguishable after the fact.
+        "server_mode": "debug" if app.debug else "production",
     }), 200
 
 @app.route('/ingest_data', methods=['POST'])
