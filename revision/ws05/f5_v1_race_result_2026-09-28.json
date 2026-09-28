@@ -1,0 +1,3 @@
+{"code_under_test": "git show v1-submitted:orchestrator/outbox.py",
+ "trials": 20, "rows_per_trial": 40, "rows_anchored_more_than_once": 20,
+ "rows_total": 800, "per_trial": [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]}

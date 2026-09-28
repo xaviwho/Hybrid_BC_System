@@ -127,8 +127,12 @@ def test_all_sensitive_no_outbox_row(db):
     check("no outbox row exists", ob.get("rec-sens") is None)
     check("dedup record persisted (committed privately)",
           ob.get_dedup("rec-sens") is not None)
-    check("counted in reconciliation set (privately committed, unanchored)",
-          any(r["id"] == "rec-sens" for r in ob.find_unanchored()))
+    # FABRIC_ONLY is unanchored by design, not a reconciliation target. Before
+    # WS0.5 find_unanchored() returned it (AUDIT_WS0 §2.2 / outbox docstring).
+    check("FABRIC_ONLY record is NOT in the reconciliation set",
+          not any(r["id"] == "rec-sens" for r in ob.find_unanchored()))
+    check("dedup row carries route FABRIC_ONLY",
+          ob.get_dedup("rec-sens")["route"] == "FABRIC_ONLY")
 
 
 def test_retry_and_failure(db):
@@ -214,13 +218,38 @@ def test_queue_wait_vs_anchor_cost(db):
           f"total {last['total_ms']:.1f} ms vs anchor {last['anchor_ms']:.1f} ms")
 
     rt = ob.relay_throughput()
-    check("relay reports a drain rate", rt["drain_rate_per_s"] is not None,
-          f"{rt['drain_rate_per_s']} anchors/s over {rt['span_s']} s")
+    check("relay reports a delivery rate", rt["delivery_rate_per_s"] is not None,
+          f"{rt['delivery_rate_per_s']} anchors/s over {rt['span_s']} s")
     # A single-threaded relay doing ANCHOR_DELAY_S per anchor cannot exceed 1/delay.
     ceiling = 1.0 / ANCHOR_DELAY_S
-    check("drain rate does not exceed the single-threaded ceiling",
-          rt["drain_rate_per_s"] <= ceiling * 1.15,
-          f"{rt['drain_rate_per_s']:.2f} /s vs ceiling {ceiling:.2f} /s")
+    check("delivery rate does not exceed the single-threaded ceiling",
+          rt["delivery_rate_per_s"] <= ceiling * 1.15,
+          f"{rt['delivery_rate_per_s']:.2f} /s vs ceiling {ceiling:.2f} /s")
+    check("timings are monotonic-clock differences", first.get("clock") == "monotonic")
+
+
+def test_two_relays_no_double_claim(db):
+    print("\n[10] two relays on one queue -> every row anchored exactly once (F5)")
+    chain = StubChain()                       # shared: counts calls across both relays
+    n = 40
+    seed = Outbox(db)
+    for i in range(n):
+        seed.commit_and_enqueue(f"r2-{i}", f"c-{i}", f"f-{i}",
+                                payload={"data_id": f"t-{i}", "m": {"i": i}})
+    a = Outbox(db, anchor_fn=chain, poll_interval_s=0.001, relay_id="relay-a")
+    b = Outbox(db, anchor_fn=chain, poll_interval_s=0.001, relay_id="relay-b")
+    a.start_relay(); b.start_relay()
+    ok = _wait(lambda: seed.stats()["queue_depth"] == 0, timeout=30)
+    a.stop_relay(); b.stop_relay()
+    check("both relays drain the queue", ok)
+    dup = [f"r2-{i}" for i in range(n) if chain.count_for(f"r2-{i}") != 1]
+    check("no row anchored twice or skipped", not dup, f"bad={dup[:5]}")
+    by = {r["delivered_by"] for r in (seed.get(f"r2-{i}") for i in range(n))}
+    check("work was actually shared between the relays", by == {"relay-a", "relay-b"},
+          f"delivered_by={sorted(by)}")
+    names = {r["relay_id"] for r in seed.relays()}
+    check("both relays registered heartbeats", {"relay-a", "relay-b"} <= names,
+          f"{sorted(names)}")
 
 
 def test_wal_guard(db):
@@ -301,6 +330,7 @@ def main():
         test_retry_and_failure(os.path.join(tmp, "t5.db"))
         test_request_thread_isolation(os.path.join(tmp, "t6.db"))
         test_queue_wait_vs_anchor_cost(os.path.join(tmp, "t9.db"))
+        test_two_relays_no_double_claim(os.path.join(tmp, "t10.db"))
         test_wal_guard(os.path.join(tmp, "t7.db"))
         test_contract_registry()
     finally:

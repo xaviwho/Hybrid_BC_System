@@ -328,3 +328,25 @@ themselves are arithmetically exact.
 | F9 µ_relay | Measure under saturation | WS3 |
 | Storage | Quote 4.01× at 800 versions for Fig. 8(b); qualify 4.04× if used | Manuscript |
 | Contract changes | Relay allowlist plus the F3 key change in **one** redeploy, so all of v2 shares one address | WS0.5 |
+
+---
+
+## Addendum (WS0.5, 2026-09-28)
+
+Resolved or confirmed in `revision/WS0_5.md`:
+
+- **F5 confirmed on the v1 code:** 20 of 800 rows were anchored twice with two
+  relays (`ws05/f5_v1_race_result_2026-09-28.json`).
+- **F7, two more instances found by querying the system:**
+  - the config string "chaincode iot-data seq2" was wrong; the committed
+    definition was sequence 1 with the channel-default endorsement policy;
+  - the images are tagged `:latest`, and resolve to 2.5.0 only by coincidence.
+- **New:** the Raft orderer has **one consenter**, so it tolerates no orderer
+  failure.
+- **New:** the manuscript defines h = Keccak-256 of the *redacted* metadata m,
+  and anchors c = H(σ) with σ = ⟨id, k, ν, τ, h⟩ (Eqs. 12, 20a, 22). It also
+  specifies a Fabric read-back before the acknowledgement (Alg. 1 l.22). v1
+  anchored SHA-256 over the full record, including sensitive fields, and did
+  no read-back. v2 implements the manuscript's model.
+- **Correction to §0:** GitHub could not be updated. The push was denied for
+  user `CHYMEE`.

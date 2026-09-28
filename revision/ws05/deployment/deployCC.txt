@@ -1,0 +1,139 @@
+[0;34mUsing docker and docker-compose[0m
+[0;34mdeploying chaincode on channel 'hiot'[0m
+executing with the following
+- CHANNEL_NAME: [0;32mhiot[0m
+- CC_NAME: [0;32miot-data[0m
+- CC_SRC_PATH: [0;32m/root/Hybrid_BC_System/blockchain/chaincode/iot-data/go[0m
+- CC_SRC_LANGUAGE: [0;32mgo[0m
+- CC_VERSION: [0;32m2.0[0m
+- CC_SEQUENCE: [0;32m2[0m
+- CC_END_POLICY: [0;32mAND('Org1MSP.peer','Org2MSP.peer')[0m
+- CC_COLL_CONFIG: [0;32mNA[0m
+- CC_INIT_FCN: [0;32mNA[0m
+- DELAY: [0;32m3[0m
+- MAX_RETRY: [0;32m5[0m
+- VERBOSE: [0;32mfalse[0m
+executing with the following
+- CC_NAME: [0;32miot-data[0m
+- CC_SRC_PATH: [0;32m/root/Hybrid_BC_System/blockchain/chaincode/iot-data/go[0m
+- CC_SRC_LANGUAGE: [0;32mgo[0m
+- CC_VERSION: [0;32m2.0[0m
+[0;34mVendoring Go dependencies at /root/Hybrid_BC_System/blockchain/chaincode/iot-data/go[0m
+~/Hybrid_BC_System/blockchain/chaincode/iot-data/go ~/fabric-clean/test-network
+~/fabric-clean/test-network
+[0;32mFinished vendoring Go dependencies[0m
++ '[' false = true ']'
++ peer lifecycle chaincode package iot-data.tar.gz --path /root/Hybrid_BC_System/blockchain/chaincode/iot-data/go --lang golang --label iot-data_2.0
++ res=0
+[0;32mChaincode is packaged[0m
+[0;34mInstalling chaincode on peer0.org1...[0m
+[0;34mUsing organization 1[0m
++ peer lifecycle chaincode queryinstalled --output json
++ jq -r 'try (.installed_chaincodes[].package_id)'
++ grep '^iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc$'
++ test 1 -ne 0
++ peer lifecycle chaincode install iot-data.tar.gz
++ res=0
+[34m2026-09-28 14:34:26.726 KST 0001 INFO[0m [cli.lifecycle.chaincode] [34;1msubmitInstallProposal[0m -> Installed remotely: response:<status:200 payload:"\nMiot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc\022\014iot-data_2.0" > 
+[34m2026-09-28 14:34:26.732 KST 0002 INFO[0m [cli.lifecycle.chaincode] [34;1msubmitInstallProposal[0m -> Chaincode code package identifier: iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc
+[0;32mChaincode is installed on peer0.org1[0m
+[0;34mInstall chaincode on peer0.org2...[0m
+[0;34mUsing organization 2[0m
++ peer lifecycle chaincode queryinstalled --output json
++ jq -r 'try (.installed_chaincodes[].package_id)'
++ grep '^iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc$'
++ test 1 -ne 0
++ peer lifecycle chaincode install iot-data.tar.gz
++ res=0
+[34m2026-09-28 14:34:47.708 KST 0001 INFO[0m [cli.lifecycle.chaincode] [34;1msubmitInstallProposal[0m -> Installed remotely: response:<status:200 payload:"\nMiot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc\022\014iot-data_2.0" > 
+[34m2026-09-28 14:34:47.708 KST 0002 INFO[0m [cli.lifecycle.chaincode] [34;1msubmitInstallProposal[0m -> Chaincode code package identifier: iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc
+[0;32mChaincode is installed on peer0.org2[0m
+[0;34mUsing organization 1[0m
++ peer lifecycle chaincode queryinstalled --output json
++ jq -r 'try (.installed_chaincodes[].package_id)'
++ grep '^iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc$'
++ res=0
+iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc
+[0;32mQuery installed successful on peer0.org1 on channel[0m
+[0;34mUsing organization 1[0m
++ peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile /root/fabric-clean/test-network/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem --channelID hiot --name iot-data --version 2.0 --package-id iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')'
++ res=0
+[34m2026-09-28 14:34:50.411 KST 0001 INFO[0m [chaincodeCmd] [34;1mClientWait[0m -> txid [38f461f2addf011d09bd522e8e3dd79dff28e11785ff639763a3437fb2fc3738] committed with status (VALID) at localhost:7051
+[0;32mChaincode definition approved on peer0.org1 on channel 'hiot'[0m
+[0;34mUsing organization 1[0m
+[0;34mChecking the commit readiness of the chaincode definition on peer0.org1 on channel 'hiot'...[0m
+[0;34mAttempting to check the commit readiness of the chaincode definition on peer0.org1, Retry after 3 seconds.[0m
++ peer lifecycle chaincode checkcommitreadiness --channelID hiot --name iot-data --version 2.0 --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')' --output json
++ res=0
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": false
+	}
+}
+[0;34mChecking the commit readiness of the chaincode definition successful on peer0.org1 on channel 'hiot'[0m
+[0;34mUsing organization 2[0m
+[0;34mChecking the commit readiness of the chaincode definition on peer0.org2 on channel 'hiot'...[0m
+[0;34mAttempting to check the commit readiness of the chaincode definition on peer0.org2, Retry after 3 seconds.[0m
++ peer lifecycle chaincode checkcommitreadiness --channelID hiot --name iot-data --version 2.0 --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')' --output json
++ res=0
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": false
+	}
+}
+[0;34mChecking the commit readiness of the chaincode definition successful on peer0.org2 on channel 'hiot'[0m
+[0;34mUsing organization 2[0m
++ peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile /root/fabric-clean/test-network/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem --channelID hiot --name iot-data --version 2.0 --package-id iot-data_2.0:14eea702efa3c96008aa3abbbdb8aef823910fa34975d377e1c20da678da07bc --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')'
++ res=0
+[34m2026-09-28 14:34:58.790 KST 0001 INFO[0m [chaincodeCmd] [34;1mClientWait[0m -> txid [825212f992964e9ab93651ed4e5093536c75f97e41b3d14b13ea1e3accecf4a0] committed with status (VALID) at localhost:9051
+[0;32mChaincode definition approved on peer0.org2 on channel 'hiot'[0m
+[0;34mUsing organization 1[0m
+[0;34mChecking the commit readiness of the chaincode definition on peer0.org1 on channel 'hiot'...[0m
+[0;34mAttempting to check the commit readiness of the chaincode definition on peer0.org1, Retry after 3 seconds.[0m
++ peer lifecycle chaincode checkcommitreadiness --channelID hiot --name iot-data --version 2.0 --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')' --output json
++ res=0
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": true
+	}
+}
+[0;34mChecking the commit readiness of the chaincode definition successful on peer0.org1 on channel 'hiot'[0m
+[0;34mUsing organization 2[0m
+[0;34mChecking the commit readiness of the chaincode definition on peer0.org2 on channel 'hiot'...[0m
+[0;34mAttempting to check the commit readiness of the chaincode definition on peer0.org2, Retry after 3 seconds.[0m
++ peer lifecycle chaincode checkcommitreadiness --channelID hiot --name iot-data --version 2.0 --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')' --output json
++ res=0
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": true
+	}
+}
+[0;34mChecking the commit readiness of the chaincode definition successful on peer0.org2 on channel 'hiot'[0m
+[0;34mUsing organization 1[0m
+[0;34mUsing organization 2[0m
++ peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile /root/fabric-clean/test-network/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem --channelID hiot --name iot-data --peerAddresses localhost:7051 --tlsRootCertFiles /root/fabric-clean/test-network/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem --peerAddresses localhost:9051 --tlsRootCertFiles /root/fabric-clean/test-network/organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem --version 2.0 --sequence 2 --signature-policy 'AND('\''Org1MSP.peer'\'','\''Org2MSP.peer'\'')'
++ res=0
+[34m2026-09-28 14:35:08.052 KST 0001 INFO[0m [chaincodeCmd] [34;1mClientWait[0m -> txid [488c78bc577e5adc751f8c566673ae8444449795f6f9db614daa2e932f77b619] committed with status (VALID) at localhost:7051
+[34m2026-09-28 14:35:08.065 KST 0002 INFO[0m [chaincodeCmd] [34;1mClientWait[0m -> txid [488c78bc577e5adc751f8c566673ae8444449795f6f9db614daa2e932f77b619] committed with status (VALID) at localhost:9051
+[0;32mChaincode definition committed on channel 'hiot'[0m
+[0;34mUsing organization 1[0m
+[0;34mQuerying chaincode definition on peer0.org1 on channel 'hiot'...[0m
+[0;34mAttempting to Query committed status on peer0.org1, Retry after 3 seconds.[0m
++ peer lifecycle chaincode querycommitted --channelID hiot --name iot-data
++ res=0
+Committed chaincode definition for chaincode 'iot-data' on channel 'hiot':
+Version: 2.0, Sequence: 2, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true]
+[0;32mQuery chaincode definition successful on peer0.org1 on channel 'hiot'[0m
+[0;34mUsing organization 2[0m
+[0;34mQuerying chaincode definition on peer0.org2 on channel 'hiot'...[0m
+[0;34mAttempting to Query committed status on peer0.org2, Retry after 3 seconds.[0m
++ peer lifecycle chaincode querycommitted --channelID hiot --name iot-data
++ res=0
+Committed chaincode definition for chaincode 'iot-data' on channel 'hiot':
+Version: 2.0, Sequence: 2, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true]
+[0;32mQuery chaincode definition successful on peer0.org2 on channel 'hiot'[0m
+[0;34mChaincode initialization is not required[0m

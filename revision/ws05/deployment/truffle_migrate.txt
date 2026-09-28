@@ -1,0 +1,104 @@
+
+Compiling your contracts...
+===========================
+> Compiling ./contracts/DataAccessRequest.sol
+> Compiling ./contracts/IoTDataRegistry.sol
+> Artifacts written to /root/Hybrid_BC_System/blockchain/setup/ethereum/build/contracts
+> Compiled successfully using:
+   - solc: 0.8.20+commit.a1b79de6.Emscripten.clang
+
+
+Starting migrations...
+======================
+> Network name:    'development'
+> Network id:      1337
+> Block gas limit: 30000000 (0x1c9c380)
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'Migrations'
+   ----------------------
+   > transaction hash:    0x415d9c81b8fdbe5488eb1bebb81f306a79b53a1e00779194aceec848eb85a342
+- Blocks: 0            Seconds: 0
+   > Blocks: 0            Seconds: 0
+   > contract address:    0xe78A0F7E598Cc8b0Bb87894B0F60dD2a88d6a8Ab
+   > block number:        1
+   > block timestamp:     1790573632
+   > account:             0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1
+   > balance:             999.999314804125
+   > gas used:            203021 (0x3190d)
+   > gas price:           3.375 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000685195875 ETH
+
+- Saving migration to chain.
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:      0.000685195875 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Replacing 'IoTDataRegistry'
+   ---------------------------
+   > transaction hash:    0x277ef9bfda52cf9880fda44efd3f48eba5706b323e3ae8bcdb5ea5be92a4f712
+- Blocks: 0            Seconds: 0
+   > Blocks: 0            Seconds: 0
+   > contract address:    0xCfEB869F69431e42cdB54A4F4f105C19C080A601
+   > block number:        3
+   > block timestamp:     1790573632
+   > account:             0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1
+   > balance:             999.997045234691727117
+   > gas used:            668525 (0xa336d)
+   > gas price:           3.171509389 gwei
+   > value sent:          0 ETH
+   > total cost:          0.002120233314281225 ETH
+
+
+   Replacing 'AccessToken'
+   -----------------------
+   > transaction hash:    0xe85b0bd79fe6962ac6fe60c121eda4bb76dc1726dfa03653ab9f3cc47c0a6b2a
+- Blocks: 0            Seconds: 0
+   > Blocks: 0            Seconds: 0
+   > contract address:    0x9561C133DD8580860B6b7E504bC5Aa500f0f06a7
+   > block number:        7
+   > block timestamp:     1790573632
+   > account:             0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1
+   > balance:             999.992262441866295074
+   > gas used:            1502524 (0x16ed3c)
+   > gas price:           2.896670545 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00435231701395558 ETH
+
+
+   Replacing 'DataAccessRequest'
+   -----------------------------
+   > transaction hash:    0xb8dd28bcc80b0ca28e60438b6010ba979837cbe51a6857b6e89828ee1802a0e4
+- Blocks: 0            Seconds: 0
+   > Blocks: 0            Seconds: 0
+   > contract address:    0xe982E462b094850F12AF94d21D470e21bE9D0E9C
+   > block number:        8
+   > block timestamp:     1790573632
+   > account:             0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1
+   > balance:             999.990201759093835322
+   > gas used:            722526 (0xb065e)
+   > gas price:           2.852053452 gwei
+   > value sent:          0 ETH
+   > total cost:          0.002060682772459752 ETH
+
+- Saving migration to chain.
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.008533233100696557 ETH
+
+Summary
+=======
+> Total deployments:   4
+> Final cost:          0.009218428975696557 ETH
+
+

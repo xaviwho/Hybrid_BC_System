@@ -1,3 +1,9 @@
+> **v2 runs: use `scripts/orbit_v2.sh`, not this document** (revision WS0.5,
+> `revision/WS0_5.md`). This file describes the v1 bring-up. Two known errors:
+> §4 names `predict.py`, but v1 actually ran `ml/privacy_filter/policy_service.py`
+> (`predict.py` imports a quarantined classifier and fails); and the `/mnt/e/...`
+> paths are the stale FAT32 copy, while the v1 runs used `/root/Hybrid_BC_System`.
+
 # Stack Bring-Up — WSL2 host
 
 Exact commands to bring the measurement stack up in dependency order, then run the

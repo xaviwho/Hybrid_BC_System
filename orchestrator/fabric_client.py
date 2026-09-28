@@ -66,12 +66,21 @@ def is_available():
     return os.path.exists(f"{FABRIC_BIN}/peer") and os.path.exists(_ORDERER_CA)
 
 
-def store_iot_data(data_id, payload):
-    """Submit StoreIoTData(data_id, payload) to Fabric. Returns the real txid on
-    success, or None on failure. `payload` may be a dict or a JSON string; it is
-    stored verbatim (full record, no field loss)."""
-    payload_str = payload if isinstance(payload, str) else json.dumps(payload)
-    args = json.dumps({"function": "StoreIoTData", "Args": [str(data_id), payload_str]})
+def store_iot_data(data_id, envelope):
+    """Submit StoreIoTData(data_id, envelope) to Fabric. Returns the txid of this
+    invocation on success, or None on failure.
+
+    `envelope` is a JSON string (commitment.make_envelope). Chaincode v2 stores
+    it verbatim as a string field, next to the id of the transaction that
+    created the record. The invocation is idempotent: if data_id already exists
+    it writes nothing, and the txid returned here is NOT the record's txid.
+    Callers read the record back (read_iot_data) to learn what was stored.
+
+    Before v2 the chaincode unmarshalled the payload into a four-field struct
+    and discarded every other field (AUDIT_WS0 F2)."""
+    if not isinstance(envelope, str):
+        raise TypeError("envelope must be the canonical JSON string")
+    args = json.dumps({"function": "StoreIoTData", "Args": [str(data_id), envelope]})
     cmd = [
         f"{FABRIC_BIN}/peer", "chaincode", "invoke",
         "-o", ORDERER, "--ordererTLSHostnameOverride", ORDERER_HOST,
@@ -99,7 +108,10 @@ def store_iot_data(data_id, payload):
 
 
 def read_iot_data(data_id):
-    """Evaluate ReadIoTData(data_id). Returns the stored record dict, or None."""
+    """Evaluate ReadIoTData(data_id) on the Org1 peer.
+
+    Returns the stored record {"envelope": <str>, "txid": <str>}, or None if the
+    key does not exist or the query fails."""
     args = json.dumps({"function": "ReadIoTData", "Args": [str(data_id)]})
     cmd = [f"{FABRIC_BIN}/peer", "chaincode", "query",
            "-C", CHANNEL, "-n", CC_NAME, "-c", args]
@@ -123,7 +135,11 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     import sys
     rid = sys.argv[1] if len(sys.argv) > 1 else "selftest-1"
-    tx = store_iot_data(rid, {"deviceId": "sensor_x", "temperature": 21.1,
-                              "patientId": "P999", "note": "fabric_client self-test"})
+    env = json.dumps({"x": {"deviceId": "sensor_x", "temperature": 21.1,
+                            "patientId": "P999", "note": "fabric_client self-test"}},
+                     sort_keys=True, separators=(",", ":"))
+    tx = store_iot_data(rid, env)
     print("store txid:", tx)
-    print("read back :", read_iot_data(rid))
+    rec = read_iot_data(rid)
+    print("read back :", rec)
+    print("verbatim  :", bool(rec) and rec.get("envelope") == env)

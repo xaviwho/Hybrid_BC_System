@@ -7,68 +7,69 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
-// SmartContract provides functions for managing IoT data
+// SmartContract stores OrBIT records on the permissioned ledger.
 type SmartContract struct {
 	contractapi.Contract
 }
 
-// IoTData describes basic details of what makes up a simple IoT data point
-type IoTData struct {
-	ID          string `json:"id"`
-	Timestamp   string `json:"timestamp"`
-	Device      string `json:"device"`
-	Value       string `json:"value"`
+// Record is the world-state value for key k.
+//
+// Envelope holds the orchestrator's canonical record bytes (full payload x,
+// public metadata m, H(m), ingress time t0) as a JSON *string*. It is kept as a
+// string rather than embedded as an object because the CouchDB state database
+// re-serialises JSON documents on read; a string value round-trips byte for
+// byte, which is what lets an auditor recompute H(m) from the ledger alone.
+//
+// TxID is the transaction that created the record. It is the version nu in the
+// relay tuple sigma = <id, k, nu, tau, H(m)> (manuscript Eq. 22).
+type Record struct {
+	Envelope string `json:"envelope"`
+	TxID     string `json:"txid"`
 }
 
-// InitLedger adds a base set of data to the ledger
+// InitLedger is required by the lifecycle but has nothing to seed.
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
-	// This is a sample initialization, can be left empty if not needed
-	fmt.Println("IoTData chaincode is initialized")
 	return nil
 }
 
-// StoreIoTData adds a new data entry to the ledger
-func (s *SmartContract) StoreIoTData(ctx contractapi.TransactionContextInterface, id string, payload string) error {
-	// Check if data with the given ID already exists
-	existingData, err := ctx.GetStub().GetState(id)
+// StoreIoTData writes envelope under key id and returns the stored record.
+//
+// Idempotent: if id already exists, nothing is written and the existing record
+// is returned unchanged. A retry after a crash between the Fabric commit and the
+// outbox write therefore converges on the first commit instead of failing. The
+// caller reads the record back and decides whether the stored envelope matches
+// the request (same x) or is a genuine key conflict.
+func (s *SmartContract) StoreIoTData(ctx contractapi.TransactionContextInterface, id string, envelope string) (string, error) {
+	existing, err := ctx.GetStub().GetState(id)
 	if err != nil {
-		return fmt.Errorf("failed to read from world state: %v", err)
+		return "", fmt.Errorf("failed to read from world state: %v", err)
 	}
-	if existingData != nil {
-		return fmt.Errorf("the data %s already exists", id)
+	if existing != nil {
+		return string(existing), nil
 	}
-
-	var data IoTData
-	err = json.Unmarshal([]byte(payload), &data)
+	if !json.Valid([]byte(envelope)) {
+		return "", fmt.Errorf("envelope for %s is not valid JSON", id)
+	}
+	rec, err := json.Marshal(Record{Envelope: envelope, TxID: ctx.GetStub().GetTxID()})
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal iot data: %v", err)
+		return "", fmt.Errorf("failed to marshal record: %v", err)
 	}
-
-	dataJSON, err := json.Marshal(data)
-	if err != nil {
-		return fmt.Errorf("failed to marshal iot data: %v", err)
+	if err := ctx.GetStub().PutState(id, rec); err != nil {
+		return "", err
 	}
-
-	return ctx.GetStub().PutState(id, dataJSON)
+	return string(rec), nil
 }
 
-// ReadIoTData returns the data stored in the world state with given id.
-func (s *SmartContract) ReadIoTData(ctx contractapi.TransactionContextInterface, id string) (*IoTData, error) {
-	dataJSON, err := ctx.GetStub().GetState(id)
+// ReadIoTData returns the stored record for id as JSON.
+func (s *SmartContract) ReadIoTData(ctx contractapi.TransactionContextInterface, id string) (string, error) {
+	rec, err := ctx.GetStub().GetState(id)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read from world state: %v", err)
+		return "", fmt.Errorf("failed to read from world state: %v", err)
 	}
-	if dataJSON == nil {
-		return nil, fmt.Errorf("the data %s does not exist", id)
+	if rec == nil {
+		return "", fmt.Errorf("the data %s does not exist", id)
 	}
-
-	var data IoTData
-	err = json.Unmarshal(dataJSON, &data)
-	if err != nil {
-		return nil, err
-	}
-
-	return &data, nil
+	return string(rec), nil
 }
 
 func main() {

@@ -1,0 +1,173 @@
+{
+  "experiment": "exp5_exactly_once_real",
+  "schema_version": 3,
+  "timestamp": "2026-09-28T14:37:53",
+  "measured": true,
+  "provenance": {
+    "architecture": "async: 202 after private commit, anchor delivered by the outbox relay; counts taken from DataRegistered event logs",
+    "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+    "chain_id": 1337,
+    "network_id": "1337",
+    "outbox_db": "/root/orbit-state/v2/outbox.db",
+    "orchestrator_health": {
+      "chain_id": 1337,
+      "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
+      "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+      "ethereum_connected": true,
+      "fabric_readback": "sync",
+      "network_id": "1337",
+      "outbox_db": "/root/orbit-state/v2/outbox.db",
+      "pid": 3807,
+      "relay_mode": "external",
+      "server": "werkzeug",
+      "server_mode": "production",
+      "server_threads": null,
+      "server_workers": null,
+      "status": "healthy"
+    },
+    "block_window": [
+      22,
+      63
+    ],
+    "per_request_rows": "revision/ws05/smoke/exp5/exp5_requests.jsonl"
+  },
+  "sequential_duplicates": {
+    "requests": 6,
+    "ok_responses": 6,
+    "all_real_tx": true,
+    "unique_anchor_txs": 1,
+    "unique_outbox_ids": [
+      "a95b136f4fed331dc2ecb2e1fa273fa51f01441e72b713a628db931dc83951c1"
+    ],
+    "first_replay": false,
+    "num_replays_true": 5,
+    "on_chain": {
+      "events_per_id": {
+        "a95b136f4fed331dc2ecb2e1fa273fa51f01441e72b713a628db931dc83951c1": 1
+      },
+      "all_exactly_one": true,
+      "all_commitments_match": true,
+      "total_events": 1
+    },
+    "pass": true
+  },
+  "concurrent_duplicates": {
+    "concurrent_requests": 25,
+    "ok_responses": 25,
+    "all_real_tx": true,
+    "unique_anchor_txs": 1,
+    "unique_outbox_ids": [
+      "7cd5938e07b33c3b37974b8180e52052253ec93534398b93ac73a7786d843c8e"
+    ],
+    "non_replay_count": 1,
+    "on_chain": {
+      "events_per_id": {
+        "7cd5938e07b33c3b37974b8180e52052253ec93534398b93ac73a7786d843c8e": 1
+      },
+      "all_exactly_one": true,
+      "all_commitments_match": true,
+      "total_events": 1
+    },
+    "pass": true
+  },
+  "distinct_requests": {
+    "distinct_payloads": 40,
+    "ok_responses": 40,
+    "all_real_tx": true,
+    "unique_anchor_txs": 40,
+    "duplicate_anchor_txs": [],
+    "unique_outbox_ids": [
+      "08b750f945915c506ee1f4ac78eb8de3adac1db6fbb99285602f02350cafe8cb",
+      "14375547fb29fcae195e3bf08dab086d8041ef2d38259a591c77ef71b3c3e096",
+      "17f67bd95fa5e7a7e88c8680cdc4f29c797418c385ea900e8763853fcb2f89d4",
+      "1826dbe62ba605105ccf83c6c2fe16f87c1ddcf6265c658b968cafeb9750ab09",
+      "27b02f850089bdaf9994abc996254892ccb1f62e0234a3f0b72206ad3a5a2b8c",
+      "2f602dcdf01814e858d06f63015c158ca64c3e17040a86c3b73badd3bb3a92ad",
+      "310a13ae155268fa38fedf1398e6e3d271f9b2cdcd68465b627e92cb8b84c1fc",
+      "382cf1e8921fd398874ca2150c68da48912a719a0722fc6b03c8be296e333655",
+      "39112711a0f62afb10988e9e44bc807f356f7e6106e7d98b6eb42a6c459b0a47",
+      "3a40c093d93a0f4cf6d98a396502bf94bfdcf9fcb1bbd4fa26a0648eae671be3",
+      "3c7d481cab6a52278188a6340a02a6de1220e2a5d3d11179e1b48ce73d90709f",
+      "45233366f8a316bbe3f55f72fb58203b66e95c53fde878321eb8ecac86cf3dc7",
+      "4e44d1358ba5bec6f22dcd4ca70c4345711abbdae363761c8a87e63d2ad860ab",
+      "52a2d6d48705d410eb3bfa5d0a52d0afd904711f0e5f60ef83b2ef44f6eecdbb",
+      "53773f253ba5c591011c03d59c137e96da0b91ec59bb4535570d1774a39e810a",
+      "58d92865f5ac56031b06b261d9d0f228f5222e76e7aa33b732f9ad6faac9bbe7",
+      "62cced675f8703cf077f094f491395a5815f2affc84a6e6c726dfdad81f06791",
+      "630547d1a501991a3ecac854751777e68e5af811da365efe87d659accc05f473",
+      "682b8816e441ebc42c88a87a7cfbc70cc3b73db87660b1fc50cd5236440385b8",
+      "71a1af8da20253888467af01041f21b7302571ab4468ffd01180426ca7b677f7",
+      "724aa9f8f39632ff19839168e973054fa834b32a6b7f9e9997212527e7973856",
+      "74ff4f3112f1d5df8ddc1272d3eb1239d4f50695c5e24acb63a872971ccf1a81",
+      "75af85db919da2506cb5462f9354d6991b5e43c29bd6cad5392f25324a0c3013",
+      "760a51aa82999c4684988814b8fc3d760a02e49a631eb921963b3226997a0850",
+      "8dee823486e5def8ab3546ff49865d2124eb8d2a72398d3aba27851bde77ac5c",
+      "8f65bd538c0f615ae42131847a8fa40d533acf225af0abac25a1ac34d7ffd920",
+      "989a7afcc2017b7767a4e22f84a61f0bea9b7c36bd57fa8f684e787127cb1380",
+      "99b1e0482afcf6137deeacb17222456768503ec670be2eaa3143d4a996fc535f",
+      "af81dbfecdaeb0a53b90326b424cb2079e94c08de6422334fd7b7691146428aa",
+      "c94e79abdf96144142da9b546fa3b7d32b9aa54db26c3390e141acdd32a3c152",
+      "c987310feeba754aaaaa13a4861383fc22c886e51f412fee1e960e7e31b12633",
+      "ca51af65f5b5317bb1aead35e24f33583b1fb42d86cffa97e6a67a15a3c294b9",
+      "ceb842550b3f4569200943e30e734ce254fecf4b628ce804eaccc7c412eb733b",
+      "d173fa41c35ca7bb6e452b1bf654feffe86d886840bf53f79570002ded671ddc",
+      "e09d2baf9a2d0437fe4520842e3908090023423397869eaeadeadbff55a7a2ec",
+      "e266c0efe77a77b242eda0b3dca38e57d8f7466df523385fd111b46e49891acd",
+      "e8775ca9f1d7479059bc8916a88e1204133c6777f34482d8d55d2d1e57dd7c13",
+      "eb5694dd5119ceaac5018709e44bd73be1bc25ae4b570a5a9a6005a6fad69f51",
+      "ebf5282ab072aa0a5c08b9e5b10ce64ac9dae1c3d826a7a2b89ecfa9a6106c3d",
+      "efce9dc6dada79dc7205740d0c4d0c532196fd5fd29be30a95d9984a866d481e"
+    ],
+    "on_chain": {
+      "events_per_id": {
+        "08b750f945915c506ee1f4ac78eb8de3adac1db6fbb99285602f02350cafe8cb": 1,
+        "14375547fb29fcae195e3bf08dab086d8041ef2d38259a591c77ef71b3c3e096": 1,
+        "17f67bd95fa5e7a7e88c8680cdc4f29c797418c385ea900e8763853fcb2f89d4": 1,
+        "1826dbe62ba605105ccf83c6c2fe16f87c1ddcf6265c658b968cafeb9750ab09": 1,
+        "27b02f850089bdaf9994abc996254892ccb1f62e0234a3f0b72206ad3a5a2b8c": 1,
+        "2f602dcdf01814e858d06f63015c158ca64c3e17040a86c3b73badd3bb3a92ad": 1,
+        "310a13ae155268fa38fedf1398e6e3d271f9b2cdcd68465b627e92cb8b84c1fc": 1,
+        "382cf1e8921fd398874ca2150c68da48912a719a0722fc6b03c8be296e333655": 1,
+        "39112711a0f62afb10988e9e44bc807f356f7e6106e7d98b6eb42a6c459b0a47": 1,
+        "3a40c093d93a0f4cf6d98a396502bf94bfdcf9fcb1bbd4fa26a0648eae671be3": 1,
+        "3c7d481cab6a52278188a6340a02a6de1220e2a5d3d11179e1b48ce73d90709f": 1,
+        "45233366f8a316bbe3f55f72fb58203b66e95c53fde878321eb8ecac86cf3dc7": 1,
+        "4e44d1358ba5bec6f22dcd4ca70c4345711abbdae363761c8a87e63d2ad860ab": 1,
+        "52a2d6d48705d410eb3bfa5d0a52d0afd904711f0e5f60ef83b2ef44f6eecdbb": 1,
+        "53773f253ba5c591011c03d59c137e96da0b91ec59bb4535570d1774a39e810a": 1,
+        "58d92865f5ac56031b06b261d9d0f228f5222e76e7aa33b732f9ad6faac9bbe7": 1,
+        "62cced675f8703cf077f094f491395a5815f2affc84a6e6c726dfdad81f06791": 1,
+        "630547d1a501991a3ecac854751777e68e5af811da365efe87d659accc05f473": 1,
+        "682b8816e441ebc42c88a87a7cfbc70cc3b73db87660b1fc50cd5236440385b8": 1,
+        "71a1af8da20253888467af01041f21b7302571ab4468ffd01180426ca7b677f7": 1,
+        "724aa9f8f39632ff19839168e973054fa834b32a6b7f9e9997212527e7973856": 1,
+        "74ff4f3112f1d5df8ddc1272d3eb1239d4f50695c5e24acb63a872971ccf1a81": 1,
+        "75af85db919da2506cb5462f9354d6991b5e43c29bd6cad5392f25324a0c3013": 1,
+        "760a51aa82999c4684988814b8fc3d760a02e49a631eb921963b3226997a0850": 1,
+        "8dee823486e5def8ab3546ff49865d2124eb8d2a72398d3aba27851bde77ac5c": 1,
+        "8f65bd538c0f615ae42131847a8fa40d533acf225af0abac25a1ac34d7ffd920": 1,
+        "989a7afcc2017b7767a4e22f84a61f0bea9b7c36bd57fa8f684e787127cb1380": 1,
+        "99b1e0482afcf6137deeacb17222456768503ec670be2eaa3143d4a996fc535f": 1,
+        "af81dbfecdaeb0a53b90326b424cb2079e94c08de6422334fd7b7691146428aa": 1,
+        "c94e79abdf96144142da9b546fa3b7d32b9aa54db26c3390e141acdd32a3c152": 1,
+        "c987310feeba754aaaaa13a4861383fc22c886e51f412fee1e960e7e31b12633": 1,
+        "ca51af65f5b5317bb1aead35e24f33583b1fb42d86cffa97e6a67a15a3c294b9": 1,
+        "ceb842550b3f4569200943e30e734ce254fecf4b628ce804eaccc7c412eb733b": 1,
+        "d173fa41c35ca7bb6e452b1bf654feffe86d886840bf53f79570002ded671ddc": 1,
+        "e09d2baf9a2d0437fe4520842e3908090023423397869eaeadeadbff55a7a2ec": 1,
+        "e266c0efe77a77b242eda0b3dca38e57d8f7466df523385fd111b46e49891acd": 1,
+        "e8775ca9f1d7479059bc8916a88e1204133c6777f34482d8d55d2d1e57dd7c13": 1,
+        "eb5694dd5119ceaac5018709e44bd73be1bc25ae4b570a5a9a6005a6fad69f51": 1,
+        "ebf5282ab072aa0a5c08b9e5b10ce64ac9dae1c3d826a7a2b89ecfa9a6106c3d": 1,
+        "efce9dc6dada79dc7205740d0c4d0c532196fd5fd29be30a95d9984a866d481e": 1
+      },
+      "all_exactly_one": true,
+      "all_commitments_match": true,
+      "total_events": 40
+    },
+    "pass": true
+  },
+  "foreign_events_in_window": [],
+  "exactly_once_holds": true,
+  "note": "71 requests. Pass requires real tx hashes for every response AND exactly one DataRegistered event per idempotency key whose dataHash equals the commitment returned at ingest. Orchestrator crash-recovery is tested separately (WS5)."
+}

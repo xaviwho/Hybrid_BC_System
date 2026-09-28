@@ -28,6 +28,8 @@ from twin_manager import TwinManager
 from outbox import Outbox
 import contract_registry
 import fabric_client
+import commitment as cm
+from anchoring import make_anchor_fn
 
 # Load environment variables from .env file
 load_dotenv()
@@ -108,23 +110,49 @@ FABRIC_USER_NAME = os.getenv('FABRIC_USER_NAME', 'user1')
 FABRIC_USER_ORG = os.getenv('FABRIC_USER_ORG', 'Org1')
 FABRIC_ORG_NAME = os.getenv('FABRIC_ORG_NAME', 'Org1')
 
-def store_on_fabric(data_id, data):
-    """Store the full record on Hyperledger Fabric via a REAL chaincode invoke.
+# Alg. 1 l.22: read the record back before acknowledging. "sync" (default) does
+# it on the request path, as the manuscript specifies; "off" skips it and takes
+# nu from the invoke's own txid (valid only for a first write). Recorded in
+# /health so the run digest carries it.
+FABRIC_READBACK = os.getenv("FABRIC_READBACK", "sync").lower()
+if FABRIC_READBACK not in ("sync", "off"):
+    raise SystemExit(f"FATAL: FABRIC_READBACK must be sync|off, got {FABRIC_READBACK!r}")
 
-    Delegates to fabric_client (peer CLI -> channel 'hiot', chaincode 'iot-data').
-    Returns the real Fabric transaction id on success, or None on failure. There
-    is no longer any simulated/fabricated transaction id (see PHASE0_FINDINGS.md).
+
+class PrivateCommitError(RuntimeError):
+    """The Fabric write or its read-back failed; nothing may be anchored."""
+
+
+class KeyConflict(RuntimeError):
+    """Fabric already holds a DIFFERENT record under this key."""
+
+
+def commit_private(key, envelope, x):
+    """Commit the envelope to Fabric under key, then read it back.
+
+    Returns (stored_envelope_dict, nu, invoke_txid, timing) where nu is the txid
+    of the transaction that created the record. The chaincode is idempotent, so
+    on a retry the stored envelope is the FIRST one (its t0 may differ from
+    ours) and it is adopted as-is, provided it holds the same payload x.
     """
-    try:
-        tx_id = fabric_client.store_iot_data(data_id, data)
-        if tx_id:
-            print(f"Stored on Fabric: id={data_id} txid={tx_id}")
-        else:
-            print(f"Fabric store returned no txid for id={data_id}")
-        return tx_id
-    except Exception as e:
-        print(f"Failed to store on Fabric: {e}")
-        return None
+    t_a = time.perf_counter()
+    invoke_txid = fabric_client.store_iot_data(key, envelope)
+    t_b = time.perf_counter()
+    if not invoke_txid:
+        raise PrivateCommitError(f"Fabric invoke failed for key {key}")
+    if FABRIC_READBACK == "off":
+        return json.loads(envelope), invoke_txid, invoke_txid, {
+            "fabric_ms": round((t_b - t_a) * 1000, 3), "readback_ms": None}
+    rec = fabric_client.read_iot_data(key)
+    t_c = time.perf_counter()
+    if not rec or "envelope" not in rec or "txid" not in rec:
+        raise PrivateCommitError(f"Fabric read-back returned no record for key {key}")
+    stored = json.loads(rec["envelope"])
+    if rec["envelope"] != envelope and cm.canon(stored.get("x")) != cm.canon(x):
+        raise KeyConflict(f"Fabric key {key} holds a different payload")
+    return stored, rec["txid"], invoke_txid, {
+        "fabric_ms": round((t_b - t_a) * 1000, 3),
+        "readback_ms": round((t_c - t_b) * 1000, 3)}
 
 # --- Flask App Initialization ---
 app = Flask(__name__)
@@ -142,57 +170,35 @@ twin_manager = TwinManager()
 OUTBOX_DB = os.getenv("OUTBOX_DB", os.path.join(os.path.dirname(__file__), "outbox.db"))
 
 
-def _anchor_row(row):
-    """Deliver one outbox row to Ethereum. Runs ONLY on the relay worker thread.
+# Where the relay runs (revision WS0.5, AUDIT_WS0 F6):
+#   external  (default) no relay in this process; run relay_worker.py, one
+#             process per relay. Required under gunicorn, where every worker
+#             process would otherwise start its own relay.
+#   inprocess the v1 arrangement: one relay thread in this process, sending from
+#             eth.accounts[RELAY_ACCOUNT_INDEX].
+#   off       no relay anywhere (tests that fill the queue deliberately).
+# The on-chain call itself lives in anchoring.py, shared with relay_worker.py.
+RELAY_MODE = os.getenv("RELAY_MODE", "external").lower()
+if os.getenv("RELAY_DISABLED", "").lower() in ("1", "true", "yes"):
+    RELAY_MODE = "off"
+if RELAY_MODE not in ("external", "inprocess", "off"):
+    raise SystemExit(f"FATAL: RELAY_MODE must be external|inprocess|off, got {RELAY_MODE!r}")
 
-    NOTE: the deployed contract exposes registerData(bytes32,string,string); there
-    is no registerAnchor(id,h) on chain. The commitment H(m) is passed as
-    _dataHash and the redacted metadata as _metadata.
-    """
-    if iot_data_registry_contract is None:
-        raise RuntimeError("IoTDataRegistry contract not loaded; cannot anchor")
-    payload = json.loads(row["payload"]) if row["payload"] else {}
-    data_id_str = payload.get("data_id") or row["twin_key"] or row["id"]
-    metadata_str = json.dumps(payload.get("metadata", {}))
-    data_id_bytes32 = hashlib.sha256(data_id_str.encode()).digest()
+outbox = Outbox(OUTBOX_DB)
 
-    # On-chain uniqueness guard. IoTDataRegistry.registerData REVERTS with
-    # "Data ID already registered" if this _dataId exists. That is what upgrades
-    # at-least-once relay delivery into an exactly-once EFFECT on the public
-    # ledger: even if this process dies after broadcasting but before recording
-    # the receipt, the retry cannot create a second anchor. Treat an existing
-    # record as success, not as a delivery failure — otherwise the recovery path
-    # would retry to exhaustion and mark a successfully anchored row 'failed'.
-    if iot_data_registry_contract.functions.getDataOwner(data_id_bytes32).call() != \
-            "0x0000000000000000000000000000000000000000":
-        print(f"[outbox] {row['id']}: anchor already on chain, idempotent no-op")
-        return "preexisting:already_registered"
-
-    sender_account = web3.eth.accounts[0]
-    web3.eth.default_account = sender_account
-    try:
-        tx_hash = iot_data_registry_contract.functions.registerData(
-            data_id_bytes32,    # _dataId
-            row["commitment"],  # _dataHash = H(m)
-            metadata_str,       # _metadata (redacted view)
-        ).transact()
-    except Exception as e:
-        if "already registered" in str(e).lower():
-            return "preexisting:already_registered"
-        raise
-    receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
-    return receipt.transactionHash.hex()
-
-
-outbox = Outbox(OUTBOX_DB, anchor_fn=_anchor_row)
-
-# Start the relay unless we are the Werkzeug reloader's parent process (which
-# would give two workers racing on the same queue).
-if os.getenv("RELAY_DISABLED", "").lower() not in ("1", "true", "yes"):
+if RELAY_MODE == "inprocess":
+    # Not in the Werkzeug reloader's parent process (two relays on one queue).
     if not os.getenv("WERKZEUG_RUN_MAIN") or os.getenv("WERKZEUG_RUN_MAIN") == "true":
+        _relay_idx = int(os.getenv("RELAY_ACCOUNT_INDEX", "0"))
+        _relay_account = web3.eth.accounts[_relay_idx]
+        outbox.anchor_fn = make_anchor_fn(web3, iot_data_registry_contract, _relay_account)
+        outbox.relay_id = f"inproc-{os.getpid()}"
+        outbox.relay_account = _relay_account
         outbox.start_relay()
-        print(f"Outbox relay worker started (db={OUTBOX_DB}, "
+        print(f"Outbox relay thread started (db={OUTBOX_DB}, account {_relay_account}, "
               f"poll={outbox.poll_interval_s}s, max_attempts={outbox.max_attempts})")
+else:
+    print(f"Relay mode {RELAY_MODE}: no relay in this process (db={OUTBOX_DB})")
 
 # --- Idempotency Cache for Exactly-Once Semantics ---
 # Maps idempotency_key -> {response, timestamp, ethereum_tx_hash, status}
@@ -305,6 +311,15 @@ def health_check():
         # 2026-08-19 while hashing identically. The config vector now records
         # this so the two are distinguishable after the fact.
         "server_mode": "debug" if app.debug else "production",
+        # What actually serves requests (set by the launcher; WS1). v1's
+        # "production" was Werkzeug with debug=False (AUDIT_WS0 F6).
+        "server": os.getenv("ORBIT_SERVER", "werkzeug"),
+        "server_workers": os.getenv("ORBIT_SERVER_WORKERS"),
+        "server_threads": os.getenv("ORBIT_SERVER_THREADS"),
+        "pid": os.getpid(),
+        "relay_mode": RELAY_MODE,
+        "fabric_readback": FABRIC_READBACK,
+        "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
     }), 200
 
 @app.route('/ingest_data', methods=['POST'])
@@ -337,9 +352,19 @@ def ingest_data():
         release_idempotency_slot(idempotency_key)
         return jsonify({"error": "Request processing timed out"}), 503
 
+    # The in-memory cache does not survive a restart; the persistent set D does
+    # (Alg. 1 l.5-7). A duplicate arriving after a restart is served from D.
+    durable = outbox.get_dedup(idempotency_key)
+    if durable and durable.get("response"):
+        replay = json.loads(durable["response"])
+        complete_idempotency(idempotency_key, replay)
+        replay = dict(replay, idempotency_replay=True, replay_source="durable")
+        return jsonify(replay), 200
+
     # Per-stage timing at REAL boundaries (Stage 4 instrumentation; replaces
     # exp1's fixed-fraction breakdown). Each stage is timed where it happens.
     t_ingress = time.perf_counter()
+    t0_us = int(time.time() * 1_000_000)   # tau: a label, not a duration
 
     # Step 1: Call the ML Privacy Filter
     try:
@@ -384,17 +409,36 @@ def ingest_data():
     # metadata (Step 3), not whether Fabric is touched. (Phase 2, Change 2 —
     # the old `if data_sensitivity == 'sensitive'` guard meant non-sensitive
     # records were never persisted at rest.)
+    #
+    # v2 (WS0.5): what is committed is the canonical envelope holding the FULL
+    # payload x, the public metadata m and h = H(m). The v1 chaincode kept four
+    # fields of x and dropped the rest (AUDIT_WS0 F2). The Fabric key is the
+    # idempotency key, not the payload's own `id` (F3).
     data_id_str = raw_iot_data.get('id', 'unknown_id')
-    try:
-        fabric_tx_id = store_on_fabric(data_id_str, raw_iot_data)
-    except Exception as e:
-        print(f"ERROR: Fabric commit raised for id={data_id_str}: {e}")
-        fabric_tx_id = None
 
-    if not fabric_tx_id:
+    # Public metadata m = the policy's redacted view (Alg. 1 l.25). The payload's
+    # own `id` label is excluded, as in v1, so the four exp1 fixtures keep their
+    # routing: a record whose only publishable field is its id stays FABRIC_ONLY.
+    m = {k: v for k, v in shareable_data.items() if k != 'id'}
+    anchor_required = bool(m)
+    route = "HYBRID" if anchor_required else "FABRIC_ONLY"
+    h = cm.metadata_hash(m) if anchor_required else None
+    envelope = cm.make_envelope(idempotency_key, t0_us, raw_iot_data,
+                                m if anchor_required else None, h, route,
+                                data_sensitivity)
+    fabric_key = idempotency_key
+    try:
+        stored, nu, invoke_txid, fab_timing = commit_private(fabric_key, envelope,
+                                                             raw_iot_data)
+    except KeyConflict as e:
+        release_idempotency_slot(idempotency_key)
+        return jsonify({"error": str(e), "data_id": data_id_str,
+                        "fabric_key": fabric_key}), 409
+    except Exception as e:
         # Fail loudly. Anchoring a commitment for a record that is not stored at
         # rest would publish a hash of data we cannot produce — worse than an
         # error. No silent continue (Phase 2: fail loudly, never fabricate).
+        print(f"ERROR: private commit failed for key={fabric_key}: {e}")
         release_idempotency_slot(idempotency_key)
         return jsonify({
             "error": "Private commit to Fabric failed; record not persisted, nothing anchored",
@@ -403,71 +447,79 @@ def ingest_data():
 
     t_fabric = time.perf_counter()
 
+    # sigma is built from what Fabric STORED (read back), so the auditor, who
+    # reads the same record, reconstructs the same sigma. On a retry the stored
+    # envelope is the first one and its t0 wins.
+    sigma = c = None
+    if anchor_required:
+        sigma = cm.make_sigma(idempotency_key, fabric_key, nu, stored["t0_us"], stored["h"])
+        c = cm.commitment(sigma)
+
     # Step 3: Enqueue the public anchor in the transactional outbox and RETURN.
-    # The anchor itself is delivered asynchronously by the relay worker — there is
+    # The anchor itself is delivered asynchronously by the relay — there is
     # no wait_for_transaction_receipt on this path (Phase 2, Change 1d).
     try:
-        # Public metadata = redacted view only. An all-sensitive record has no
-        # publishable fields, so nothing is anchored (anchor_required=False).
-        metadata_obj = {k: v for k, v in shareable_data.items() if k != 'id'}
-        anchor_required = bool(metadata_obj)
-
-        # Commitment H(m) over the full raw record.
-        data_hash = hashlib.sha256(json.dumps(raw_iot_data).encode()).hexdigest()
-        if anchor_required:
-            metadata_obj['fabricTxId'] = fabric_tx_id
-
-        outbox.commit_and_enqueue(
-            record_id=idempotency_key,
-            commitment=data_hash,
-            fabric_tx_id=fabric_tx_id,
-            twin_key=data_id_str,
-            version=raw_iot_data.get('version'),
-            tau=data_sensitivity,
-            payload={"data_id": data_id_str, "metadata": metadata_obj},
-            anchor_required=anchor_required,
-        )
-
-        t_enqueue = time.perf_counter()
         timing_ms = {
             "policy_ms": round((t_policy - t_ingress) * 1000, 3),
-            "fabric_ms": round((t_fabric - t_policy) * 1000, 3),
-            "outbox_ms": round((t_enqueue - t_fabric) * 1000, 3),
-            # Acknowledgement latency: t0 -> 200 OK. The client-visible number.
-            "ack_ms": round((t_enqueue - t_ingress) * 1000, 3),
+            "fabric_ms": fab_timing["fabric_ms"],
+            "readback_ms": fab_timing["readback_ms"],
+            "fabric_stage_ms": round((t_fabric - t_policy) * 1000, 3),
             "fabric_invoked": True,
             "anchor_enqueued": anchor_required,
         }
-
         final_response = {
             "status": "accepted",
             "message": ("Record committed privately; public anchor enqueued."
                         if anchor_required else
                         "Record committed privately; no publishable fields, no anchor."),
             "data_id": data_id_str,
-            "data_hash": data_hash,
+            "route": route,
             "data_sensitivity": data_sensitivity,
-            "fabric_tx_id": fabric_tx_id,
-            "metadata": metadata_obj,
+            "fabric_key": fabric_key,
+            "fabric_tx_id": nu,
+            "fabric_invoke_tx_id": invoke_txid,
+            "metadata": m if anchor_required else {},
+            "h": h,
+            "sigma": sigma,
+            "commitment": c,
             "anchor_state": "pending" if anchor_required else "not_required",
             "outbox_id": idempotency_key,
-            "timing_ms": timing_ms,
             "idempotency_key": idempotency_key,
             "idempotency_replay": False,
         }
+
+        outbox.commit_and_enqueue(
+            record_id=idempotency_key,
+            commitment=c,
+            fabric_tx_id=nu,
+            twin_key=data_id_str,
+            version=raw_iot_data.get('version'),
+            tau=data_sensitivity,
+            payload={"data_id": data_id_str, "m": m} if anchor_required else None,
+            response=final_response,
+            anchor_required=anchor_required,
+            sigma=cm.canon(sigma).decode("utf-8") if sigma else None,
+        )
+
+        t_enqueue = time.perf_counter()
+        timing_ms["outbox_ms"] = round((t_enqueue - t_fabric) * 1000, 3)
+        # Acknowledgement latency: t0 -> 202. The client-visible number.
+        timing_ms["ack_ms"] = round((t_enqueue - t_ingress) * 1000, 3)
+        final_response["timing_ms"] = timing_ms
 
         complete_idempotency(idempotency_key, final_response)
         return jsonify(final_response), 202
 
     except Exception as e:
         print(f"ERROR: outbox enqueue failed after private commit: {e}")
-        # Reconciliation case: committed privately, never enqueued. Surfaced by
-        # outbox.find_unanchored(). Fail loudly rather than pretend it anchored.
+        # Reconciliation case: committed privately, never enqueued. Only the
+        # Fabric-side sweep (WS5) finds it. Fail loudly rather than pretend.
         release_idempotency_slot(idempotency_key)
         return jsonify({
             "error": "Committed to Fabric but failed to enqueue public anchor",
             "data_id": data_id_str,
-            "fabric_tx_id": fabric_tx_id,
+            "fabric_key": fabric_key,
+            "fabric_tx_id": nu,
             "reconciliation_required": True,
         }), 500
 
