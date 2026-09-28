@@ -155,7 +155,7 @@ def services():
     st = requests.get(ORCH + "/outbox_stats", timeout=10).json()
     p = requests.get(POLICY + "/health", timeout=10).json()
     return {"orchestrator": {k: h.get(k) for k in (
-                "server", "server_mode", "server_workers", "server_threads",
+                "server", "server_profile", "server_mode", "server_workers", "server_threads",
                 "relay_mode", "fabric_readback", "commitment_scheme", "outbox_db",
                 "contract_addr")},
             "orchestrator_pid": h.get("pid"),

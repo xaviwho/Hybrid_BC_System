@@ -108,16 +108,37 @@ cmd_chaincode() {
 }
 
 cmd_services() {
+  # SERVER_PROFILE=dev (Werkzeug, as v1) | prod (gunicorn); see config/orbit_v2_server.env
+  local profile="${SERVER_PROFILE:-dev}"
+  # shellcheck source=/dev/null
+  . "$REPO/config/orbit_v2_server.env"
+  local gun="/root/orbit-venv/bin/gunicorn"
+  local gopts=(-k gthread --timeout "$GUNICORN_TIMEOUT" --keep-alive "$GUNICORN_KEEPALIVE")
   cd "$REPO"
-  wait_http "$GANACHE_URL" 1 2>/dev/null || true
   if ! curl -sf "http://127.0.0.1:$POLICY_PORT/health" >/dev/null; then
-    PORT=$POLICY_PORT PYTHONPATH="$REPO/ml" start_bg policy "$LOGS/policy.log" \
-      "$PY" "$REPO/ml/privacy_filter/policy_service.py"
+    cd "$REPO/ml"
+    case "$profile" in
+      dev)  PORT=$POLICY_PORT PYTHONPATH="$REPO/ml" ORBIT_SERVER=werkzeug ORBIT_SERVER_PROFILE=dev \
+              start_bg policy "$LOGS/policy.log" "$PY" "$REPO/ml/privacy_filter/policy_service.py";;
+      prod) PYTHONPATH="$REPO/ml" ORBIT_SERVER=gunicorn ORBIT_SERVER_PROFILE=prod \
+              ORBIT_SERVER_WORKERS=$POLICY_PROD_WORKERS ORBIT_SERVER_THREADS=$POLICY_PROD_THREADS \
+              start_bg policy "$LOGS/policy.log" "$gun" "${gopts[@]}" \
+              -w "$POLICY_PROD_WORKERS" --threads "$POLICY_PROD_THREADS" \
+              -b "127.0.0.1:$POLICY_PORT" privacy_filter.policy_service:app;;
+      *) echo "FATAL: SERVER_PROFILE must be dev|prod" >&2; exit 1;;
+    esac
     wait_http "http://127.0.0.1:$POLICY_PORT/health" 30
   fi
   cd "$REPO/orchestrator"
-  RELAY_MODE="${RELAY_MODE:-external}" ORBIT_SERVER=werkzeug \
-    start_bg orchestrator "$LOGS/orchestrator.log" "$PY" orchestrator.py
+  case "$profile" in
+    dev)  RELAY_MODE="${RELAY_MODE:-external}" ORBIT_SERVER=werkzeug ORBIT_SERVER_PROFILE=dev \
+            start_bg orchestrator "$LOGS/orchestrator.log" "$PY" orchestrator.py;;
+    prod) RELAY_MODE="${RELAY_MODE:-external}" ORBIT_SERVER=gunicorn ORBIT_SERVER_PROFILE=prod \
+            ORBIT_SERVER_WORKERS=$ORCH_PROD_WORKERS ORBIT_SERVER_THREADS=$ORCH_PROD_THREADS \
+            start_bg orchestrator "$LOGS/orchestrator.log" "$gun" "${gopts[@]}" \
+            -w "$ORCH_PROD_WORKERS" --threads "$ORCH_PROD_THREADS" \
+            -b "0.0.0.0:$ORCH_PORT" orchestrator:app;;
+  esac
   wait_http "http://127.0.0.1:$ORCH_PORT/health" 60
   curl -s "http://127.0.0.1:$ORCH_PORT/health"; echo
 }

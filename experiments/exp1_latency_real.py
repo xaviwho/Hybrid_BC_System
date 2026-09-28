@@ -57,12 +57,31 @@ Harness fixes (Phase 2, Change 4), each closing a specific defect:
 
 No randomness anywhere in the measurement path (ids from a counter + run nonce).
 
-Output:
-  experiments/results/exp1/exp1_latency_real.json     (aggregates, kind-tagged)
-  experiments/results/exp1/exp1_requests.jsonl        (per-request rows)
+Revision v2 (WS1):
+  * requests per throughput level = smallest multiple of c that is >= TPUT_MIN_N
+    (200). v1 used 50, and n/(c*ceil(n/c)) quantisation explained most of the gap
+    to c/T_ack (AUDIT_WS0 §4.2); a multiple of c removes it.
+  * steady-state TPS (first and last c completions excluded, monotonic clock)
+    is reported next to the gated value.
+  * every row carries monotonic submit/return stamps; wall-clock stamps are
+    labels only (AUDIT_WS0 F1).
+  * warm-up ids are unique per level, so warm-ups exercise Fabric instead of
+    hitting the idempotency cache as they did in v1.
+  * the run digest (experiments/run_digest.py) is taken at start and end; a
+    change in config_hash during the run fails it.
+  * the relay drain phase is off by default: it measured the offered rate, not
+    mu_relay (AUDIT_WS0 F9). WS3 measures mu_relay under saturation.
+  * which fixtures, levels and phases run is set from the environment
+    (EXP1_CLASSES, EXP1_CONC, EXP1_PHASES, ...) so the WS1/WS2 sweeps reuse
+    this script unchanged.
+
+Output (under $ORBIT_RESULTS_DIR, default experiments/results):
+  exp1/exp1_latency_real.json     (aggregates, kind-tagged)
+  exp1/exp1_requests.jsonl        (per-request rows)
 """
 
 import json
+import math
 import os
 import statistics
 import sys
@@ -73,20 +92,35 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 
 _REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp1")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+OUTPUT_DIR = os.path.join(os.getenv("ORBIT_RESULTS_DIR",
+                                    os.path.join(_REPO, "experiments", "results")), "exp1")
 BASE = os.getenv("ORCHESTRATOR_URL", "http://localhost:5002")
 ORCH = BASE + "/ingest_data"
-NONCE = str(int(time.time()))
+NONCE = os.getenv("EXP1_NONCE", str(int(time.time())))
+
+
+def _env_list(name, default, conv=str):
+    v = os.getenv(name)
+    return [conv(x) for x in v.split(",")] if v else default
+
 
 # --- Measurement configuration ---
-WARMUP = 20                              # discarded, per class and per level
-LAT_REPS = 200                           # >= 200 per class (spec: RESULTS.json v2)
-CLASSES = ["all_public", "all_sensitive", "mixed", "fabric_only"]
-TPUT_CONC = [1, 2, 4, 8, 10, 12, 14, 16, 20, 24, 32]
-TPUT_N = 50                              # >= 50 per level
+WARMUP = int(os.getenv("EXP1_WARMUP", "20"))        # discarded, per class and per level
+LAT_REPS = int(os.getenv("EXP1_LAT_REPS", "200"))   # >= 200 per class
+CLASSES = _env_list("EXP1_CLASSES", ["all_public", "all_sensitive", "mixed", "fabric_only"])
+TPUT_CONC = _env_list("EXP1_CONC", [1, 2, 4, 8, 10, 12, 14, 16, 20, 24, 32], int)
+TPUT_MIN_N = int(os.getenv("EXP1_TPUT_MIN_N", "200"))  # >= 200 per level (v1: 50)
+TPUT_WARMUP_ROUNDS = int(os.getenv("EXP1_TPUT_WARMUP_ROUNDS", "2"))  # discarded, per level
+PHASES = set(_env_list("EXP1_PHASES", ["latency", "throughput"]))  # + "drain"
 ANCHOR_POLL_S = 0.05                     # completion-latency poll cadence
 ANCHOR_TIMEOUT_S = 120                   # give up waiting for an anchor
 GATE_TOLERANCE = 0.25                    # reconciliation gate: +/- 25%
+
+
+def n_for_level(c):
+    """Smallest multiple of c that is >= TPUT_MIN_N."""
+    return c * math.ceil(TPUT_MIN_N / c)
 
 _sessions = threading.local()
 
@@ -155,12 +189,14 @@ def one_request(cls, i, follow_anchor=False, sample_depth=False):
     depth_before = queue_depth() if sample_depth else None
     t_submit = time.time()
     t0 = time.perf_counter()
-    row = {"class": cls, "i": i, "t_submit": t_submit, "ok": False,
-           "queue_depth_at_submit": depth_before}
+    row = {"class": cls, "i": i, "t_submit": t_submit, "t_submit_mono": t0,
+           "ok": False, "queue_depth_at_submit": depth_before}
     try:
         r = session().post(ORCH, json=payload(cls, i), timeout=60)
-        rtt = (time.perf_counter() - t0) * 1000.0
+        t1 = time.perf_counter()
+        rtt = (t1 - t0) * 1000.0
         row["t_return"] = time.time()
+        row["t_return_mono"] = t1
         row["rtt_ms"] = round(rtt, 3)
         row["status_code"] = r.status_code
         if r.status_code not in (200, 202):
@@ -171,8 +207,11 @@ def one_request(cls, i, follow_anchor=False, sample_depth=False):
         row.update({
             "ok": True,
             "policy_ms": t.get("policy_ms"),
-            "fabric_ms": t.get("fabric_ms"),
+            "fabric_ms": t.get("fabric_ms"),          # invoke (endorse+order+commit)
+            "readback_ms": t.get("readback_ms"),      # Alg. 1 l.22 query (v2)
+            "fabric_stage_ms": t.get("fabric_stage_ms"),
             "outbox_ms": t.get("outbox_ms"),
+            "route": j.get("route"),
             "ack_ms": t.get("ack_ms"),
             "fabric_invoked": t.get("fabric_invoked"),
             "anchor_enqueued": t.get("anchor_enqueued"),
@@ -190,8 +229,10 @@ def one_request(cls, i, follow_anchor=False, sample_depth=False):
             row["anchor_state"] = "not_required"
         return row
     except requests.RequestException as e:
+        t1 = time.perf_counter()
         row["t_return"] = time.time()
-        row["rtt_ms"] = round((time.perf_counter() - t0) * 1000.0, 3)
+        row["t_return_mono"] = t1
+        row["rtt_ms"] = round((t1 - t0) * 1000.0, 3)
         row["error"] = str(e)[:200]
         return row
 
@@ -284,6 +325,7 @@ def measure_latency(cls):
         "client_rtt_ms": _stats([r.get("rtt_ms") for r in ok]),
         "stage_policy_ms": _stats([r.get("policy_ms") for r in ok]),
         "stage_fabric_ms": _stats([r.get("fabric_ms") for r in ok]),
+        "stage_readback_ms": _stats([r.get("readback_ms") for r in ok]),
         "stage_outbox_ms": _stats([r.get("outbox_ms") for r in ok]),
         "fabric_invoked_all": {"kind": "measured", "value": fabric_all},
         "anchors_enqueued": {"kind": "measured", "value": anchored},
@@ -404,20 +446,40 @@ def _error_detail(reqs):
             for k, v in sorted(buckets.items(), key=lambda kv: -kv[1])]
 
 
+def steady_state_tps(ok, c):
+    """Completions per second with the first and last c completions excluded.
+
+    Those are the ramp-up (workers starting together) and drain (fewer than c
+    requests left in flight) phases, where a closed loop of c workers is not at
+    concurrency c. Monotonic return stamps only. None if too few completions.
+    """
+    ends = sorted(r["t_return_mono"] for r in ok if r.get("t_return_mono") is not None)
+    if len(ends) < 2 * c + 2:
+        return None
+    lo, hi = ends[c - 1], ends[len(ends) - c - 1]
+    return (len(ends) - 2 * c) / (hi - lo) if hi > lo else None
+
+
 def measure_throughput(cls):
     rows_out, gate_failures = [], []
     for c in TPUT_CONC:
-        for i in range(WARMUP):
-            one_request(cls, 800000 + i)
+        n = n_for_level(c)
+        # Warm-up: TPUT_WARMUP_ROUNDS rounds AT this level's concurrency, unique
+        # ids (v1 sent 20 sequential requests re-using the same ids at every
+        # level, which after the first level were idempotency-cache hits).
+        with ThreadPoolExecutor(max_workers=c) as ex:
+            list(ex.map(lambda i: one_request(cls, 800000 + 1000 * c + i),
+                        range(TPUT_WARMUP_ROUNDS * c)))
         t0 = time.perf_counter()
         with ThreadPoolExecutor(max_workers=c) as ex:
-            futs = [ex.submit(one_request, cls, 10000 * c + i) for i in range(TPUT_N)]
+            futs = [ex.submit(one_request, cls, 10000 * c + i) for i in range(n)]
             reqs = [f.result() for f in futs]
         wall = time.perf_counter() - t0
         write_rows(reqs, f"throughput:{cls}:c{c}")
 
         ok = [r for r in reqs if r["ok"]]
         tps = len(ok) / wall if wall > 0 else 0.0
+        ss = steady_state_tps(ok, c)
         ack = _stats([r.get("ack_ms") for r in ok])
         gate = reconciliation_gate(c, tps, ack.get("mean"))
         row = {
@@ -427,11 +489,16 @@ def measure_throughput(cls):
             "wall_s": {"kind": "measured", "value": round(wall, 3)},
             "throughput_tps": {"kind": "derived", "value": round(tps, 3),
                                "derivation": "completed_requests / wall_clock_s"},
+            "throughput_steady_tps": {
+                "kind": "derived", "value": round(ss, 3) if ss else None,
+                "derivation": ("(n - 2c) / (t_return[n-c] - t_return[c]) over sorted "
+                               "monotonic return stamps")},
             "ack_latency_ms": ack,
             "client_rtt_ms": _stats([r.get("rtt_ms") for r in ok]),
             # Stage decomposition per level: isolates WHERE the transition happens.
             "stage_policy_ms": _stats([r.get("policy_ms") for r in ok]),
             "stage_fabric_ms": _stats([r.get("fabric_ms") for r in ok]),
+            "stage_readback_ms": _stats([r.get("readback_ms") for r in ok]),
             "stage_outbox_ms": _stats([r.get("outbox_ms") for r in ok]),
             # outbox_ms spans commit_and_enqueue, so it absorbs any SQLite
             "anchors_enqueued": {"kind": "measured",
@@ -443,8 +510,9 @@ def measure_throughput(cls):
         }
         rows_out.append(row)
         status = "OK " if gate["passed"] else "GATE FAILED"
-        print(f"    c={c:>2}: {tps:>6.3f} TPS  ack {ack.get('mean')} ms  "
-              f"expected {gate.get('expected_tps')} TPS  [{status}]")
+        print(f"    c={c:>2} n={n}: {tps:>6.3f} TPS (steady {ss if ss is None else round(ss, 3)})"
+              f"  ack {ack.get('mean')} ms  expected {gate.get('expected_tps')} TPS  [{status}]",
+              flush=True)
         if not gate["passed"]:
             gate_failures.append({"class": cls, "concurrency": c, **gate})
         if row["errors"] > 0:
@@ -470,28 +538,40 @@ def main():
               "recoverable, a fabricated one is not.")
         return 1
 
+    import run_digest
+    digest_start = run_digest.collect()
+
     print("=" * 72)
-    print("  EXPERIMENT 1 (Phase 2): ack/completion latency + throughput")
-    print("=" * 72)
+    print("  EXPERIMENT 1 (v2): ack/completion latency + throughput")
+    print(f"  server={health.get('server')} workers={health.get('server_workers')} "
+          f"threads={health.get('server_threads')} readback={health.get('fabric_readback')} "
+          f"config_hash={digest_start['config_hash']}")
+    print("=" * 72, flush=True)
 
     latency = {}
-    for cls in CLASSES:
-        print(f"  latency: {cls} (n={LAT_REPS}, warmup={WARMUP})")
-        latency[cls] = measure_latency(cls)
+    if "latency" in PHASES:
+        for cls in CLASSES:
+            print(f"  latency: {cls} (n={LAT_REPS}, warmup={WARMUP})", flush=True)
+            latency[cls] = measure_latency(cls)
 
-    print("  relay drain rate (public-anchoring ceiling)")
-    drain = measure_drain_rate()
-    print(f"    ingest {drain['ingest_rate_per_s']['value']} /s -> "
-          f"drain {drain['drain_rate_per_s']['value']} /s "
-          f"(peak queue depth {drain['peak_queue_depth_observed']}, "
-          f"backlog forms: {drain['backlog_forms']['value']})")
+    drain = None
+    if "drain" in PHASES:
+        print("  relay delivery at offered load (NOT mu_relay; see AUDIT_WS0 F9)")
+        drain = measure_drain_rate()
+        print(f"    ingest {drain['ingest_rate_per_s']['value']} /s -> "
+              f"delivered {drain['drain_rate_per_s']['value']} /s "
+              f"(peak queue depth {drain['peak_queue_depth_observed']}, "
+              f"backlog forms: {drain['backlog_forms']['value']})")
 
     throughput, all_gate_failures = {}, []
-    for cls in CLASSES:
-        print(f"  throughput: {cls}")
-        rows, failures = measure_throughput(cls)
-        throughput[cls] = rows
-        all_gate_failures.extend(failures)
+    if "throughput" in PHASES:
+        for cls in CLASSES:
+            print(f"  throughput: {cls}", flush=True)
+            rows, failures = measure_throughput(cls)
+            throughput[cls] = rows
+            all_gate_failures.extend(failures)
+
+    digest_end = run_digest.collect()
 
     saturated = {}
     for cls, rows in throughput.items():
@@ -509,13 +589,24 @@ def main():
 
     results = {
         "experiment": "exp1_latency_real",
-        "schema_version": 2,
+        "schema_version": 3,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "provenance": {
             "data_source": "synthetic telemetry generated in exp1_latency_real.py:payload()",
+            "nonce": NONCE,
+            "phases": sorted(PHASES),
+            "classes": CLASSES,
+            "concurrency_levels": TPUT_CONC,
             "n_per_class": LAT_REPS,
-            "warmups_discarded": WARMUP,
-            "per_request_rows": "experiments/results/exp1/exp1_requests.jsonl",
+            "n_per_level": {str(c): n_for_level(c) for c in TPUT_CONC},
+            "warmups_discarded": {"latency_phase": WARMUP,
+                                  "throughput_rounds_per_level": TPUT_WARMUP_ROUNDS},
+            "per_request_rows": os.path.relpath(jsonl, _REPO),
+            "config_hash": digest_start["config_hash"],
+            "config_hash_end": digest_end["config_hash"],
+            "run_digest_start": digest_start,
+            "run_digest_end": digest_end,
+            "orchestrator_health": health,
             "architecture": ("async: private commit acknowledged at 202, public "
                              "anchor delivered by the outbox relay worker"),
             # Recorded so consolidate_results.py can prove every experiment in a
@@ -534,6 +625,16 @@ def main():
         "saturation": saturated,
         "reconciliation_gate_failures": all_gate_failures,
     }
+
+    if digest_start["config_hash"] != digest_end["config_hash"]:
+        # The system changed under the run (restart, redeploy, new relay...).
+        results["status"] = "FAILED_CONFIG_CHANGED"
+        path = os.path.join(OUTPUT_DIR, "exp1_latency_real.FAILED.json")
+        with open(path, "w") as f:
+            json.dump(results, f, indent=2)
+        print(f"  CONFIG CHANGED DURING RUN ({digest_start['config_hash']} -> "
+              f"{digest_end['config_hash']}); results NOT admitted. {path}")
+        return 3
 
     if all_gate_failures:
         # Spec: do not record the number — record the discrepancy and stop.

@@ -314,6 +314,7 @@ def health_check():
         # What actually serves requests (set by the launcher; WS1). v1's
         # "production" was Werkzeug with debug=False (AUDIT_WS0 F6).
         "server": os.getenv("ORBIT_SERVER", "werkzeug"),
+        "server_profile": os.getenv("ORBIT_SERVER_PROFILE"),
         "server_workers": os.getenv("ORBIT_SERVER_WORKERS"),
         "server_threads": os.getenv("ORBIT_SERVER_THREADS"),
         "pid": os.getpid(),

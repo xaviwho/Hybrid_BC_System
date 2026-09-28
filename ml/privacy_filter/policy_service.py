@@ -42,6 +42,11 @@ def health():
         "service": "deterministic-privacy-policy",
         "policy_version": POLICY_VERSION,
         "engine": "policy_engine",
+        # What serves this process (set by scripts/orbit_v2.sh; WS1).
+        "server": os.getenv("ORBIT_SERVER", "werkzeug"),
+        "server_profile": os.getenv("ORBIT_SERVER_PROFILE"),
+        "server_workers": os.getenv("ORBIT_SERVER_WORKERS"),
+        "server_threads": os.getenv("ORBIT_SERVER_THREADS"),
     }), 200
 
 
