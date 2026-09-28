@@ -1,0 +1,558 @@
+{
+  "experiment": "exp4_lifecycle_real",
+  "schema_version": 2,
+  "timestamp": "2026-08-11T13:54:07",
+  "provenance": {
+    "data_source": "deterministic synthetic states, exp4_lifecycle_real.py:make_state()",
+    "component": "orchestrator/twin_manager.py (in-process)",
+    "measures_production_code": true,
+    "state_models": [
+      "dense",
+      "sparse"
+    ],
+    "warmup": 20,
+    "reps": 200,
+    "storage_reps": 5,
+    "state_fields": 20,
+    "sparse_fields_changed_per_update": 2,
+    "python": "3.12.10"
+  },
+  "versioning_model": "delta + periodic checkpoint (Phase 3). Checkpoint every q versions; per-version min(delta, snapshot) fallback; reversible deltas in the open checkpoint window, compacted to forward-only once the window closes.",
+  "rollback_model": "reconstruct target (Algorithm 2, cheaper of checkpoint-forward and inversion-from-head), then APPEND a new head (Eq 35). History is never truncated.",
+  "by_state_model": {
+    "dense": {
+      "state_model": "dense",
+      "update_latency": {
+        "mean_ms": 0.11545998742803931,
+        "p95_ms": 0.13560010120272636,
+        "stdev_ms": 0.02324449726477496,
+        "ci95_ms": 0.003221522961674127,
+        "n": 200
+      },
+      "storage_growth": [
+        {
+          "versions": 1,
+          "reps": 5,
+          "total_bytes": 311.0,
+          "snapshot_equivalent_bytes": 311.0,
+          "compression_vs_snapshots": 1.0,
+          "total_bytes_min": 311,
+          "total_bytes_max": 311,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 311.0
+        },
+        {
+          "versions": 10,
+          "reps": 5,
+          "total_bytes": 3450.0,
+          "snapshot_equivalent_bytes": 3450.0,
+          "compression_vs_snapshots": 1.0,
+          "total_bytes_min": 3450,
+          "total_bytes_max": 3450,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 345.0
+        },
+        {
+          "versions": 50,
+          "reps": 5,
+          "total_bytes": 18090.0,
+          "snapshot_equivalent_bytes": 18090.0,
+          "compression_vs_snapshots": 1.0,
+          "total_bytes_min": 18090,
+          "total_bytes_max": 18090,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 361.8
+        },
+        {
+          "versions": 100,
+          "reps": 5,
+          "total_bytes": 36640.0,
+          "snapshot_equivalent_bytes": 36640.0,
+          "compression_vs_snapshots": 1.0,
+          "total_bytes_min": 36640,
+          "total_bytes_max": 36640,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 366.4
+        },
+        {
+          "versions": 200,
+          "reps": 5,
+          "total_bytes": 74871.0,
+          "snapshot_equivalent_bytes": 73740.0,
+          "compression_vs_snapshots": 0.9849,
+          "total_bytes_min": 74871,
+          "total_bytes_max": 74871,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 374.4
+        },
+        {
+          "versions": 400,
+          "reps": 5,
+          "total_bytes": 153111.0,
+          "snapshot_equivalent_bytes": 151940.0,
+          "compression_vs_snapshots": 0.9924,
+          "total_bytes_min": 153111,
+          "total_bytes_max": 153111,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 382.8
+        },
+        {
+          "versions": 800,
+          "reps": 5,
+          "total_bytes": 309511.0,
+          "snapshot_equivalent_bytes": 308340.0,
+          "compression_vs_snapshots": 0.9962,
+          "total_bytes_min": 309511,
+          "total_bytes_max": 309511,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 386.9
+        }
+      ],
+      "approx_bytes_per_version": 361.2,
+      "compression_vs_snapshots_at_max": 0.9962,
+      "rollback_latency_by_target_version": [
+        {
+          "mean_ms": 0.10139899561181664,
+          "p95_ms": 0.1159000676125288,
+          "stdev_ms": 0.007046895346801191,
+          "ci95_ms": 0.0013811914879730334,
+          "n": 100,
+          "target_version": 1,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.10395901277661324,
+          "p95_ms": 0.1097000204026699,
+          "stdev_ms": 0.00734098852341014,
+          "ci95_ms": 0.0014388337505883875,
+          "n": 100,
+          "target_version": 50,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.10341300163418055,
+          "p95_ms": 0.11070002801716328,
+          "stdev_ms": 0.004210544500382267,
+          "ci95_ms": 0.0008252667220749243,
+          "n": 100,
+          "target_version": 100,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.11340699624270201,
+          "p95_ms": 0.18550013191998005,
+          "stdev_ms": 0.02484281234044851,
+          "ci95_ms": 0.0048691912187279075,
+          "n": 100,
+          "target_version": 250,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.1260870066471398,
+          "p95_ms": 0.14399993233382702,
+          "stdev_ms": 0.12640553108127395,
+          "ci95_ms": 0.024775484091929693,
+          "n": 100,
+          "target_version": 500,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.11194598395377398,
+          "p95_ms": 0.11860020458698273,
+          "stdev_ms": 0.008045693575529082,
+          "ci95_ms": 0.0015769559408037002,
+          "n": 100,
+          "target_version": 750,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.11304799932986498,
+          "p95_ms": 0.1167000737041235,
+          "stdev_ms": 0.018678805282152235,
+          "ci95_ms": 0.0036610458353018385,
+          "n": 100,
+          "target_version": 1000,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        }
+      ],
+      "rollback_min_ms": 0.10139899561181664,
+      "rollback_max_ms": 0.1260870066471398,
+      "rollback_cost_model": {
+        "u_by_target": {
+          "1": 0,
+          "50": 0,
+          "100": 0,
+          "250": 0,
+          "500": 0,
+          "750": 0,
+          "1000": 0
+        },
+        "u_max_observed": 0,
+        "checkpoint_interval_q": 100,
+        "u_bounded_by_q": true,
+        "latency_ratio_high_u_over_low_u": 1.0,
+        "varies_with_u": false,
+        "note": "u = min{n-k, (k-1) mod q} is SAWTOOTH in k, so a target=1 vs target=N comparison is not a valid constant-time probe under this storage model. Cost is BOUNDED by q, not constant."
+      },
+      "rollback_scales_with_target_index": false,
+      "is_constant_time": false,
+      "is_bounded_by_checkpoint_interval": true
+    },
+    "sparse": {
+      "state_model": "sparse",
+      "update_latency": {
+        "mean_ms": 0.07239049300551414,
+        "p95_ms": 0.0801000278443098,
+        "stdev_ms": 0.008016532699286408,
+        "ci95_ms": 0.0011110347481207469,
+        "n": 200
+      },
+      "storage_growth": [
+        {
+          "versions": 1,
+          "reps": 5,
+          "total_bytes": 311.0,
+          "snapshot_equivalent_bytes": 311.0,
+          "compression_vs_snapshots": 1.0,
+          "total_bytes_min": 311,
+          "total_bytes_max": 311,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 311.0
+        },
+        {
+          "versions": 10,
+          "reps": 5,
+          "total_bytes": 1263.0,
+          "snapshot_equivalent_bytes": 3272.0,
+          "compression_vs_snapshots": 2.5907,
+          "total_bytes_min": 1263,
+          "total_bytes_max": 1263,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 126.3
+        },
+        {
+          "versions": 50,
+          "reps": 5,
+          "total_bytes": 5757.0,
+          "snapshot_equivalent_bytes": 17820.0,
+          "compression_vs_snapshots": 3.0954,
+          "total_bytes_min": 5757,
+          "total_bytes_max": 5757,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 115.1
+        },
+        {
+          "versions": 100,
+          "reps": 5,
+          "total_bytes": 11457.0,
+          "snapshot_equivalent_bytes": 36370.0,
+          "compression_vs_snapshots": 3.1745,
+          "total_bytes_min": 11457,
+          "total_bytes_max": 11457,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 114.6
+        },
+        {
+          "versions": 200,
+          "reps": 5,
+          "total_bytes": 20754.0,
+          "snapshot_equivalent_bytes": 73470.0,
+          "compression_vs_snapshots": 3.54,
+          "total_bytes_min": 20754,
+          "total_bytes_max": 20754,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 103.8
+        },
+        {
+          "versions": 400,
+          "reps": 5,
+          "total_bytes": 39540.0,
+          "snapshot_equivalent_bytes": 151580.0,
+          "compression_vs_snapshots": 3.8336,
+          "total_bytes_min": 39540,
+          "total_bytes_max": 39540,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 98.8
+        },
+        {
+          "versions": 800,
+          "reps": 5,
+          "total_bytes": 76744.0,
+          "snapshot_equivalent_bytes": 307980.0,
+          "compression_vs_snapshots": 4.0131,
+          "total_bytes_min": 76744,
+          "total_bytes_max": 76744,
+          "total_bytes_stdev": 0.0,
+          "bytes_per_version": 95.9
+        }
+      ],
+      "approx_bytes_per_version": 137.9,
+      "compression_vs_snapshots_at_max": 4.0131,
+      "rollback_latency_by_target_version": [
+        {
+          "mean_ms": 0.10389599716290832,
+          "p95_ms": 0.11580018326640129,
+          "stdev_ms": 0.0068293880587292945,
+          "ci95_ms": 0.0013385600595109417,
+          "n": 100,
+          "target_version": 1,
+          "delta_applications_u": 0,
+          "reconstruction_path": "direct"
+        },
+        {
+          "mean_ms": 0.17575500765815377,
+          "p95_ms": 0.21249987185001373,
+          "stdev_ms": 0.05114421345891207,
+          "ci95_ms": 0.010024265837946765,
+          "n": 100,
+          "target_version": 50,
+          "delta_applications_u": 49,
+          "reconstruction_path": "checkpoint"
+        },
+        {
+          "mean_ms": 0.22513000294566154,
+          "p95_ms": 0.26320014148950577,
+          "stdev_ms": 0.022386186344253035,
+          "ci95_ms": 0.004387692523473595,
+          "n": 100,
+          "target_version": 100,
+          "delta_applications_u": 99,
+          "reconstruction_path": "checkpoint"
+        },
+        {
+          "mean_ms": 0.17449198057875037,
+          "p95_ms": 0.19120005890727043,
+          "stdev_ms": 0.0230661368928917,
+          "ci95_ms": 0.004520962831006773,
+          "n": 100,
+          "target_version": 250,
+          "delta_applications_u": 49,
+          "reconstruction_path": "checkpoint"
+        },
+        {
+          "mean_ms": 0.24609700310975313,
+          "p95_ms": 0.27989991940557957,
+          "stdev_ms": 0.052329993684938216,
+          "ci95_ms": 0.01025667876224789,
+          "n": 100,
+          "target_version": 500,
+          "delta_applications_u": 99,
+          "reconstruction_path": "checkpoint"
+        },
+        {
+          "mean_ms": 0.18379600252956152,
+          "p95_ms": 0.2288001123815775,
+          "stdev_ms": 0.03153014456030241,
+          "ci95_ms": 0.006179908333819273,
+          "n": 100,
+          "target_version": 750,
+          "delta_applications_u": 49,
+          "reconstruction_path": "checkpoint"
+        },
+        {
+          "mean_ms": 0.12015498941764235,
+          "p95_ms": 0.12520002201199532,
+          "stdev_ms": 0.005307869861094624,
+          "ci95_ms": 0.0010403424927745463,
+          "n": 100,
+          "target_version": 1000,
+          "delta_applications_u": 0,
+          "reconstruction_path": "inversion"
+        }
+      ],
+      "rollback_min_ms": 0.10389599716290832,
+      "rollback_max_ms": 0.24609700310975313,
+      "rollback_cost_model": {
+        "u_by_target": {
+          "1": 0,
+          "50": 49,
+          "100": 99,
+          "250": 49,
+          "500": 99,
+          "750": 49,
+          "1000": 0
+        },
+        "u_max_observed": 99,
+        "checkpoint_interval_q": 100,
+        "u_bounded_by_q": true,
+        "latency_ratio_high_u_over_low_u": 2.1032,
+        "varies_with_u": true,
+        "note": "u = min{n-k, (k-1) mod q} is SAWTOOTH in k, so a target=1 vs target=N comparison is not a valid constant-time probe under this storage model. Cost is BOUNDED by q, not constant."
+      },
+      "rollback_scales_with_target_index": false,
+      "is_constant_time": false,
+      "is_bounded_by_checkpoint_interval": true
+    }
+  },
+  "update_latency": {
+    "mean_ms": 0.07239049300551414,
+    "p95_ms": 0.0801000278443098,
+    "stdev_ms": 0.008016532699286408,
+    "ci95_ms": 0.0011110347481207469,
+    "n": 200
+  },
+  "storage_growth": [
+    {
+      "versions": 1,
+      "reps": 5,
+      "total_bytes": 311.0,
+      "snapshot_equivalent_bytes": 311.0,
+      "compression_vs_snapshots": 1.0,
+      "total_bytes_min": 311,
+      "total_bytes_max": 311,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 311.0
+    },
+    {
+      "versions": 10,
+      "reps": 5,
+      "total_bytes": 1263.0,
+      "snapshot_equivalent_bytes": 3272.0,
+      "compression_vs_snapshots": 2.5907,
+      "total_bytes_min": 1263,
+      "total_bytes_max": 1263,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 126.3
+    },
+    {
+      "versions": 50,
+      "reps": 5,
+      "total_bytes": 5757.0,
+      "snapshot_equivalent_bytes": 17820.0,
+      "compression_vs_snapshots": 3.0954,
+      "total_bytes_min": 5757,
+      "total_bytes_max": 5757,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 115.1
+    },
+    {
+      "versions": 100,
+      "reps": 5,
+      "total_bytes": 11457.0,
+      "snapshot_equivalent_bytes": 36370.0,
+      "compression_vs_snapshots": 3.1745,
+      "total_bytes_min": 11457,
+      "total_bytes_max": 11457,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 114.6
+    },
+    {
+      "versions": 200,
+      "reps": 5,
+      "total_bytes": 20754.0,
+      "snapshot_equivalent_bytes": 73470.0,
+      "compression_vs_snapshots": 3.54,
+      "total_bytes_min": 20754,
+      "total_bytes_max": 20754,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 103.8
+    },
+    {
+      "versions": 400,
+      "reps": 5,
+      "total_bytes": 39540.0,
+      "snapshot_equivalent_bytes": 151580.0,
+      "compression_vs_snapshots": 3.8336,
+      "total_bytes_min": 39540,
+      "total_bytes_max": 39540,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 98.8
+    },
+    {
+      "versions": 800,
+      "reps": 5,
+      "total_bytes": 76744.0,
+      "snapshot_equivalent_bytes": 307980.0,
+      "compression_vs_snapshots": 4.0131,
+      "total_bytes_min": 76744,
+      "total_bytes_max": 76744,
+      "total_bytes_stdev": 0.0,
+      "bytes_per_version": 95.9
+    }
+  ],
+  "approx_bytes_per_version": 137.9,
+  "rollback_latency_by_target_version": [
+    {
+      "mean_ms": 0.10389599716290832,
+      "p95_ms": 0.11580018326640129,
+      "stdev_ms": 0.0068293880587292945,
+      "ci95_ms": 0.0013385600595109417,
+      "n": 100,
+      "target_version": 1,
+      "delta_applications_u": 0,
+      "reconstruction_path": "direct"
+    },
+    {
+      "mean_ms": 0.17575500765815377,
+      "p95_ms": 0.21249987185001373,
+      "stdev_ms": 0.05114421345891207,
+      "ci95_ms": 0.010024265837946765,
+      "n": 100,
+      "target_version": 50,
+      "delta_applications_u": 49,
+      "reconstruction_path": "checkpoint"
+    },
+    {
+      "mean_ms": 0.22513000294566154,
+      "p95_ms": 0.26320014148950577,
+      "stdev_ms": 0.022386186344253035,
+      "ci95_ms": 0.004387692523473595,
+      "n": 100,
+      "target_version": 100,
+      "delta_applications_u": 99,
+      "reconstruction_path": "checkpoint"
+    },
+    {
+      "mean_ms": 0.17449198057875037,
+      "p95_ms": 0.19120005890727043,
+      "stdev_ms": 0.0230661368928917,
+      "ci95_ms": 0.004520962831006773,
+      "n": 100,
+      "target_version": 250,
+      "delta_applications_u": 49,
+      "reconstruction_path": "checkpoint"
+    },
+    {
+      "mean_ms": 0.24609700310975313,
+      "p95_ms": 0.27989991940557957,
+      "stdev_ms": 0.052329993684938216,
+      "ci95_ms": 0.01025667876224789,
+      "n": 100,
+      "target_version": 500,
+      "delta_applications_u": 99,
+      "reconstruction_path": "checkpoint"
+    },
+    {
+      "mean_ms": 0.18379600252956152,
+      "p95_ms": 0.2288001123815775,
+      "stdev_ms": 0.03153014456030241,
+      "ci95_ms": 0.006179908333819273,
+      "n": 100,
+      "target_version": 750,
+      "delta_applications_u": 49,
+      "reconstruction_path": "checkpoint"
+    },
+    {
+      "mean_ms": 0.12015498941764235,
+      "p95_ms": 0.12520002201199532,
+      "stdev_ms": 0.005307869861094624,
+      "ci95_ms": 0.0010403424927745463,
+      "n": 100,
+      "target_version": 1000,
+      "delta_applications_u": 0,
+      "reconstruction_path": "inversion"
+    }
+  ],
+  "rollback_min_ms": 0.10389599716290832,
+  "rollback_max_ms": 0.24609700310975313,
+  "rollback_scales_with_target_index": false,
+  "is_constant_time": false,
+  "conclusion": "Rollback is NOT constant time, but it is now BOUNDED: cost tracks the delta-application count u = min{n-k, (k-1) mod q} plus the append, rather than a linear scan over the version list. Because u is sawtooth in k, the old target=1 vs target=N probe no longer detects the variation \u2014 the characterization is against u, and u is capped by the checkpoint interval q. Storage is no longer one full snapshot per version: under sparse updates the delta/checkpoint format is materially smaller than the snapshot equivalent, while under dense updates the min(delta, snapshot) fallback keeps it at parity instead of regressing. Both conditions are reported; a dense-only result would be predetermined."
+}

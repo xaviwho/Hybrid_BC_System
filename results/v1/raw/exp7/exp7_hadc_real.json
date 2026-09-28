@@ -1,0 +1,90 @@
+{
+  "experiment": "exp7_hadc_real",
+  "measured": true,
+  "data_source": "real twin_manager version deltas (deterministic multi-class workload)",
+  "steps_per_twin": 500,
+  "classes": [
+    "machine",
+    "conveyor",
+    "sensor",
+    "agv"
+  ],
+  "per_class": {
+    "machine": {
+      "n_deltas": 500,
+      "raw_bytes": 24189,
+      "codec_bytes": {
+        "store": 24189,
+        "zlib-1": 2027,
+        "zlib-6": 1728,
+        "zlib-9": 1618
+      },
+      "uniform_codec": "zlib-6",
+      "uniform_bytes": 1728,
+      "hadc_codec": "zlib-9",
+      "hadc_bytes": 1618,
+      "uniform_ratio": 13.998,
+      "hadc_ratio": 14.95
+    },
+    "conveyor": {
+      "n_deltas": 500,
+      "raw_bytes": 24087,
+      "codec_bytes": {
+        "store": 24087,
+        "zlib-1": 2094,
+        "zlib-6": 1680,
+        "zlib-9": 1569
+      },
+      "uniform_codec": "zlib-6",
+      "uniform_bytes": 1680,
+      "hadc_codec": "zlib-9",
+      "hadc_bytes": 1569,
+      "uniform_ratio": 14.338,
+      "hadc_ratio": 15.352
+    },
+    "sensor": {
+      "n_deltas": 500,
+      "raw_bytes": 24249,
+      "codec_bytes": {
+        "store": 24249,
+        "zlib-1": 2856,
+        "zlib-6": 1642,
+        "zlib-9": 1322
+      },
+      "uniform_codec": "zlib-6",
+      "uniform_bytes": 1642,
+      "hadc_codec": "zlib-9",
+      "hadc_bytes": 1322,
+      "uniform_ratio": 14.768,
+      "hadc_ratio": 18.343
+    },
+    "agv": {
+      "n_deltas": 500,
+      "raw_bytes": 27362,
+      "codec_bytes": {
+        "store": 27362,
+        "zlib-1": 5680,
+        "zlib-6": 3609,
+        "zlib-9": 3747
+      },
+      "uniform_codec": "zlib-6",
+      "uniform_bytes": 3609,
+      "hadc_codec": "zlib-6",
+      "hadc_bytes": 3609,
+      "uniform_ratio": 7.582,
+      "hadc_ratio": 7.582
+    }
+  },
+  "total_raw_bytes": 99887,
+  "total_uniform_bytes": 8659,
+  "total_hadc_bytes": 8118,
+  "overall_uniform_ratio": 11.536,
+  "overall_hadc_ratio": 12.304,
+  "hadc_storage_savings_vs_uniform_pct": 6.25,
+  "codecs_selected": [
+    "zlib-6",
+    "zlib-9"
+  ],
+  "heterogeneous_selection": true,
+  "finding": "Block-level compression of REAL twin_manager version deltas reaches ~11.5x (uniform zlib-6). Per-class codec selection (HADC) improves on uniform by 6.2%. Classes selected DIFFERENT codecs, supporting the heterogeneity thesis."
+}

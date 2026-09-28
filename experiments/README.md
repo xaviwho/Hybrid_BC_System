@@ -1,3 +1,9 @@
+> **Stale (WS0 audit).** Everything below this banner describes the pre-Phase-2
+> suite, which is now in `_quarantine/legacy/` and must not be run. The live
+> experiments are the `exp*_real.py` scripts plus `exp2_privacy_policy.py` and
+> `exp8_recovery_strategy.py`, consolidated by `consolidate_results.py`. See
+> `DATA_SOURCES.md` and `revision/AUDIT_WS0.md`.
+
 # Experimental Evaluation Suite
 
 This directory contains the comprehensive experimental evaluation suite for the **Hybrid Blockchain Digital Twin System** journal paper.

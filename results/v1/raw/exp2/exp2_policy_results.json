@@ -1,0 +1,157 @@
+{
+  "experiment": "exp2_privacy_policy",
+  "engine": "deterministic-policy",
+  "policy_version": "1.0.0",
+  "n_cases": 13,
+  "routing_accuracy": 1.0,
+  "routing_correct": 13,
+  "leak_count": 0,
+  "leaks": [],
+  "guarantee_holds": true,
+  "coverage": {
+    "total_fields": 57,
+    "explicit_rule_fields": 55,
+    "default_fields": 2,
+    "coverage": 0.9649122807017544,
+    "unmatched_field_names": {
+      "note": 1,
+      "mysteryReading": 1
+    }
+  },
+  "routing_detail": [
+    {
+      "case": "env_sensor",
+      "expected": "public",
+      "predicted": "public",
+      "max_sensitivity": "public",
+      "route_ok": true,
+      "redacted_fields": []
+    },
+    {
+      "case": "industrial_telemetry",
+      "expected": "public",
+      "predicted": "public",
+      "max_sensitivity": "public",
+      "route_ok": true,
+      "redacted_fields": []
+    },
+    {
+      "case": "healthcare_patient",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "patientId",
+        "diagnosis",
+        "heartRate"
+      ]
+    },
+    {
+      "case": "ssn_record",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "ssn"
+      ]
+    },
+    {
+      "case": "contact_pii",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "email",
+        "phone"
+      ]
+    },
+    {
+      "case": "payment",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "creditCard",
+        "cvv"
+      ]
+    },
+    {
+      "case": "bank",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "bankAccount",
+        "salary"
+      ]
+    },
+    {
+      "case": "secrets",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "password",
+        "apiKey"
+      ]
+    },
+    {
+      "case": "gdpr_special",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "genetic",
+        "religion"
+      ]
+    },
+    {
+      "case": "precise_geo",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "exactLocation"
+      ]
+    },
+    {
+      "case": "quasi_ids",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "restricted",
+      "route_ok": true,
+      "redacted_fields": [
+        "dateOfBirth",
+        "zipCode"
+      ]
+    },
+    {
+      "case": "hidden_ssn_in_note",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "note"
+      ]
+    },
+    {
+      "case": "unknown_field",
+      "expected": "sensitive",
+      "predicted": "sensitive",
+      "max_sensitivity": "critical",
+      "route_ok": true,
+      "redacted_fields": [
+        "mysteryReading"
+      ]
+    }
+  ]
+}
