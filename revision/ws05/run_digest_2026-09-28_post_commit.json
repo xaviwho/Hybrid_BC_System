@@ -1,0 +1,100 @@
+{
+ "code": {
+  "commit": "9f2d2db7cd48c85bd0f3104c1c66413a12308c91",
+  "branch": "revision/v2",
+  "dirty_tracked_files": []
+ },
+ "ethereum": {
+  "chain_id": 1337,
+  "client_version": "Ganache/v7.9.1/EthereumJS TestRPC/v7.9.1/ethereum-js",
+  "contract_address": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+  "contract_code_keccak": "0xd3f082b9af8e2a104ad4d27ff1e15d1e572beae9fa7ec8510d39a85ea8689bd4",
+  "contract_code_bytes": 2629,
+  "relay_allowlist": {
+   "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1": true,
+   "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0": true,
+   "0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b": true,
+   "0xE11BA2b4D45Eaed5996Cd0823791E0C93114882d": true
+  },
+  "block_gas_limit": 30000000,
+  "block_number": 63
+ },
+ "fabric": {
+  "channel": "hiot",
+  "binary_versions": {
+   "peer": "v2.5.0",
+   "orderer": "v2.5.0"
+  },
+  "chaincode": {
+   "name": "iot-data",
+   "version": "2.0",
+   "sequence": 2,
+   "validation_parameter_b64": "CiwSDBIKCAISAggAEgIIARoNEgsKB09yZzFNU1AQAxoNEgsKB09yZzJNU1AQAw==",
+   "endorsement_policy_printable": ".,....................Org1MSP........Org2MSP..",
+   "approvals": {
+    "Org1MSP": true,
+    "Org2MSP": true
+   }
+  },
+  "orderer": {
+   "type": "etcdraft",
+   "consenters": 1,
+   "batch_timeout": "2s",
+   "max_message_count": 10,
+   "absolute_max_bytes": 103809024,
+   "preferred_max_bytes": 524288
+  },
+  "images": {
+   "peer0.org1.example.com": "hyperledger/fabric-peer:latest@sha256:3d131d2433b1",
+   "peer0.org2.example.com": "hyperledger/fabric-peer:latest@sha256:3d131d2433b1",
+   "couchdb0": "couchdb:3.4.2@sha256:053646816ef0",
+   "orderer.example.com": "hyperledger/fabric-orderer:latest@sha256:6c3b8eae207f",
+   "couchdb1": "couchdb:3.4.2@sha256:053646816ef0",
+   "ca_org2": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb",
+   "ca_orderer": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb",
+   "ca_org1": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb"
+  },
+  "channel_height": 4063
+ },
+ "services": {
+  "orchestrator": {
+   "server": "werkzeug",
+   "server_mode": "production",
+   "server_workers": null,
+   "server_threads": null,
+   "relay_mode": "external",
+   "fabric_readback": "sync",
+   "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
+   "outbox_db": "/root/orbit-state/v2/outbox.db",
+   "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601"
+  },
+  "orchestrator_pid": 3807,
+  "relays": [
+   [
+    "relay-1",
+    "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0"
+   ]
+  ],
+  "relays_alive": 1,
+  "policy": {
+   "engine": "policy_engine",
+   "policy_version": "1.0.0",
+   "service": "deterministic-privacy-policy"
+  }
+ },
+ "host": {
+  "kernel": "6.6.87.2-microsoft-standard-WSL2",
+  "cpus": 4,
+  "mem_mb": 7943,
+  "python": "3.10.12",
+  "packages": {
+   "web3": "7.16.0",
+   "flask": "3.1.3",
+   "flask_socketio": "5.6.1",
+   "gunicorn": null,
+   "requests": "2.34.2"
+  }
+ },
+ "config_hash": "e14cc77f1dd7",
+ "config_hash_covers": "all fields except ethereum.block_number, fabric.channel_height, services.orchestrator_pid, services.relays_alive"
+}
