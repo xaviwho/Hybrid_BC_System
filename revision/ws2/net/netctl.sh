@@ -59,7 +59,7 @@ cmd_push() {
               "orbit-b org2 peerOrganizations/org2.example.com" \
               "orbit-c orderer ordererOrganizations/example.com"; do
     set -- $spec; h=$1 f=$2 org=$3
-    ssh $h "sudo mkdir -p /opt/orbit-net/organizations/$(dirname $org) && sudo chown -R azureuser /opt/orbit-net"
+    ssh -n $h "sudo mkdir -p /opt/orbit-net/organizations/$(dirname $org) && sudo chown -R azureuser /opt/orbit-net"
     tar -C $NET -cf - organizations/$org peercfg | ssh $h "tar -C /opt/orbit-net -xf -"
     scp -q $SRC/compose-$f.yaml $h:/opt/orbit-net/compose.yaml
     say "pushed $f -> $h"
@@ -68,13 +68,13 @@ cmd_push() {
 
 cmd_up() {
   for h in orbit-c orbit-a orbit-b; do
-    ssh $h "cd /opt/orbit-net && sudo docker compose -f compose.yaml up -d" 2>&1 | tail -3
+    ssh -n $h "cd /opt/orbit-net && sudo docker compose -f compose.yaml up -d" 2>&1 | tail -3
   done
   sleep 10; cmd_status
 }
 
 cmd_down() {
-  for h in orbit-a orbit-b orbit-c; do ssh $h "cd /opt/orbit-net && sudo docker compose -f compose.yaml down" 2>&1 | tail -2; done
+  for h in orbit-a orbit-b orbit-c; do ssh -n $h "cd /opt/orbit-net && sudo docker compose -f compose.yaml down" 2>&1 | tail -2; done
 }
 
 cmd_channel() {
@@ -136,7 +136,7 @@ cmd_batch() {  # MaxMessageCount BatchTimeout(e.g. 2s)
 }
 
 cmd_status() {
-  for h in orbit-a orbit-b orbit-c; do echo "== $h"; ssh $h "sudo docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}'"; done
+  for h in orbit-a orbit-b orbit-c; do echo "== $h"; ssh -n $h "sudo docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}'"; done
   as_org 1
   peer channel getinfo -c $CH 2>/dev/null || true
   peer lifecycle chaincode querycommitted --channelID $CH --name $CC_NAME 2>/dev/null || true

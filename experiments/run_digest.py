@@ -98,7 +98,11 @@ def ethereum():
     if any(f.get("name") == "isRelay" for f in res["abi"]):
         allow = {a: contract.functions.isRelay(a).call() for a in accounts}
     latest = w3.eth.get_block("latest")
+    # Deterministic Ganache puts the same bytecode at the same address on every
+    # fresh chain (laptop and Azure alike); the genesis hash tells chains apart.
+    genesis = w3.eth.get_block(0)["hash"].hex()
     return {"chain_id": w3.eth.chain_id,
+            "genesis_hash": genesis if genesis.startswith("0x") else "0x" + genesis,
             "client_version": w3.client_version,
             "contract_address": res["address"],
             "contract_code_keccak": "0x" + Web3.keccak(code_bytes).hex().removeprefix("0x"),
