@@ -42,10 +42,11 @@ restart_services() {
   ORBIT_ENV=/opt/orbit/azure.env $REPO/scripts/orbit_v2.sh relay 1 1 >>"$LOG" 2>&1
 }
 wait_drained() {
+  local depth=?
   for _ in $(seq 360); do
-    d=$(curl -s -m 10 http://127.0.0.1:5002/outbox_depth | python3 -c 'import json,sys; print(json.load(sys.stdin)["queue_depth"])' 2>/dev/null || echo "?")
-    [ "$d" = 0 ] && return 0; sleep 5
-  done; say "WARNING: relay queue not drained after 30 min (depth $d)"
+    depth=$(curl -s -m 10 http://127.0.0.1:5002/outbox_depth | python3 -c 'import json,sys; print(json.load(sys.stdin)["queue_depth"])' 2>/dev/null || echo "?")
+    [ "$depth" = 0 ] && return 0; sleep 5
+  done; say "WARNING: relay queue not drained after 30 min (depth $depth)"
 }
 vmstat_start() { for h in orbit-a orbit-b orbit-c; do ssh -n $h "nohup vmstat -n -t 5 > /tmp/vmstat.log 2>&1 & echo \$! > /tmp/vmstat.pid"; done
                  nohup vmstat -n -t 5 > /tmp/vmstat.log 2>&1 & echo $! > /tmp/vmstat.pid; }
