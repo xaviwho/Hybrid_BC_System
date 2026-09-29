@@ -557,6 +557,13 @@ def outbox_stats():
     """Outbox health: queue depths, relay liveness, reconciliation set size."""
     return jsonify(outbox.stats()), 200
 
+
+@app.route('/outbox_depth', methods=['GET'])
+def outbox_depth():
+    """Pending anchors only. exp1 samples this per request; /outbox_stats is too
+    heavy for that once the outbox holds ~1e5 rows."""
+    return jsonify({"queue_depth": outbox.queue_depth()}), 200
+
 # --- Real-Time WebSocket Endpoints ---
 
 @socketio.on('connect')

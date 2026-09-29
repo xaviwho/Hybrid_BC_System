@@ -1,0 +1,25 @@
+{
+ "measured_at_utc": "2026-09-28T18:32:18Z",
+ "duration_host_s": 66.898,
+ "monotonic_rate_vs_host": 0.90115,
+ "realtime_rate_vs_host": 0.99964,
+ "rate_uncertainty": 0.00304,
+ "realtime_steps_s": [
+  [
+   26.9,
+   1.074
+  ],
+  [
+   27.1,
+   2.229
+  ],
+  [
+   56.8,
+   1.061
+  ],
+  [
+   57.2,
+   2.228
+  ]
+ ]
+}

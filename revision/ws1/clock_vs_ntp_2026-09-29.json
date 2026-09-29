@@ -1,0 +1,23 @@
+{
+ "measured_at_utc": "2026-09-29T01:45:45Z",
+ "duration_s": 180.0,
+ "servers_answered": [
+  "time.google.com",
+  "time.cloudflare.com",
+  "pool.ntp.org"
+ ],
+ "errors": [],
+ "wsl_monotonic_rate_vs_utc": 0.9072,
+ "wsl_realtime_rate_vs_utc": 1.01135,
+ "windows_host_rate_vs_utc": 0.97985,
+ "windows_host_offset_from_utc_s": 62135596796.856,
+ "ntp_rtt_ms": [
+  184.1,
+  126.7,
+  105.1,
+  508.0,
+  71.4,
+  201.1
+ ],
+ "rate_uncertainty": 0.00282
+}

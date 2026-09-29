@@ -1,0 +1,4381 @@
+{
+  "experiment": "exp1_latency_real",
+  "schema_version": 3,
+  "timestamp": "2026-09-29T00:46:20",
+  "provenance": {
+    "data_source": "synthetic telemetry generated in exp1_latency_real.py:payload()",
+    "nonce": "ws1-prod-r4-1790605774",
+    "phases": [
+      "throughput"
+    ],
+    "classes": [
+      "all_public",
+      "all_sensitive",
+      "mixed",
+      "fabric_only"
+    ],
+    "concurrency_levels": [
+      1,
+      2,
+      4,
+      8,
+      10,
+      12,
+      14,
+      16,
+      20,
+      24,
+      32
+    ],
+    "n_per_class": 200,
+    "n_per_level": {
+      "1": 200,
+      "2": 200,
+      "4": 200,
+      "8": 200,
+      "10": 200,
+      "12": 204,
+      "14": 210,
+      "16": 208,
+      "20": 200,
+      "24": 216,
+      "32": 224
+    },
+    "warmups_discarded": {
+      "latency_phase": 20,
+      "throughput_rounds_per_level": 2
+    },
+    "per_request_rows": "results/v2/raw/ws1/prod/rep4/exp1/exp1_requests.jsonl",
+    "config_hash": "c9d23c394ef7",
+    "config_hash_end": "c9d23c394ef7",
+    "run_digest_start": {
+      "code": {
+        "commit": "a0f9d1e7489549a37cc0f65a9771c998a3e9e532",
+        "branch": "revision/v2",
+        "dirty_tracked_files": [
+          "revision/WS0_5.md"
+        ]
+      },
+      "ethereum": {
+        "chain_id": 1337,
+        "client_version": "Ganache/v7.9.1/EthereumJS TestRPC/v7.9.1/ethereum-js",
+        "contract_address": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+        "contract_code_keccak": "0xd3f082b9af8e2a104ad4d27ff1e15d1e572beae9fa7ec8510d39a85ea8689bd4",
+        "contract_code_bytes": 2629,
+        "relay_allowlist": {
+          "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1": true,
+          "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0": true,
+          "0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b": true,
+          "0xE11BA2b4D45Eaed5996Cd0823791E0C93114882d": true
+        },
+        "block_gas_limit": 30000000,
+        "block_number": 46239
+      },
+      "fabric": {
+        "channel": "hiot",
+        "binary_versions": {
+          "peer": "v2.5.0",
+          "orderer": "v2.5.0"
+        },
+        "chaincode": {
+          "name": "iot-data",
+          "version": "2.0",
+          "sequence": 2,
+          "validation_parameter_b64": "CiwSDBIKCAISAggAEgIIARoNEgsKB09yZzFNU1AQAxoNEgsKB09yZzJNU1AQAw==",
+          "endorsement_policy_printable": ".,....................Org1MSP........Org2MSP..",
+          "approvals": {
+            "Org1MSP": true,
+            "Org2MSP": true
+          }
+        },
+        "orderer": {
+          "type": "etcdraft",
+          "consenters": 1,
+          "batch_timeout": "2s",
+          "max_message_count": 10,
+          "absolute_max_bytes": 103809024,
+          "preferred_max_bytes": 524288
+        },
+        "images": {
+          "peer0.org1.example.com": "hyperledger/fabric-peer:latest@sha256:3d131d2433b1",
+          "peer0.org2.example.com": "hyperledger/fabric-peer:latest@sha256:3d131d2433b1",
+          "couchdb0": "couchdb:3.4.2@sha256:053646816ef0",
+          "orderer.example.com": "hyperledger/fabric-orderer:latest@sha256:6c3b8eae207f",
+          "couchdb1": "couchdb:3.4.2@sha256:053646816ef0",
+          "ca_org2": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb",
+          "ca_orderer": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb",
+          "ca_org1": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb"
+        },
+        "channel_height": 17683
+      },
+      "services": {
+        "orchestrator": {
+          "server": "gunicorn",
+          "server_profile": "prod",
+          "server_mode": "production",
+          "server_workers": "1",
+          "server_threads": "64",
+          "relay_mode": "external",
+          "fabric_readback": "sync",
+          "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
+          "outbox_db": "/root/orbit-state/v2/outbox.db",
+          "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601"
+        },
+        "orchestrator_pid": 1054811,
+        "relays": [
+          [
+            "relay-1",
+            "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0"
+          ]
+        ],
+        "relays_alive": 1,
+        "policy": {
+          "engine": "policy_engine",
+          "policy_version": "1.0.0",
+          "server": "gunicorn",
+          "server_profile": "prod",
+          "server_threads": "32",
+          "server_workers": "2",
+          "service": "deterministic-privacy-policy"
+        }
+      },
+      "host": {
+        "kernel": "6.6.87.2-microsoft-standard-WSL2",
+        "cpus": 4,
+        "mem_mb": 7943,
+        "python": "3.10.12",
+        "packages": {
+          "web3": "7.16.0",
+          "flask": "3.1.3",
+          "flask_socketio": "5.6.1",
+          "gunicorn": "23.0.0",
+          "requests": "2.34.2"
+        }
+      },
+      "config_hash": "c9d23c394ef7",
+      "config_hash_covers": "all fields except ethereum.block_number, fabric.channel_height, services.orchestrator_pid, services.relays_alive"
+    },
+    "run_digest_end": {
+      "code": {
+        "commit": "a0f9d1e7489549a37cc0f65a9771c998a3e9e532",
+        "branch": "revision/v2",
+        "dirty_tracked_files": [
+          "revision/WS0_5.md"
+        ]
+      },
+      "ethereum": {
+        "chain_id": 1337,
+        "client_version": "Ganache/v7.9.1/EthereumJS TestRPC/v7.9.1/ethereum-js",
+        "contract_address": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+        "contract_code_keccak": "0xd3f082b9af8e2a104ad4d27ff1e15d1e572beae9fa7ec8510d39a85ea8689bd4",
+        "contract_code_bytes": 2629,
+        "relay_allowlist": {
+          "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1": true,
+          "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0": true,
+          "0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b": true,
+          "0xE11BA2b4D45Eaed5996Cd0823791E0C93114882d": true
+        },
+        "block_gas_limit": 30000000,
+        "block_number": 53883
+      },
+      "fabric": {
+        "channel": "hiot",
+        "binary_versions": {
+          "peer": "v2.5.0",
+          "orderer": "v2.5.0"
+        },
+        "chaincode": {
+          "name": "iot-data",
+          "version": "2.0",
+          "sequence": 2,
+          "validation_parameter_b64": "CiwSDBIKCAISAggAEgIIARoNEgsKB09yZzFNU1AQAxoNEgsKB09yZzJNU1AQAw==",
+          "endorsement_policy_printable": ".,....................Org1MSP........Org2MSP..",
+          "approvals": {
+            "Org1MSP": true,
+            "Org2MSP": true
+          }
+        },
+        "orderer": {
+          "type": "etcdraft",
+          "consenters": 1,
+          "batch_timeout": "2s",
+          "max_message_count": 10,
+          "absolute_max_bytes": 103809024,
+          "preferred_max_bytes": 524288
+        },
+        "images": {
+          "peer0.org1.example.com": "hyperledger/fabric-peer:latest@sha256:3d131d2433b1",
+          "peer0.org2.example.com": "hyperledger/fabric-peer:latest@sha256:3d131d2433b1",
+          "couchdb0": "couchdb:3.4.2@sha256:053646816ef0",
+          "orderer.example.com": "hyperledger/fabric-orderer:latest@sha256:6c3b8eae207f",
+          "couchdb1": "couchdb:3.4.2@sha256:053646816ef0",
+          "ca_org2": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb",
+          "ca_orderer": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb",
+          "ca_org1": "hyperledger/fabric-ca:latest@sha256:93f19fa873cb"
+        },
+        "channel_height": 19946
+      },
+      "services": {
+        "orchestrator": {
+          "server": "gunicorn",
+          "server_profile": "prod",
+          "server_mode": "production",
+          "server_workers": "1",
+          "server_threads": "64",
+          "relay_mode": "external",
+          "fabric_readback": "sync",
+          "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
+          "outbox_db": "/root/orbit-state/v2/outbox.db",
+          "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601"
+        },
+        "orchestrator_pid": 1054811,
+        "relays": [
+          [
+            "relay-1",
+            "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0"
+          ]
+        ],
+        "relays_alive": 1,
+        "policy": {
+          "engine": "policy_engine",
+          "policy_version": "1.0.0",
+          "server": "gunicorn",
+          "server_profile": "prod",
+          "server_threads": "32",
+          "server_workers": "2",
+          "service": "deterministic-privacy-policy"
+        }
+      },
+      "host": {
+        "kernel": "6.6.87.2-microsoft-standard-WSL2",
+        "cpus": 4,
+        "mem_mb": 7943,
+        "python": "3.10.12",
+        "packages": {
+          "web3": "7.16.0",
+          "flask": "3.1.3",
+          "flask_socketio": "5.6.1",
+          "gunicorn": "23.0.0",
+          "requests": "2.34.2"
+        }
+      },
+      "config_hash": "c9d23c394ef7",
+      "config_hash_covers": "all fields except ethereum.block_number, fabric.channel_height, services.orchestrator_pid, services.relays_alive"
+    },
+    "orchestrator_health": {
+      "chain_id": 1337,
+      "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
+      "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+      "ethereum_connected": true,
+      "fabric_readback": "sync",
+      "network_id": "1337",
+      "outbox_db": "/root/orbit-state/v2/outbox.db",
+      "pid": 1054811,
+      "relay_mode": "external",
+      "server": "gunicorn",
+      "server_mode": "production",
+      "server_profile": "prod",
+      "server_threads": "64",
+      "server_workers": "1",
+      "status": "healthy"
+    },
+    "architecture": "async: private commit acknowledged at 202, public anchor delivered by the outbox relay worker",
+    "contract_addr": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
+    "chain_id": 1337,
+    "network_id": "1337",
+    "outbox_db": "/root/orbit-state/v2/outbox.db",
+    "server_mode": "production"
+  },
+  "latency": {},
+  "relay_drain": null,
+  "throughput": {
+    "all_public": [
+      {
+        "concurrency": 1,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 452.019
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.442,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.442,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2257.654,
+          "p50": 2246.486,
+          "p95": 2331.673,
+          "p99": 2503.388,
+          "ci95": 9.401
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2260.006,
+          "p50": 2248.622,
+          "p95": 2333.959,
+          "p99": 2506.054,
+          "ci95": 9.403
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.278,
+          "p50": 2.193,
+          "p95": 2.659,
+          "p99": 3.34,
+          "ci95": 0.061
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2198.244,
+          "p50": 2184.992,
+          "p95": 2270.326,
+          "p99": 2446.212,
+          "ci95": 9.345
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 53.497,
+          "p50": 52.42,
+          "p95": 61.203,
+          "p99": 65.161,
+          "ci95": 0.465
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 3.514,
+          "p50": 1.72,
+          "p95": 11.313,
+          "p99": 24.439,
+          "ci95": 0.703
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.443,
+          "observed_tps": 0.442,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 2,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 226.188
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.884,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.884,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2259.126,
+          "p50": 2254.474,
+          "p95": 2316.229,
+          "p99": 2324.658,
+          "ci95": 4.039
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2261.784,
+          "p50": 2256.737,
+          "p95": 2318.702,
+          "p99": 2327.786,
+          "ci95": 4.05
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.686,
+          "p50": 2.548,
+          "p95": 3.738,
+          "p99": 4.242,
+          "ci95": 0.066
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2198.009,
+          "p50": 2194.966,
+          "p95": 2248.66,
+          "p99": 2264.596,
+          "ci95": 3.909
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 55.725,
+          "p50": 54.422,
+          "p95": 63.931,
+          "p99": 75.768,
+          "ci95": 0.742
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.562,
+          "p50": 1.905,
+          "p95": 6.165,
+          "p99": 7.414,
+          "ci95": 0.223
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.885,
+          "observed_tps": 0.884,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 4,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 117.376
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 1.704,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 1.705,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2342.946,
+          "p50": 2340.681,
+          "p95": 2420.473,
+          "p99": 2450.859,
+          "ci95": 5.424
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2347.166,
+          "p50": 2344.972,
+          "p95": 2424.225,
+          "p99": 2455.569,
+          "ci95": 5.395
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.142,
+          "p50": 3.594,
+          "p95": 7.563,
+          "p99": 9.761,
+          "ci95": 0.242
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2254.371,
+          "p50": 2253.181,
+          "p95": 2319.556,
+          "p99": 2362.065,
+          "ci95": 5.14
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 80.135,
+          "p50": 79.017,
+          "p95": 97.448,
+          "p99": 107.913,
+          "ci95": 1.353
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.051,
+          "p50": 2.953,
+          "p95": 11.452,
+          "p99": 14.768,
+          "ci95": 0.433
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 1.707,
+          "observed_tps": 1.704,
+          "relative_error": 0.002,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 8,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 61.544
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 3.25,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 3.251,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2451.13,
+          "p50": 2456.594,
+          "p95": 2546.699,
+          "p99": 2593.401,
+          "ci95": 8.948
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2460.186,
+          "p50": 2464.46,
+          "p95": 2557.584,
+          "p99": 2602.655,
+          "ci95": 8.985
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 8.712,
+          "p50": 7.618,
+          "p95": 16.237,
+          "p99": 22.578,
+          "ci95": 0.689
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2282.842,
+          "p50": 2288.881,
+          "p95": 2371.385,
+          "p99": 2383.904,
+          "ci95": 7.559
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 148.154,
+          "p50": 150.34,
+          "p95": 186.492,
+          "p99": 231.007,
+          "ci95": 3.747
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 10.727,
+          "p50": 6.583,
+          "p95": 36.794,
+          "p99": 60.528,
+          "ci95": 1.681
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 3.264,
+          "observed_tps": 3.25,
+          "relative_error": 0.004,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 10,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 16.466
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.146,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 11.958,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 809.629,
+          "p50": 805.112,
+          "p95": 1063.682,
+          "p99": 1169.007,
+          "ci95": 19.174
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 821.348,
+          "p50": 816.286,
+          "p95": 1079.672,
+          "p99": 1183.407,
+          "ci95": 19.135
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 11.226,
+          "p50": 9.182,
+          "p95": 24.726,
+          "p99": 34.517,
+          "ci95": 0.989
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 568.96,
+          "p50": 558.182,
+          "p95": 788.96,
+          "p99": 861.923,
+          "ci95": 15.924
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 200.841,
+          "p50": 200.847,
+          "p95": 259.087,
+          "p99": 296.55,
+          "ci95": 5.068
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 27.776,
+          "p50": 12.623,
+          "p95": 93.031,
+          "p99": 155.137,
+          "ci95": 4.935
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 12.351,
+          "observed_tps": 12.146,
+          "relative_error": 0.017,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 12,
+        "n_sent": 204,
+        "n_ok": 204,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 17.03
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 11.979,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.587,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 905.645,
+          "p50": 792.082,
+          "p95": 1565.054,
+          "p99": 2084.633,
+          "ci95": 48.428
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 916.726,
+          "p50": 800.542,
+          "p95": 1569.479,
+          "p99": 2094.472,
+          "ci95": 48.513
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 9.976,
+          "p50": 8.121,
+          "p95": 20.349,
+          "p99": 28.894,
+          "ci95": 0.849
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 658.57,
+          "p50": 535.764,
+          "p95": 1280.851,
+          "p99": 1935.927,
+          "ci95": 48.972
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 199.332,
+          "p50": 201.254,
+          "p95": 256.896,
+          "p99": 266.167,
+          "ci95": 4.718
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 36.98,
+          "p50": 17.984,
+          "p95": 140.616,
+          "p99": 200.404,
+          "ci95": 6.688
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 204
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 13.25,
+          "observed_tps": 11.979,
+          "relative_error": 0.096,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 14,
+        "n_sent": 210,
+        "n_ok": 210,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 14.758
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 14.229,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 14.244,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 957.462,
+          "p50": 809.088,
+          "p95": 1506.686,
+          "p99": 1605.728,
+          "ci95": 44.924
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 968.768,
+          "p50": 817.532,
+          "p95": 1524.113,
+          "p99": 1620.448,
+          "ci95": 45.081
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 10.469,
+          "p50": 9.001,
+          "p95": 22.214,
+          "p99": 29.007,
+          "ci95": 0.81
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 718.381,
+          "p50": 561.812,
+          "p95": 1243.741,
+          "p99": 1321.492,
+          "ci95": 43.292
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 203.471,
+          "p50": 203.33,
+          "p95": 258.151,
+          "p99": 285.561,
+          "ci95": 5.045
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 24.2,
+          "p50": 10.423,
+          "p95": 90.933,
+          "p99": 140.847,
+          "ci95": 4.579
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 210
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 14.622,
+          "observed_tps": 14.229,
+          "relative_error": 0.027,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 16,
+        "n_sent": 208,
+        "n_ok": 208,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 17.084
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.175,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.133,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1222.752,
+          "p50": 1276.089,
+          "p95": 1830.458,
+          "p99": 2646.019,
+          "ci95": 59.858
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1236.007,
+          "p50": 1284.07,
+          "p95": 1843.157,
+          "p99": 2652.52,
+          "ci95": 59.977
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 12.194,
+          "p50": 10.701,
+          "p95": 28.098,
+          "p99": 35.967,
+          "ci95": 1.061
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 981.226,
+          "p50": 1052.301,
+          "p95": 1533.58,
+          "p99": 2491.988,
+          "ci95": 60.507
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 203.589,
+          "p50": 204.057,
+          "p95": 268.328,
+          "p99": 285.66,
+          "ci95": 5.367
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 24.619,
+          "p50": 12.084,
+          "p95": 82.25,
+          "p99": 127.737,
+          "ci95": 3.912
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 208
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 13.085,
+          "observed_tps": 12.175,
+          "relative_error": 0.07,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 20,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 21.141
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 9.46,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 10.8,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2061.214,
+          "p50": 1695.146,
+          "p95": 4004.846,
+          "p99": 4161.687,
+          "ci95": 119.724
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2087.116,
+          "p50": 1715.436,
+          "p95": 4014.947,
+          "p99": 4170.62,
+          "ci95": 120.182
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 19.724,
+          "p50": 11.437,
+          "p95": 42.342,
+          "p99": 142.34,
+          "ci95": 4.77
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1421.668,
+          "p50": 1232.049,
+          "p95": 2689.602,
+          "p99": 3467.611,
+          "ci95": 85.785
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 582.804,
+          "p50": 339.43,
+          "p95": 1813.592,
+          "p99": 2469.112,
+          "ci95": 81.322
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 36.214,
+          "p50": 15.083,
+          "p95": 113.699,
+          "p99": 331.464,
+          "ci95": 9.065
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 9.703,
+          "observed_tps": 9.46,
+          "relative_error": 0.025,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 24,
+        "n_sent": 216,
+        "n_ok": 216,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 24.78
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 8.717,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 9.248,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 2485.869,
+          "p50": 2327.095,
+          "p95": 4810.589,
+          "p99": 5192.956,
+          "ci95": 160.27
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 2513.031,
+          "p50": 2362.134,
+          "p95": 4916.185,
+          "p99": 5248.824,
+          "ci95": 160.562
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 20.134,
+          "p50": 10.9,
+          "p95": 67.391,
+          "p99": 132.753,
+          "ci95": 3.78
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1691.778,
+          "p50": 1487.242,
+          "p95": 3249.143,
+          "p99": 3649.081,
+          "ci95": 113.317
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 718.922,
+          "p50": 389.641,
+          "p95": 1842.219,
+          "p99": 2007.204,
+          "ci95": 79.482
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 53.681,
+          "p50": 16.145,
+          "p95": 175.635,
+          "p99": 577.945,
+          "ci95": 16.714
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 216
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 9.655,
+          "observed_tps": 8.717,
+          "relative_error": 0.097,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 32,
+        "n_sent": 224,
+        "n_ok": 224,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 22.727
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 9.856,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 10.958,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2913.288,
+          "p50": 3062.879,
+          "p95": 4212.266,
+          "p99": 4476.943,
+          "ci95": 115.286
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2957.831,
+          "p50": 3087.133,
+          "p95": 4362.935,
+          "p99": 4541.772,
+          "ci95": 119.465
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 21.538,
+          "p50": 13.487,
+          "p95": 59.582,
+          "p99": 141.888,
+          "ci95": 3.512
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2229.13,
+          "p50": 2051.535,
+          "p95": 3647.633,
+          "p99": 3998.052,
+          "ci95": 110.937
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 612.751,
+          "p50": 495.693,
+          "p95": 1433.159,
+          "p99": 1650.098,
+          "ci95": 52.079
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 48.992,
+          "p50": 20.536,
+          "p95": 203.598,
+          "p99": 293.25,
+          "ci95": 9.352
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 224
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 10.984,
+          "observed_tps": 9.856,
+          "relative_error": 0.103,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      }
+    ],
+    "all_sensitive": [
+      {
+        "concurrency": 1,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 463.532
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.431,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.432,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2314.976,
+          "p50": 2292.755,
+          "p95": 2465.42,
+          "p99": 2627.87,
+          "ci95": 13.084
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2317.568,
+          "p50": 2295.178,
+          "p95": 2467.994,
+          "p99": 2630.298,
+          "ci95": 13.087
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.465,
+          "p50": 2.308,
+          "p95": 3.237,
+          "p99": 4.288,
+          "ci95": 0.108
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2250.557,
+          "p50": 2229.734,
+          "p95": 2395.327,
+          "p99": 2559.492,
+          "ci95": 12.434
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 56.481,
+          "p50": 54.466,
+          "p95": 68.59,
+          "p99": 71.946,
+          "ci95": 0.865
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 5.346,
+          "p50": 1.695,
+          "p95": 22.732,
+          "p99": 49.36,
+          "ci95": 1.396
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.432,
+          "observed_tps": 0.431,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 2,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 232.42
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.861,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.86,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2321.162,
+          "p50": 2308.949,
+          "p95": 2446.57,
+          "p99": 2542.863,
+          "ci95": 9.375
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2324.069,
+          "p50": 2311.317,
+          "p95": 2451.662,
+          "p99": 2545.212,
+          "ci95": 9.376
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.666,
+          "p50": 2.523,
+          "p95": 3.452,
+          "p99": 4.208,
+          "ci95": 0.066
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2258.317,
+          "p50": 2245.627,
+          "p95": 2373.943,
+          "p99": 2480.52,
+          "ci95": 9.004
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 57.55,
+          "p50": 56.497,
+          "p95": 67.674,
+          "p99": 80.481,
+          "ci95": 0.844
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.466,
+          "p50": 1.808,
+          "p95": 6.125,
+          "p99": 9.064,
+          "ci95": 0.299
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.862,
+          "observed_tps": 0.861,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 4,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 119.065
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 1.68,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 1.68,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2376.316,
+          "p50": 2375.696,
+          "p95": 2454.134,
+          "p99": 2485.248,
+          "ci95": 6.12
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2380.974,
+          "p50": 2379.45,
+          "p95": 2456.878,
+          "p99": 2489.98,
+          "ci95": 6.104
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.195,
+          "p50": 3.828,
+          "p95": 7.54,
+          "p99": 9.413,
+          "ci95": 0.222
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2283.017,
+          "p50": 2277.334,
+          "p95": 2354.325,
+          "p99": 2389.937,
+          "ci95": 5.75
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 83.75,
+          "p50": 82.667,
+          "p95": 101.441,
+          "p99": 109.924,
+          "ci95": 1.48
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 5.1,
+          "p50": 3.319,
+          "p95": 15.192,
+          "p99": 31.081,
+          "ci95": 0.793
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 1.683,
+          "observed_tps": 1.68,
+          "relative_error": 0.002,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 8,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 62.851
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 3.182,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 3.189,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2502.659,
+          "p50": 2503.926,
+          "p95": 2630.452,
+          "p99": 2674.713,
+          "ci95": 9.846
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2512.643,
+          "p50": 2514.295,
+          "p95": 2644.523,
+          "p99": 2699.406,
+          "ci95": 9.952
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 9.1,
+          "p50": 8.214,
+          "p95": 17.752,
+          "p99": 19.83,
+          "ci95": 0.616
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2332.187,
+          "p50": 2329.157,
+          "p95": 2447.178,
+          "p99": 2499.856,
+          "ci95": 8.726
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 151.69,
+          "p50": 154.865,
+          "p95": 192.206,
+          "p99": 203.499,
+          "ci95": 3.826
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 9.031,
+          "p50": 6.308,
+          "p95": 28.31,
+          "p99": 47.66,
+          "ci95": 1.274
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 3.197,
+          "observed_tps": 3.182,
+          "relative_error": 0.005,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 10,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 16.588
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.057,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 12.186,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 816.308,
+          "p50": 817.092,
+          "p95": 1046.732,
+          "p99": 1243.202,
+          "ci95": 19.786
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 827.084,
+          "p50": 826.635,
+          "p95": 1056.282,
+          "p99": 1255.144,
+          "ci95": 19.848
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 13.054,
+          "p50": 9.295,
+          "p95": 26.515,
+          "p99": 146.742,
+          "ci95": 2.608
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 572.59,
+          "p50": 564.664,
+          "p95": 806.787,
+          "p99": 917.817,
+          "ci95": 17.628
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 206.457,
+          "p50": 209.228,
+          "p95": 270.575,
+          "p99": 305.341,
+          "ci95": 5.615
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 23.412,
+          "p50": 11.654,
+          "p95": 87.969,
+          "p99": 123.275,
+          "ci95": 4.193
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 12.25,
+          "observed_tps": 12.057,
+          "relative_error": 0.016,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 12,
+        "n_sent": 204,
+        "n_ok": 204,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 30.598
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 6.667,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 7.019,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 1687.855,
+          "p50": 1025.881,
+          "p95": 7471.794,
+          "p99": 8501.892,
+          "ci95": 248.786
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 1700.575,
+          "p50": 1040.515,
+          "p95": 7489.105,
+          "p99": 8505.856,
+          "ci95": 248.663
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 12.232,
+          "p50": 9.373,
+          "p95": 27.085,
+          "p99": 48.611,
+          "ci95": 1.333
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 1341.954,
+          "p50": 717.328,
+          "p95": 4121.775,
+          "p99": 7996.097,
+          "ci95": 218.959
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 283.904,
+          "p50": 212.974,
+          "p95": 358.368,
+          "p99": 979.987,
+          "ci95": 51.508
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 48.86,
+          "p50": 23.927,
+          "p95": 163.332,
+          "p99": 331.456,
+          "ci95": 10.078
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 204
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 7.11,
+          "observed_tps": 6.667,
+          "relative_error": 0.062,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 14,
+        "n_sent": 210,
+        "n_ok": 210,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 43.979
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 4.775,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 5.028,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 2834.458,
+          "p50": 2618.455,
+          "p95": 5608.927,
+          "p99": 7100.61,
+          "ci95": 205.588
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 2851.287,
+          "p50": 2673.355,
+          "p95": 5690.0,
+          "p99": 7104.341,
+          "ci95": 206.016
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 11.934,
+          "p50": 7.448,
+          "p95": 34.082,
+          "p99": 61.134,
+          "ci95": 1.975
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 2247.392,
+          "p50": 1834.003,
+          "p95": 4677.477,
+          "p99": 6706.63,
+          "ci95": 178.016
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 532.136,
+          "p50": 285.826,
+          "p95": 1966.638,
+          "p99": 2295.681,
+          "ci95": 75.73
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 42.426,
+          "p50": 21.217,
+          "p95": 148.394,
+          "p99": 247.372,
+          "ci95": 8.01
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 210
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 4.939,
+          "observed_tps": 4.775,
+          "relative_error": 0.033,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 16,
+        "n_sent": 208,
+        "n_ok": 208,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 17.696
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 11.754,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 12.688,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1273.264,
+          "p50": 1333.456,
+          "p95": 1863.317,
+          "p99": 2530.241,
+          "ci95": 57.904
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1287.911,
+          "p50": 1347.226,
+          "p95": 1878.894,
+          "p99": 2542.862,
+          "ci95": 58.257
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 10.962,
+          "p50": 9.624,
+          "p95": 21.267,
+          "p99": 28.136,
+          "ci95": 0.923
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1024.8,
+          "p50": 1109.269,
+          "p95": 1563.72,
+          "p99": 2360.735,
+          "ci95": 58.541
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 209.616,
+          "p50": 210.885,
+          "p95": 270.788,
+          "p99": 288.379,
+          "ci95": 5.631
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 27.25,
+          "p50": 13.554,
+          "p95": 90.042,
+          "p99": 130.492,
+          "ci95": 4.32
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 208
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 12.566,
+          "observed_tps": 11.754,
+          "relative_error": 0.065,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 20,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 16.14
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.391,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 12.328,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1562.047,
+          "p50": 1546.893,
+          "p95": 2036.939,
+          "p99": 2157.538,
+          "ci95": 35.266
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1577.649,
+          "p50": 1557.405,
+          "p95": 2057.27,
+          "p99": 2163.042,
+          "ci95": 34.891
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 14.336,
+          "p50": 8.224,
+          "p95": 50.422,
+          "p99": 82.251,
+          "ci95": 2.323
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1174.529,
+          "p50": 1153.95,
+          "p95": 1647.497,
+          "p99": 1822.538,
+          "ci95": 33.134
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 292.973,
+          "p50": 271.801,
+          "p95": 463.584,
+          "p99": 593.816,
+          "ci95": 12.643
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 79.171,
+          "p50": 51.104,
+          "p95": 232.585,
+          "p99": 370.315,
+          "ci95": 12.539
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 12.804,
+          "observed_tps": 12.391,
+          "relative_error": 0.032,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 24,
+        "n_sent": 216,
+        "n_ok": 216,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 20.736
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 10.417,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 10.257,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 2157.862,
+          "p50": 1733.794,
+          "p95": 4946.894,
+          "p99": 5135.825,
+          "ci95": 162.926
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 2180.267,
+          "p50": 1741.828,
+          "p95": 4953.667,
+          "p99": 5142.239,
+          "ci95": 162.433
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 14.505,
+          "p50": 11.194,
+          "p95": 37.48,
+          "p99": 46.56,
+          "ci95": 1.495
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1672.323,
+          "p50": 1375.178,
+          "p95": 3958.634,
+          "p99": 4593.303,
+          "ci95": 139.953
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 420.628,
+          "p50": 270.394,
+          "p95": 974.134,
+          "p99": 1454.865,
+          "ci95": 46.539
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 48.939,
+          "p50": 19.196,
+          "p95": 156.044,
+          "p99": 337.462,
+          "ci95": 9.446
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 216
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 11.122,
+          "observed_tps": 10.417,
+          "relative_error": 0.063,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 32,
+        "n_sent": 224,
+        "n_ok": 224,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 18.726
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 11.962,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.147,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2460.98,
+          "p50": 2394.064,
+          "p95": 3477.613,
+          "p99": 3876.625,
+          "ci95": 83.786
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2494.333,
+          "p50": 2411.417,
+          "p95": 3520.985,
+          "p99": 3885.545,
+          "ci95": 86.386
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 15.116,
+          "p50": 12.609,
+          "p95": 38.404,
+          "p99": 54.224,
+          "ci95": 1.554
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 1872.233,
+          "p50": 1783.794,
+          "p95": 2906.58,
+          "p99": 3539.84,
+          "ci95": 75.253
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 545.505,
+          "p50": 462.183,
+          "p95": 1284.185,
+          "p99": 1626.78,
+          "ci95": 44.638
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 27.188,
+          "p50": 16.212,
+          "p95": 95.301,
+          "p99": 115.988,
+          "ci95": 3.939
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 224
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 13.003,
+          "observed_tps": 11.962,
+          "relative_error": 0.08,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      }
+    ],
+    "mixed": [
+      {
+        "concurrency": 1,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 454.204
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.44,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.44,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2268.366,
+          "p50": 2254.575,
+          "p95": 2363.518,
+          "p99": 2472.184,
+          "ci95": 7.988
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2270.932,
+          "p50": 2256.944,
+          "p95": 2365.795,
+          "p99": 2474.678,
+          "ci95": 7.999
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.412,
+          "p50": 2.31,
+          "p95": 3.088,
+          "p99": 4.004,
+          "ci95": 0.052
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2206.212,
+          "p50": 2195.355,
+          "p95": 2295.714,
+          "p99": 2401.081,
+          "ci95": 7.39
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 55.083,
+          "p50": 53.663,
+          "p95": 64.935,
+          "p99": 67.881,
+          "ci95": 0.665
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.526,
+          "p50": 1.65,
+          "p95": 15.792,
+          "p99": 44.421,
+          "ci95": 1.237
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.441,
+          "observed_tps": 0.44,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 2,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 224.828
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.89,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.89,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2245.237,
+          "p50": 2244.636,
+          "p95": 2300.272,
+          "p99": 2315.006,
+          "ci95": 3.785
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2248.149,
+          "p50": 2247.369,
+          "p95": 2303.272,
+          "p99": 2317.617,
+          "ci95": 3.799
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.771,
+          "p50": 2.667,
+          "p95": 3.68,
+          "p99": 4.378,
+          "ci95": 0.07
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2184.004,
+          "p50": 2182.634,
+          "p95": 2235.687,
+          "p99": 2247.323,
+          "ci95": 3.569
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 55.2,
+          "p50": 54.178,
+          "p95": 63.309,
+          "p99": 71.292,
+          "ci95": 0.591
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 3.121,
+          "p50": 1.883,
+          "p95": 6.634,
+          "p99": 15.69,
+          "ci95": 0.655
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.891,
+          "observed_tps": 0.89,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 4,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 115.344
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 1.734,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 1.734,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2301.959,
+          "p50": 2299.503,
+          "p95": 2347.094,
+          "p99": 2364.679,
+          "ci95": 3.864
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2306.551,
+          "p50": 2303.907,
+          "p95": 2351.88,
+          "p99": 2369.187,
+          "ci95": 3.842
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.462,
+          "p50": 3.906,
+          "p95": 7.974,
+          "p99": 12.328,
+          "ci95": 0.279
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2210.954,
+          "p50": 2209.01,
+          "p95": 2249.06,
+          "p99": 2263.599,
+          "ci95": 3.274
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 81.779,
+          "p50": 78.749,
+          "p95": 110.881,
+          "p99": 129.142,
+          "ci95": 1.914
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.474,
+          "p50": 3.398,
+          "p95": 11.52,
+          "p99": 15.292,
+          "ci95": 0.513
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 1.738,
+          "observed_tps": 1.734,
+          "relative_error": 0.002,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 8,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 60.792
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 3.29,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 3.293,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2420.038,
+          "p50": 2420.913,
+          "p95": 2527.624,
+          "p99": 2563.193,
+          "ci95": 9.522
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2430.612,
+          "p50": 2431.579,
+          "p95": 2536.196,
+          "p99": 2570.029,
+          "ci95": 9.595
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 9.997,
+          "p50": 8.588,
+          "p95": 21.826,
+          "p99": 29.535,
+          "ci95": 0.808
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2242.438,
+          "p50": 2240.133,
+          "p95": 2339.528,
+          "p99": 2393.62,
+          "ci95": 8.966
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 152.66,
+          "p50": 150.701,
+          "p95": 201.961,
+          "p99": 222.115,
+          "ci95": 3.971
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 13.877,
+          "p50": 8.39,
+          "p95": 49.452,
+          "p99": 66.501,
+          "ci95": 2.019
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 3.306,
+          "observed_tps": 3.29,
+          "relative_error": 0.005,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 10,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 14.794
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 13.519,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.502,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 725.893,
+          "p50": 718.754,
+          "p95": 917.628,
+          "p99": 1074.897,
+          "ci95": 14.854
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 736.315,
+          "p50": 725.647,
+          "p95": 928.332,
+          "p99": 1084.961,
+          "ci95": 14.778
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 10.096,
+          "p50": 8.862,
+          "p95": 18.677,
+          "p99": 31.707,
+          "ci95": 0.812
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 484.685,
+          "p50": 466.381,
+          "p95": 693.527,
+          "p99": 787.237,
+          "ci95": 13.186
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 202.198,
+          "p50": 204.36,
+          "p95": 248.577,
+          "p99": 279.548,
+          "ci95": 4.564
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 28.085,
+          "p50": 14.665,
+          "p95": 102.141,
+          "p99": 129.436,
+          "ci95": 4.489
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 13.776,
+          "observed_tps": 13.519,
+          "relative_error": 0.019,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 12,
+        "n_sent": 204,
+        "n_ok": 204,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 15.958
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.784,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 14.134,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 855.706,
+          "p50": 735.848,
+          "p95": 1439.608,
+          "p99": 1815.735,
+          "ci95": 44.866
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 868.243,
+          "p50": 754.564,
+          "p95": 1456.139,
+          "p99": 1827.434,
+          "ci95": 44.857
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 11.13,
+          "p50": 9.083,
+          "p95": 23.623,
+          "p99": 35.54,
+          "ci95": 1.13
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 614.462,
+          "p50": 489.778,
+          "p95": 1165.661,
+          "p99": 1719.131,
+          "ci95": 45.335
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 193.53,
+          "p50": 193.901,
+          "p95": 263.387,
+          "p99": 294.437,
+          "ci95": 5.159
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 35.757,
+          "p50": 13.688,
+          "p95": 131.83,
+          "p99": 184.036,
+          "ci95": 6.067
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 204
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 14.024,
+          "observed_tps": 12.784,
+          "relative_error": 0.088,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 14,
+        "n_sent": 210,
+        "n_ok": 210,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 15.093
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 13.914,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.992,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 985.903,
+          "p50": 835.704,
+          "p95": 1540.373,
+          "p99": 1595.846,
+          "ci95": 46.455
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 996.941,
+          "p50": 855.692,
+          "p95": 1551.503,
+          "p99": 1610.047,
+          "ci95": 46.609
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 11.428,
+          "p50": 9.706,
+          "p95": 22.365,
+          "p99": 33.049,
+          "ci95": 1.043
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 738.198,
+          "p50": 557.587,
+          "p95": 1298.731,
+          "p99": 1359.723,
+          "ci95": 46.097
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 208.342,
+          "p50": 207.49,
+          "p95": 266.088,
+          "p99": 282.805,
+          "ci95": 5.09
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 26.928,
+          "p50": 14.005,
+          "p95": 96.245,
+          "p99": 141.107,
+          "ci95": 4.785
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 210
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 14.2,
+          "observed_tps": 13.914,
+          "relative_error": 0.02,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 16,
+        "n_sent": 208,
+        "n_ok": 208,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 18.87
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 11.023,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.313,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1303.008,
+          "p50": 1254.528,
+          "p95": 2399.278,
+          "p99": 2932.39,
+          "ci95": 78.162
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1315.905,
+          "p50": 1260.733,
+          "p95": 2415.613,
+          "p99": 2992.302,
+          "ci95": 79.277
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 10.372,
+          "p50": 8.997,
+          "p95": 21.233,
+          "p99": 30.569,
+          "ci95": 0.849
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 992.305,
+          "p50": 1003.954,
+          "p95": 1978.316,
+          "p99": 2638.614,
+          "ci95": 69.881
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 272.725,
+          "p50": 211.238,
+          "p95": 656.803,
+          "p99": 690.773,
+          "ci95": 20.092
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 27.013,
+          "p50": 12.803,
+          "p95": 93.187,
+          "p99": 134.715,
+          "ci95": 4.555
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 208
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 12.279,
+          "observed_tps": 11.023,
+          "relative_error": 0.102,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 20,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 16.309
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.264,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 12.718,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1586.395,
+          "p50": 1474.142,
+          "p95": 2269.657,
+          "p99": 2526.965,
+          "ci95": 49.33
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1604.041,
+          "p50": 1487.902,
+          "p95": 2289.244,
+          "p99": 2538.306,
+          "ci95": 49.956
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 16.165,
+          "p50": 10.702,
+          "p95": 35.317,
+          "p99": 61.44,
+          "ci95": 3.222
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1102.54,
+          "p50": 1037.39,
+          "p95": 1688.152,
+          "p99": 1875.603,
+          "ci95": 42.315
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 411.978,
+          "p50": 371.5,
+          "p95": 907.885,
+          "p99": 966.171,
+          "ci95": 28.046
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 54.642,
+          "p50": 27.401,
+          "p95": 174.528,
+          "p99": 434.894,
+          "ci95": 10.693
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 200
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 12.607,
+          "observed_tps": 12.264,
+          "relative_error": 0.027,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 24,
+        "n_sent": 216,
+        "n_ok": 216,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 16.156
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 13.37,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 15.547,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1576.518,
+          "p50": 1483.84,
+          "p95": 2604.481,
+          "p99": 2836.993,
+          "ci95": 63.928
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1599.666,
+          "p50": 1503.708,
+          "p95": 2672.522,
+          "p99": 2880.952,
+          "ci95": 63.984
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 16.013,
+          "p50": 13.392,
+          "p95": 38.425,
+          "p99": 54.421,
+          "ci95": 1.57
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1135.977,
+          "p50": 969.316,
+          "p95": 2099.127,
+          "p99": 2583.239,
+          "ci95": 62.638
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 389.948,
+          "p50": 381.583,
+          "p95": 557.558,
+          "p99": 743.298,
+          "ci95": 16.556
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 33.399,
+          "p50": 14.128,
+          "p95": 140.229,
+          "p99": 189.664,
+          "ci95": 5.967
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 216
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 15.223,
+          "observed_tps": 13.37,
+          "relative_error": 0.122,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 32,
+        "n_sent": 224,
+        "n_ok": 224,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 15.324
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 14.618,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 15.915,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 1949.522,
+          "p50": 1867.306,
+          "p95": 2760.88,
+          "p99": 2874.91,
+          "ci95": 55.721
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 1975.375,
+          "p50": 1884.106,
+          "p95": 2777.716,
+          "p99": 2971.605,
+          "ci95": 56.164
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 16.241,
+          "p50": 11.329,
+          "p95": 42.865,
+          "p99": 74.266,
+          "ci95": 2.402
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 1517.216,
+          "p50": 1432.178,
+          "p95": 2289.773,
+          "p99": 2653.287,
+          "ci95": 52.76
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 366.482,
+          "p50": 305.252,
+          "p95": 701.343,
+          "p99": 806.997,
+          "ci95": 20.967
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 47.948,
+          "p50": 26.382,
+          "p95": 142.878,
+          "p99": 211.969,
+          "ci95": 6.902
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 224
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 16.414,
+          "observed_tps": 14.618,
+          "relative_error": 0.109,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      }
+    ],
+    "fabric_only": [
+      {
+        "concurrency": 1,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 448.437
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.446,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.446,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2239.554,
+          "p50": 2224.419,
+          "p95": 2344.14,
+          "p99": 2457.419,
+          "ci95": 7.972
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2242.1,
+          "p50": 2226.932,
+          "p95": 2346.637,
+          "p99": 2460.437,
+          "ci95": 7.983
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.376,
+          "p50": 2.302,
+          "p95": 3.038,
+          "p99": 3.617,
+          "ci95": 0.046
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2177.777,
+          "p50": 2166.482,
+          "p95": 2267.167,
+          "p99": 2367.935,
+          "ci95": 7.377
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 55.113,
+          "p50": 53.705,
+          "p95": 64.024,
+          "p99": 72.742,
+          "ci95": 0.628
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.24,
+          "p50": 1.424,
+          "p95": 18.393,
+          "p99": 32.998,
+          "ci95": 0.885
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.447,
+          "observed_tps": 0.446,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 2,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 222.345
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 0.9,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 0.9,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2220.459,
+          "p50": 2218.756,
+          "p95": 2250.421,
+          "p99": 2269.095,
+          "ci95": 2.723
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2223.336,
+          "p50": 2221.354,
+          "p95": 2252.998,
+          "p99": 2271.789,
+          "ci95": 2.727
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.721,
+          "p50": 2.557,
+          "p95": 3.802,
+          "p99": 4.945,
+          "ci95": 0.076
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2158.237,
+          "p50": 2158.31,
+          "p95": 2190.024,
+          "p99": 2202.91,
+          "ci95": 2.589
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 56.97,
+          "p50": 56.093,
+          "p95": 66.234,
+          "p99": 69.42,
+          "ci95": 0.656
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2.485,
+          "p50": 1.473,
+          "p95": 5.348,
+          "p99": 10.285,
+          "ci95": 0.743
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 0.901,
+          "observed_tps": 0.9,
+          "relative_error": 0.001,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 4,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 113.484
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 1.762,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 1.762,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2264.791,
+          "p50": 2262.803,
+          "p95": 2307.148,
+          "p99": 2350.475,
+          "ci95": 3.497
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2269.482,
+          "p50": 2268.001,
+          "p95": 2311.323,
+          "p99": 2354.921,
+          "ci95": 3.527
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 4.459,
+          "p50": 3.87,
+          "p95": 7.111,
+          "p99": 8.545,
+          "ci95": 0.576
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2177.045,
+          "p50": 2177.031,
+          "p95": 2211.636,
+          "p99": 2229.482,
+          "ci95": 2.87
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 79.6,
+          "p50": 77.412,
+          "p95": 100.217,
+          "p99": 134.074,
+          "ci95": 1.696
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 3.629,
+          "p50": 2.625,
+          "p95": 9.259,
+          "p99": 14.316,
+          "ci95": 0.498
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 1.766,
+          "observed_tps": 1.762,
+          "relative_error": 0.002,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 8,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 59.728
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 3.349,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 3.355,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2377.3,
+          "p50": 2376.405,
+          "p95": 2470.564,
+          "p99": 2540.336,
+          "ci95": 8.5
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2387.787,
+          "p50": 2385.825,
+          "p95": 2479.271,
+          "p99": 2549.832,
+          "ci95": 8.45
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 9.277,
+          "p50": 8.182,
+          "p95": 20.74,
+          "p99": 24.415,
+          "ci95": 0.729
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 2214.952,
+          "p50": 2223.126,
+          "p95": 2286.408,
+          "p99": 2326.958,
+          "ci95": 7.305
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 144.591,
+          "p50": 146.556,
+          "p95": 179.65,
+          "p99": 240.313,
+          "ci95": 3.941
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 8.392,
+          "p50": 5.342,
+          "p95": 26.597,
+          "p99": 47.206,
+          "ci95": 1.339
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 3.365,
+          "observed_tps": 3.349,
+          "relative_error": 0.005,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 10,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 11.292
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 17.711,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 17.583,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 550.451,
+          "p50": 549.156,
+          "p95": 647.459,
+          "p99": 691.184,
+          "ci95": 8.61
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 562.626,
+          "p50": 561.886,
+          "p95": 652.996,
+          "p99": 702.634,
+          "ci95": 8.442
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 11.365,
+          "p50": 9.838,
+          "p95": 25.407,
+          "p99": 31.88,
+          "ci95": 0.92
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 340.908,
+          "p50": 333.869,
+          "p95": 427.796,
+          "p99": 474.775,
+          "ci95": 7.009
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 186.254,
+          "p50": 188.949,
+          "p95": 241.579,
+          "p99": 263.819,
+          "ci95": 4.612
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 11.857,
+          "p50": 6.978,
+          "p95": 40.368,
+          "p99": 62.409,
+          "ci95": 1.867
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 18.167,
+          "observed_tps": 17.711,
+          "relative_error": 0.025,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 12,
+        "n_sent": 204,
+        "n_ok": 204,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 13.303
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 15.335,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 18.012,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 694.534,
+          "p50": 578.506,
+          "p95": 1167.427,
+          "p99": 1967.697,
+          "ci95": 41.774
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 707.014,
+          "p50": 590.885,
+          "p95": 1183.884,
+          "p99": 1970.826,
+          "ci95": 41.836
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 11.423,
+          "p50": 10.048,
+          "p95": 24.339,
+          "p99": 31.171,
+          "ci95": 0.915
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 492.902,
+          "p50": 377.043,
+          "p95": 915.194,
+          "p99": 1888.83,
+          "ci95": 42.8
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 176.202,
+          "p50": 178.578,
+          "p95": 219.402,
+          "p99": 241.506,
+          "ci95": 4.363
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 204,
+          "mean": 13.87,
+          "p50": 7.815,
+          "p95": 43.488,
+          "p99": 67.321,
+          "ci95": 2.126
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 17.278,
+          "observed_tps": 15.335,
+          "relative_error": 0.112,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 14,
+        "n_sent": 210,
+        "n_ok": 210,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 11.267
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 18.638,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 18.77,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 729.271,
+          "p50": 603.423,
+          "p95": 1094.668,
+          "p99": 1141.257,
+          "ci95": 32.921
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 741.845,
+          "p50": 611.107,
+          "p95": 1110.977,
+          "p99": 1154.657,
+          "ci95": 33.205
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 11.048,
+          "p50": 9.736,
+          "p95": 23.709,
+          "p99": 29.61,
+          "ci95": 0.867
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 528.377,
+          "p50": 390.566,
+          "p95": 881.898,
+          "p99": 922.276,
+          "ci95": 32.449
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 178.687,
+          "p50": 179.703,
+          "p95": 225.912,
+          "p99": 246.919,
+          "ci95": 3.956
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 210,
+          "mean": 11.078,
+          "p50": 7.143,
+          "p95": 34.759,
+          "p99": 53.138,
+          "ci95": 1.641
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 19.197,
+          "observed_tps": 18.638,
+          "relative_error": 0.029,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 16,
+        "n_sent": 208,
+        "n_ok": 208,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 14.921
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 13.94,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 15.678,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 991.321,
+          "p50": 1011.673,
+          "p95": 2397.314,
+          "p99": 2621.293,
+          "ci95": 69.049
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 1004.291,
+          "p50": 1024.563,
+          "p95": 2438.018,
+          "p99": 2644.506,
+          "ci95": 69.231
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 11.66,
+          "p50": 10.357,
+          "p95": 23.018,
+          "p99": 28.632,
+          "ci95": 0.873
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 722.329,
+          "p50": 808.675,
+          "p95": 1106.862,
+          "p99": 2311.375,
+          "ci95": 54.802
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 244.113,
+          "p50": 184.274,
+          "p95": 347.365,
+          "p99": 1422.487,
+          "ci95": 35.357
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 208,
+          "mean": 13.138,
+          "p50": 7.731,
+          "p95": 45.875,
+          "p99": 62.657,
+          "ci95": 2.094
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 16.14,
+          "observed_tps": 13.94,
+          "relative_error": 0.136,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 20,
+        "n_sent": 200,
+        "n_ok": 200,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 15.027
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 13.309,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 12.293,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1460.224,
+          "p50": 1104.811,
+          "p95": 4098.307,
+          "p99": 4266.055,
+          "ci95": 129.777
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 1477.332,
+          "p50": 1126.795,
+          "p95": 4120.395,
+          "p99": 4284.526,
+          "ci95": 129.948
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 13.39,
+          "p50": 10.331,
+          "p95": 29.995,
+          "p99": 55.315,
+          "ci95": 1.906
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 961.211,
+          "p50": 761.539,
+          "p95": 1607.965,
+          "p99": 3644.304,
+          "ci95": 91.496
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 467.158,
+          "p50": 299.688,
+          "p95": 1437.203,
+          "p99": 2734.142,
+          "ci95": 76.382
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 200,
+          "mean": 18.358,
+          "p50": 9.436,
+          "p95": 68.388,
+          "p99": 127.886,
+          "ci95": 3.54
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 13.697,
+          "observed_tps": 13.309,
+          "relative_error": 0.028,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 24,
+        "n_sent": 216,
+        "n_ok": 216,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 17.461
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.371,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 13.58,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1695.565,
+          "p50": 1389.255,
+          "p95": 3988.869,
+          "p99": 4757.721,
+          "ci95": 125.21
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1725.925,
+          "p50": 1431.5,
+          "p95": 3999.924,
+          "p99": 4769.623,
+          "ci95": 125.415
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 19.669,
+          "p50": 11.149,
+          "p95": 50.054,
+          "p99": 152.077,
+          "ci95": 4.657
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 1206.442,
+          "p50": 994.244,
+          "p95": 3033.822,
+          "p99": 3615.567,
+          "ci95": 95.556
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 448.989,
+          "p50": 349.258,
+          "p95": 830.0,
+          "p99": 2338.912,
+          "ci95": 52.96
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 216,
+          "mean": 20.397,
+          "p50": 8.701,
+          "p95": 68.452,
+          "p99": 147.06,
+          "ci95": 4.092
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 14.155,
+          "observed_tps": 12.371,
+          "relative_error": 0.126,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      },
+      {
+        "concurrency": 32,
+        "n_sent": 224,
+        "n_ok": 224,
+        "errors": 0,
+        "wall_s": {
+          "kind": "measured",
+          "value": 17.94
+        },
+        "throughput_tps": {
+          "kind": "derived",
+          "value": 12.486,
+          "derivation": "completed_requests / wall_clock_s"
+        },
+        "throughput_steady_tps": {
+          "kind": "derived",
+          "value": 15.537,
+          "derivation": "(n - 2c) / (t_return[n-c] - t_return[c]) over sorted monotonic return stamps"
+        },
+        "ack_latency_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2331.487,
+          "p50": 2004.511,
+          "p95": 4667.762,
+          "p99": 4887.764,
+          "ci95": 137.678
+        },
+        "client_rtt_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 2366.038,
+          "p50": 2048.357,
+          "p95": 4729.359,
+          "p99": 5065.693,
+          "ci95": 142.914
+        },
+        "stage_policy_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 16.63,
+          "p50": 13.275,
+          "p95": 40.933,
+          "p99": 63.942,
+          "ci95": 1.722
+        },
+        "stage_fabric_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 1752.855,
+          "p50": 1454.251,
+          "p95": 3395.112,
+          "p99": 4264.252,
+          "ci95": 114.085
+        },
+        "stage_readback_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 528.927,
+          "p50": 420.097,
+          "p95": 1328.151,
+          "p99": 1560.195,
+          "ci95": 47.276
+        },
+        "stage_outbox_ms": {
+          "kind": "measured",
+          "n": 224,
+          "mean": 32.973,
+          "p50": 10.89,
+          "p95": 129.714,
+          "p99": 252.211,
+          "ci95": 8.299
+        },
+        "anchors_enqueued": {
+          "kind": "measured",
+          "value": 0
+        },
+        "error_detail": [],
+        "fabric_invoked_all": {
+          "kind": "measured",
+          "value": true
+        },
+        "reconciliation_gate": {
+          "kind": "derived",
+          "expected_tps": 13.725,
+          "observed_tps": 12.486,
+          "relative_error": 0.09,
+          "tolerance": 0.25,
+          "passed": true,
+          "derivation": "concurrency / mean_ack_latency_s"
+        }
+      }
+    ]
+  },
+  "saturation": {
+    "all_public": {
+      "kind": "measured",
+      "peak_tps": 14.229,
+      "peak_at_concurrency": 14,
+      "saturation_reached": true,
+      "note": "TPS flattened or declined at the top of the sweep"
+    },
+    "all_sensitive": {
+      "kind": "measured",
+      "peak_tps": 12.391,
+      "peak_at_concurrency": 20,
+      "saturation_reached": true,
+      "note": "TPS flattened or declined at the top of the sweep"
+    },
+    "mixed": {
+      "kind": "measured",
+      "peak_tps": 14.618,
+      "peak_at_concurrency": 32,
+      "saturation_reached": true,
+      "note": "TPS flattened or declined at the top of the sweep"
+    },
+    "fabric_only": {
+      "kind": "measured",
+      "peak_tps": 18.638,
+      "peak_at_concurrency": 14,
+      "saturation_reached": true,
+      "note": "TPS flattened or declined at the top of the sweep"
+    }
+  },
+  "reconciliation_gate_failures": [],
+  "status": "OK"
+}

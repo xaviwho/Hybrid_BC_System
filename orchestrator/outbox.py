@@ -57,6 +57,7 @@ LEASE_S = 30.0               # claim lease; a dead claimant's row is re-claimabl
 BUSY_TIMEOUT_MS = 5000       # SQLite lock wait
 HEARTBEAT_S = 1.0            # relay heartbeat period
 RELAY_ALIVE_S = 5.0          # a relay is 'running' if it beat within this window
+RELAY_STATS_WINDOW = 2000    # relay_throughput() covers the most recent N deliveries
 
 STATE_PENDING = "pending"
 STATE_DELIVERED = "delivered"
@@ -158,6 +159,14 @@ class Outbox:
                 for name, typ in cols:
                     if name not in have:
                         c.execute(f"ALTER TABLE {table} ADD COLUMN {name} {typ}")
+            # Covering index for relay_throughput()/stats(). Without it they read
+            # every row; at ~100k rows (after WS1) /outbox_stats exceeded 10 s and
+            # the end-of-run digest timed out in 2 of 10 runs.
+            c.execute("CREATE INDEX IF NOT EXISTS idx_outbox_timing ON outbox"
+                      "(state, delivered_mono, started_mono, created_mono)")
+            # find_unanchored() joins on this instead of scanning dedup rows,
+            # which carry the stored responses (~2 KB each): 146 s at 1e5 rows.
+            c.execute("CREATE INDEX IF NOT EXISTS idx_dedup_route ON dedup(route, id)")
         self._assert_wal()
 
     def _assert_wal(self):
@@ -265,12 +274,19 @@ class Outbox:
         was exactly the FABRIC_ONLY records: correct, unanchored by design, and
         not a reconciliation target.
         """
-        rows = self._conn().execute(
-            "SELECT d.id, d.fabric_tx_id, d.created_at FROM dedup d"
-            " LEFT JOIN outbox o ON o.id = d.id"
-            " WHERE o.id IS NULL AND COALESCE(d.route, 'HYBRID') = 'HYBRID'"
-        ).fetchall()
-        return [dict(r) for r in rows]
+        # Two index-only passes (idx_dedup_route, outbox PK); fetch the rest of
+        # the row only for the (normally zero) ids found. `route IS NULL` keeps
+        # pre-WS0.5 rows, which have no route and were all HYBRID-or-unknown.
+        ids = [r[0] for r in self._conn().execute(
+            "SELECT d.id FROM dedup d INDEXED BY idx_dedup_route"
+            " WHERE (d.route = 'HYBRID' OR d.route IS NULL)"
+            "   AND NOT EXISTS (SELECT 1 FROM outbox o WHERE o.id = d.id)")]
+        out = []
+        for rid in ids:
+            r = self._conn().execute(
+                "SELECT id, fabric_tx_id, created_at FROM dedup WHERE id=?", (rid,)).fetchone()
+            out.append(dict(r))
+        return out
 
     def stats(self):
         c = self._conn()
@@ -288,6 +304,11 @@ class Outbox:
         out["queue_depth"] = out[STATE_PENDING]
         out["relay"] = self.relay_throughput()
         return out
+
+    def queue_depth(self):
+        """Pending rows. Index-only; cheap enough to sample per request."""
+        return self._conn().execute(
+            "SELECT COUNT(*) FROM outbox WHERE state=?", (STATE_PENDING,)).fetchone()[0]
 
     def relays(self):
         now = time.monotonic()
@@ -347,9 +368,11 @@ class Outbox:
             "SELECT COUNT(*) n, MIN(delivered_mono) lo, MAX(delivered_mono) hi,"
             "       AVG((delivered_mono - started_mono) * 1000.0) anchor_ms,"
             "       AVG((started_mono - created_mono) * 1000.0) queue_ms"
-            "  FROM outbox WHERE state=? AND delivered_mono IS NOT NULL"
-            "   AND started_mono IS NOT NULL AND created_mono IS NOT NULL",
-            (STATE_DELIVERED,)
+            "  FROM (SELECT delivered_mono, started_mono, created_mono FROM outbox"
+            "        WHERE state=? AND delivered_mono IS NOT NULL"
+            "          AND started_mono IS NOT NULL AND created_mono IS NOT NULL"
+            "        ORDER BY delivered_mono DESC LIMIT ?)",
+            (STATE_DELIVERED, RELAY_STATS_WINDOW)
         ).fetchone()
         n = r["n"] or 0
         span = (r["hi"] - r["lo"]) if (n > 1 and r["hi"] and r["lo"]) else 0.0
@@ -360,6 +383,7 @@ class Outbox:
             "delivery_rate_per_s": round((n - 1) / span, 4) if span > 0 else None,
             "mean_anchor_ms": round(r["anchor_ms"], 3) if r["anchor_ms"] else None,
             "mean_queue_wait_ms": round(r["queue_ms"], 3) if r["queue_ms"] else None,
+            "window": f"most recent {RELAY_STATS_WINDOW} deliveries",
             "note": ("delivery_rate_per_s is the achieved rate over the delivered "
                      "span. It is mu_relay only under saturation."),
         }

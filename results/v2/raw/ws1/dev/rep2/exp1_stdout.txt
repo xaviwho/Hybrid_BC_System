@@ -1,0 +1,54 @@
+========================================================================
+  EXPERIMENT 1 (v2): ack/completion latency + throughput
+  server=werkzeug workers=None threads=None readback=sync config_hash=8d0891d91160
+========================================================================
+  throughput: all_public
+    c= 1 n=200:  0.453 TPS (steady 0.453)  ack 2204.694 ms  expected 0.454 TPS  [OK ]
+    c= 2 n=200:  0.899 TPS (steady 0.899)  ack 2220.762 ms  expected 0.901 TPS  [OK ]
+    c= 4 n=200:  1.754 TPS (steady 1.755)  ack 2274.582 ms  expected 1.759 TPS  [OK ]
+    c= 8 n=200:  3.373 TPS (steady 3.375)  ack 2360.786 ms  expected 3.389 TPS  [OK ]
+    c=10 n=200: 13.286 TPS (steady 13.395)  ack 735.45 ms  expected 13.597 TPS  [OK ]
+    c=12 n=204: 12.215 TPS (steady 13.699)  ack 890.029 ms  expected 13.483 TPS  [OK ]
+    c=14 n=210: 13.357 TPS (steady 13.403)  ack 1024.178 ms  expected 13.669 TPS  [OK ]
+    c=16 n=208: 13.008 TPS (steady 14.116)  ack 1142.613 ms  expected 14.003 TPS  [OK ]
+    c=20 n=200: 15.519 TPS (steady 15.373)  ack 1242.533 ms  expected 16.096 TPS  [OK ]
+    c=24 n=216: 14.175 TPS (steady 16.524)  ack 1493.269 ms  expected 16.072 TPS  [OK ]
+    c=32 n=224: 14.958 TPS (steady 16.486)  ack 1864.702 ms  expected 17.161 TPS  [OK ]
+  throughput: all_sensitive
+    c= 1 n=200:  0.445 TPS (steady 0.445)  ack 2246.379 ms  expected 0.445 TPS  [OK ]
+    c= 2 n=200:  0.901 TPS (steady 0.901)  ack 2215.72 ms  expected 0.903 TPS  [OK ]
+    c= 4 n=200:  1.765 TPS (steady 1.767)  ack 2261.693 ms  expected 1.769 TPS  [OK ]
+    c= 8 n=200:  3.373 TPS (steady 3.394)  ack 2360.786 ms  expected 3.389 TPS  [OK ]
+    c=10 n=200: 13.716 TPS (steady 13.945)  ack 705.188 ms  expected 14.181 TPS  [OK ]
+    c=12 n=204: 11.637 TPS (steady 12.72)  ack 949.709 ms  expected 12.635 TPS  [OK ]
+    c=14 n=210: 12.608 TPS (steady 13.295)  ack 1073.921 ms  expected 13.036 TPS  [OK ]
+    c=16 n=208: 13.100 TPS (steady 14.086)  ack 1131.622 ms  expected 14.139 TPS  [OK ]
+    c=20 n=200: 15.329 TPS (steady 15.603)  ack 1258.906 ms  expected 15.887 TPS  [OK ]
+    c=24 n=216: 13.016 TPS (steady 15.062)  ack 1644.277 ms  expected 14.596 TPS  [OK ]
+    c=32 n=224: 14.439 TPS (steady 16.217)  ack 1933.505 ms  expected 16.55 TPS  [OK ]
+  throughput: mixed
+    c= 1 n=200:  0.445 TPS (steady 0.445)  ack 2243.703 ms  expected 0.446 TPS  [OK ]
+    c= 2 n=200:  0.901 TPS (steady 0.901)  ack 2216.745 ms  expected 0.902 TPS  [OK ]
+    c= 4 n=200:  1.765 TPS (steady 1.767)  ack 2261.96 ms  expected 1.768 TPS  [OK ]
+    c= 8 n=200:  3.352 TPS (steady 3.354)  ack 2376.008 ms  expected 3.367 TPS  [OK ]
+    c=10 n=200: 13.786 TPS (steady 13.947)  ack 709.26 ms  expected 14.099 TPS  [OK ]
+    c=12 n=204: 12.200 TPS (steady 13.767)  ack 887.73 ms  expected 13.518 TPS  [OK ]
+    c=14 n=210: 14.116 TPS (steady 14.131)  ack 970.024 ms  expected 14.433 TPS  [OK ]
+    c=16 n=208: 12.835 TPS (steady 14.087)  ack 1150.202 ms  expected 13.911 TPS  [OK ]
+    c=20 n=200: 14.907 TPS (steady 14.763)  ack 1292.093 ms  expected 15.479 TPS  [OK ]
+    c=24 n=216: 13.842 TPS (steady 16.444)  ack 1526.158 ms  expected 15.726 TPS  [OK ]
+    c=32 n=224: 14.484 TPS (steady 15.761)  ack 1945.408 ms  expected 16.449 TPS  [OK ]
+  throughput: fabric_only
+    c= 1 n=200:  0.445 TPS (steady 0.445)  ack 2243.519 ms  expected 0.446 TPS  [OK ]
+    c= 2 n=200:  0.903 TPS (steady 0.903)  ack 2212.691 ms  expected 0.904 TPS  [OK ]
+    c= 4 n=200:  1.755 TPS (steady 1.756)  ack 2273.976 ms  expected 1.759 TPS  [OK ]
+    c= 8 n=200:  3.371 TPS (steady 3.376)  ack 2362.53 ms  expected 3.386 TPS  [OK ]
+    c=10 n=200: 18.058 TPS (steady 18.014)  ack 540.985 ms  expected 18.485 TPS  [OK ]
+    c=12 n=204: 15.876 TPS (steady 18.398)  ack 669.131 ms  expected 17.934 TPS  [OK ]
+    c=14 n=210: 17.506 TPS (steady 17.658)  ack 776.08 ms  expected 18.039 TPS  [OK ]
+    c=16 n=208: 16.081 TPS (steady 18.16)  ack 902.247 ms  expected 17.734 TPS  [OK ]
+    c=20 n=200: 19.426 TPS (steady 19.467)  ack 997.511 ms  expected 20.05 TPS  [OK ]
+    c=24 n=216: 15.955 TPS (steady 17.881)  ack 1328.492 ms  expected 18.066 TPS  [OK ]
+    c=32 n=224:  8.984 TPS (steady 19.542)  ack 3272.772 ms  expected 9.778 TPS  [OK ]
+
+  All reconciliation gates passed. JSON: /root/Hybrid_BC_System/results/v2/raw/ws1/dev/rep2/exp1/exp1_latency_real.json

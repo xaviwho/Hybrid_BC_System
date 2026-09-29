@@ -172,7 +172,7 @@ def queue_depth():
     inflate the ack latency it is meant to contextualise.
     """
     try:
-        r = session().get(f"{BASE}/outbox_stats", timeout=5)
+        r = session().get(f"{BASE}/outbox_depth", timeout=5)
         if r.status_code == 200:
             return r.json().get("queue_depth")
     except requests.RequestException:

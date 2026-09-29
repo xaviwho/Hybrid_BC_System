@@ -1,0 +1,108 @@
+========================================================================
+  EXPERIMENT 1 (v2): ack/completion latency + throughput
+  server=werkzeug workers=None threads=None readback=sync config_hash=8d0891d91160
+========================================================================
+  throughput: all_public
+    c= 1 n=200:  0.453 TPS (steady 0.453)  ack 2203.109 ms  expected 0.454 TPS  [OK ]
+    c= 2 n=200:  0.901 TPS (steady 0.901)  ack 2216.675 ms  expected 0.902 TPS  [OK ]
+    c= 4 n=200:  1.760 TPS (steady 1.761)  ack 2267.378 ms  expected 1.764 TPS  [OK ]
+    c= 8 n=200:  3.359 TPS (steady 3.382)  ack 2370.568 ms  expected 3.375 TPS  [OK ]
+    c=10 n=200: 13.422 TPS (steady 13.79)  ack 723.144 ms  expected 13.829 TPS  [OK ]
+    c=12 n=204: 11.932 TPS (steady 13.39)  ack 920.777 ms  expected 13.032 TPS  [OK ]
+    c=14 n=210: 13.325 TPS (steady 13.661)  ack 1022.694 ms  expected 13.689 TPS  [OK ]
+    c=16 n=208: 12.384 TPS (steady 13.628)  ack 1195.144 ms  expected 13.388 TPS  [OK ]
+    c=20 n=200: 15.352 TPS (steady 15.446)  ack 1272.883 ms  expected 15.712 TPS  [OK ]
+    c=24 n=216: 12.435 TPS (steady 14.06)  ack 1751.08 ms  expected 13.706 TPS  [OK ]
+    c=32 n=224:  6.754 TPS (steady 7.551)  ack 4588.247 ms  expected 6.974 TPS  [OK ]
+  throughput: all_sensitive
+    c= 1 n=200:  0.440 TPS (steady 0.44)  ack 2269.443 ms  expected 0.441 TPS  [OK ]
+    c= 2 n=200:  0.892 TPS (steady 0.892)  ack 2238.102 ms  expected 0.894 TPS  [OK ]
+    c= 4 n=200:  1.761 TPS (steady 1.76)  ack 2266.762 ms  expected 1.765 TPS  [OK ]
+    c= 8 n=200:  3.351 TPS (steady 3.362)  ack 2376.209 ms  expected 3.367 TPS  [OK ]
+    c=10 n=200: 13.796 TPS (steady 13.698)  ack 711.046 ms  expected 14.064 TPS  [OK ]
+    c=12 n=204: 12.324 TPS (steady 13.578)  ack 901.079 ms  expected 13.317 TPS  [OK ]
+    c=14 n=210: 14.023 TPS (steady 14.481)  ack 970.652 ms  expected 14.423 TPS  [OK ]
+    c=16 n=208: 12.702 TPS (steady 13.63)  ack 1173.229 ms  expected 13.638 TPS  [OK ]
+    c=20 n=200: 15.606 TPS (steady 16.126)  ack 1241.926 ms  expected 16.104 TPS  [OK ]
+    c=24 n=216: 14.786 TPS (steady 17.128)  ack 1434.445 ms  expected 16.731 TPS  [OK ]
+    c=32 n=224: 13.154 TPS (steady 15.381)  ack 2116.178 ms  expected 15.122 TPS  [OK ]
+  throughput: mixed
+    c= 1 n=200:  0.444 TPS (steady 0.444)  ack 2247.731 ms  expected 0.445 TPS  [OK ]
+    c= 2 n=200:  0.893 TPS (steady 0.893)  ack 2236.069 ms  expected 0.894 TPS  [OK ]
+    c= 4 n=200:  1.735 TPS (steady 1.736)  ack 2300.09 ms  expected 1.739 TPS  [OK ]
+    c= 8 n=200:  3.282 TPS (steady 3.285)  ack 2428.021 ms  expected 3.295 TPS  [OK ]
+    c=10 n=200: 11.232 TPS (steady 11.501)  ack 872.547 ms  expected 11.461 TPS  [OK ]
+    c=12 n=204: 11.022 TPS (steady 11.953)  ack 1011.37 ms  expected 11.865 TPS  [OK ]
+    c=14 n=210:  8.879 TPS (steady 8.881)  ack 1519.168 ms  expected 9.216 TPS  [OK ]
+    c=16 n=208:  8.188 TPS (steady 11.724)  ack 1800.113 ms  expected 8.888 TPS  [OK ]
+    c=20 n=200:  9.268 TPS (steady 11.209)  ack 2066.01 ms  expected 9.68 TPS  [OK ]
+    c=24 n=216:  8.536 TPS (steady 9.46)  ack 2631.626 ms  expected 9.12 TPS  [OK ]
+    c=32 n=224: 10.834 TPS (steady 11.952)  ack 2687.031 ms  expected 11.909 TPS  [OK ]
+  throughput: fabric_only
+    c= 1 n=200:  0.425 TPS (steady 0.425)  ack 2349.74 ms  expected 0.426 TPS  [OK ]
+    c= 2 n=200:  0.876 TPS (steady 0.876)  ack 2280.394 ms  expected 0.877 TPS  [OK ]
+    c= 4 n=200:  1.717 TPS (steady 1.717)  ack 2324.601 ms  expected 1.721 TPS  [OK ]
+    c= 8 n=200:  3.280 TPS (steady 3.283)  ack 2428.355 ms  expected 3.294 TPS  [OK ]
+    c=10 n=200: 16.134 TPS (steady 16.124)  ack 608.137 ms  expected 16.444 TPS  [OK ]
+    c=12 n=204: 13.657 TPS (steady 15.269)  ack 793.115 ms  expected 15.13 TPS  [OK ]
+    c=14 n=210: 15.272 TPS (steady 15.625)  ack 887.308 ms  expected 15.778 TPS  [OK ]
+    c=16 n=208:  9.294 TPS (steady 9.518)  ack 1576.49 ms  expected 10.149 TPS  [OK ]
+    c=20 n=200: 11.192 TPS (steady 16.327)  ack 1738.535 ms  expected 11.504 TPS  [OK ]
+    c=24 n=216: 11.095 TPS (steady 11.304)  ack 1932.403 ms  expected 12.42 TPS  [OK ]
+    c=32 n=224:  9.333 TPS (steady 9.088)  ack 3143.785 ms  expected 10.179 TPS  [OK ]
+Traceback (most recent call last):
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "/usr/lib/python3.10/http/client.py", line 1404, in getresponse
+    response.begin()
+  File "/usr/lib/python3.10/http/client.py", line 323, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.10/http/client.py", line 284, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/orbit-venv/lib/python3.10/site-packages/requests/adapters.py", line 696, in send
+    resp = conn.urlopen(
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/util/retry.py", line 498, in increment
+    raise reraise(type(error), error, _stacktrace)
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/util/util.py", line 39, in reraise
+    raise value
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/root/orbit-venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='localhost', port=5002): Read timed out. (read timeout=10)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Hybrid_BC_System/experiments/exp1_latency_real.py", line 671, in <module>
+    sys.exit(main())
+  File "/root/Hybrid_BC_System/experiments/exp1_latency_real.py", line 574, in main
+    digest_end = run_digest.collect()
+  File "/root/Hybrid_BC_System/experiments/run_digest.py", line 197, in collect
+    "services": services(), "host": host()}
+  File "/root/Hybrid_BC_System/experiments/run_digest.py", line 155, in services
+    st = requests.get(ORCH + "/outbox_stats", timeout=10).json()
+  File "/root/orbit-venv/lib/python3.10/site-packages/requests/api.py", line 87, in get
+    return request("get", url, params=params, **kwargs)
+  File "/root/orbit-venv/lib/python3.10/site-packages/requests/api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/root/orbit-venv/lib/python3.10/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/root/orbit-venv/lib/python3.10/site-packages/requests/sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "/root/orbit-venv/lib/python3.10/site-packages/requests/adapters.py", line 742, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='localhost', port=5002): Read timed out. (read timeout=10)

@@ -150,10 +150,22 @@ def fabric():
             "channel_height": height}
 
 
+def _get_json(url, attempts=3, timeout=60):
+    """GET with retries. The end-of-run digest follows a sweep that leaves a
+    relay backlog; a single 10 s attempt failed 2 of 10 WS1 runs."""
+    last = None
+    for _ in range(attempts):
+        try:
+            return requests.get(url, timeout=timeout).json()
+        except requests.RequestException as e:
+            last = e
+    raise RuntimeError(f"digest: {url} unreachable after {attempts} attempts: {last}")
+
+
 def services():
-    h = requests.get(ORCH + "/health", timeout=10).json()
-    st = requests.get(ORCH + "/outbox_stats", timeout=10).json()
-    p = requests.get(POLICY + "/health", timeout=10).json()
+    h = _get_json(ORCH + "/health")
+    st = _get_json(ORCH + "/outbox_stats")
+    p = _get_json(POLICY + "/health")
     return {"orchestrator": {k: h.get(k) for k in (
                 "server", "server_profile", "server_mode", "server_workers", "server_threads",
                 "relay_mode", "fabric_readback", "commitment_scheme", "outbox_db",

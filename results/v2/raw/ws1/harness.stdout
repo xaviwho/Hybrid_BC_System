@@ -1,0 +1,32 @@
+[2026-09-28T07:01:05Z] WS1 start: reps=5 out=/root/Hybrid_BC_System/results/v2/raw/ws1 commit=a0f9d1e7
+[2026-09-28T07:01:05Z] === dev rep1: restarting services
+[2026-09-28T07:02:26Z] dev rep1: exp1 running
+[2026-09-28T08:11:25Z] dev rep1: exp1 exit 0 (0 gate failures)
+[2026-09-28T08:11:25Z] === prod rep1: restarting services
+[2026-09-28T08:12:46Z] prod rep1: exp1 running
+[2026-09-28T09:23:02Z] prod rep1: exp1 exit 0 (0 gate failures)
+[2026-09-28T09:23:02Z] === prod rep2: restarting services
+[2026-09-28T09:24:24Z] prod rep2: exp1 running
+[2026-09-28T10:35:16Z] prod rep2: exp1 exit 0 (0 gate failures)
+[2026-09-28T10:35:16Z] === dev rep2: restarting services
+[2026-09-28T10:36:39Z] dev rep2: exp1 running
+[2026-09-28T11:48:48Z] dev rep2: exp1 exit 0 (0 gate failures)
+[2026-09-28T11:48:48Z] === dev rep3: restarting services
+[2026-09-28T11:50:13Z] dev rep3: exp1 running
+[2026-09-28T13:07:18Z] dev rep3: exp1 exit 1 (0 gate failures)
+[2026-09-28T13:07:18Z] === prod rep3: restarting services
+[2026-09-28T13:08:45Z] prod rep3: exp1 running
+[2026-09-28T14:28:09Z] prod rep3: exp1 exit 0 (0 gate failures)
+[2026-09-28T14:28:09Z] === prod rep4: restarting services
+[2026-09-28T14:29:34Z] prod rep4: exp1 running
+[2026-09-28T15:47:34Z] prod rep4: exp1 exit 0 (0 gate failures)
+[2026-09-28T15:47:34Z] === dev rep4: restarting services
+[2026-09-28T15:49:02Z] dev rep4: exp1 running
+[2026-09-28T17:07:39Z] dev rep4: exp1 exit 0 (0 gate failures)
+[2026-09-28T17:07:39Z] === dev rep5: restarting services
+[2026-09-28T17:09:07Z] dev rep5: exp1 running
+[2026-09-28T18:30:50Z] dev rep5: exp1 exit 0 (0 gate failures)
+[2026-09-28T18:30:50Z] === prod rep5: restarting services
+[2026-09-28T18:32:18Z] prod rep5: exp1 running
+[2026-09-28T20:00:09Z] prod rep5: exp1 exit 1 (0 gate failures)
+[2026-09-28T20:00:21Z] WS1 done
