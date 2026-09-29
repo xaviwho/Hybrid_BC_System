@@ -72,6 +72,53 @@ func (s *SmartContract) ReadIoTData(ctx contractapi.TransactionContextInterface,
 	return string(rec), nil
 }
 
+// KeyedRecord is one entry of a ListRecords page.
+type KeyedRecord struct {
+	Key      string `json:"key"`
+	Envelope string `json:"envelope"`
+	TxID     string `json:"txid"`
+}
+
+// RecordPage is a page of records plus the bookmark to fetch the next one.
+type RecordPage struct {
+	Records  []KeyedRecord `json:"records"`
+	Bookmark string        `json:"bookmark"`
+}
+
+// ListRecords returns up to pageSize records after bookmark, in key order.
+//
+// Read-only: range queries with pagination run only in query (evaluate)
+// transactions. Used by the reconciliation sweep and the auditor (revision
+// WS5): a record committed privately whose process died before the outbox
+// write exists nowhere but here, so finding it requires enumerating the ledger.
+func (s *SmartContract) ListRecords(ctx contractapi.TransactionContextInterface, pageSize int32, bookmark string) (string, error) {
+	it, meta, err := ctx.GetStub().GetStateByRangeWithPagination("", "", pageSize, bookmark)
+	if err != nil {
+		return "", fmt.Errorf("range query failed: %v", err)
+	}
+	defer it.Close()
+	page := RecordPage{Records: []KeyedRecord{}}
+	for it.HasNext() {
+		kv, err := it.Next()
+		if err != nil {
+			return "", err
+		}
+		var rec Record
+		if err := json.Unmarshal(kv.Value, &rec); err != nil {
+			// Not a v2 record; report the key with an empty envelope.
+			page.Records = append(page.Records, KeyedRecord{Key: kv.Key})
+			continue
+		}
+		page.Records = append(page.Records, KeyedRecord{Key: kv.Key, Envelope: rec.Envelope, TxID: rec.TxID})
+	}
+	page.Bookmark = meta.GetBookmark()
+	out, err := json.Marshal(page)
+	if err != nil {
+		return "", err
+	}
+	return string(out), nil
+}
+
 func main() {
 	chaincode, err := contractapi.NewChaincode(&SmartContract{})
 	if err != nil {

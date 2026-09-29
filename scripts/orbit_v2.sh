@@ -16,11 +16,16 @@
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Host-specific overrides (e.g. /opt/orbit/azure.env on orbit-d): STATE, VENV,
+# FAB, FABRIC_TEST_NETWORK, FABRIC_ORDERER, FABRIC_PEER{1,2}_ADDR, GANACHE_URL,
+# GANACHE_HOST. Defaults are the laptop (WSL) layout.
+if [ -n "${ORBIT_ENV:-}" ]; then . "$ORBIT_ENV"; fi
 STATE="${STATE:-/root/orbit-state/v2}"
 LOGS="$STATE/logs"
-PY=/root/orbit-venv/bin/python
+VENV="${VENV:-/root/orbit-venv}"
+PY=$VENV/bin/python
 ETH="$REPO/blockchain/setup/ethereum"
-FAB=/root/fabric-clean
+FAB="${FAB:-/root/fabric-clean}"
 ORCH_PORT="${ORCH_PORT:-5002}"
 POLICY_PORT="${POLICY_PORT:-5011}"
 mkdir -p "$STATE" "$LOGS"
@@ -30,9 +35,10 @@ case "$(stat -f -c %T "$STATE")" in
   *) echo "FATAL: $STATE is on $(stat -f -c %T "$STATE"), need a native Linux fs" >&2; exit 1;;
 esac
 
-export GANACHE_URL=http://127.0.0.1:8545
+export GANACHE_URL="${GANACHE_URL:-http://127.0.0.1:8545}"
 export OUTBOX_DB="$STATE/outbox.db"
-export FABRIC_BIN=$FAB/bin FABRIC_CFG_PATH=$FAB/config FABRIC_TEST_NETWORK=$FAB/test-network
+export FABRIC_BIN=$FAB/bin FABRIC_CFG_PATH=$FAB/config
+export FABRIC_TEST_NETWORK="${FABRIC_TEST_NETWORK:-$FAB/test-network}"
 export FABRIC_CHANNEL=hiot FABRIC_CC_NAME=iot-data
 export PRIVACY_FILTER_URL="http://127.0.0.1:$POLICY_PORT/filter_data"
 export FABRIC_READBACK="${FABRIC_READBACK:-sync}"
@@ -84,10 +90,10 @@ cmd_deploy() {
   npx truffle migrate --network development --reset 2>&1 | tee "$LOGS/truffle_migrate.log" | tail -25
   cd "$REPO"
   "$PY" - <<'PY' | tee "$STATE/DEPLOYED"
-import sys; sys.path.insert(0, 'orchestrator')
+import os, sys; sys.path.insert(0, 'orchestrator')
 import contract_registry as cr
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:8545'))
+w3 = Web3(Web3.HTTPProvider(os.environ['GANACHE_URL']))
 r = cr.resolve('blockchain/setup/ethereum/build/contracts/IoTDataRegistry.json', w3=w3, require_code=True)
 c = w3.eth.contract(address=r['address'], abi=r['abi'])
 code = w3.eth.get_code(r['address'])
@@ -112,7 +118,7 @@ cmd_services() {
   local profile="${SERVER_PROFILE:-dev}"
   # shellcheck source=/dev/null
   . "$REPO/config/orbit_v2_server.env"
-  local gun="/root/orbit-venv/bin/gunicorn"
+  local gun="$VENV/bin/gunicorn"
   local gopts=(-k gthread --timeout "$GUNICORN_TIMEOUT" --keep-alive "$GUNICORN_KEEPALIVE")
   cd "$REPO"
   if ! curl -sf "http://127.0.0.1:$POLICY_PORT/health" >/dev/null; then

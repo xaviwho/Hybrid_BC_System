@@ -53,6 +53,11 @@ RELAY_ACCOUNTS_CHECKED = 4
 DIRTY_IGNORE = ("blockchain/setup/ethereum/node_modules",)
 VOLATILE = {("fabric", "channel_height"), ("services", "orchestrator_pid"),
             ("services", "relays_alive"), ("ethereum", "block_number")}
+VOLATILE_SECTIONS = {"clock"}   # recorded, never hashed
+# Multi-VM testbed (WS2+): Fabric containers live on other hosts, reached over
+# SSH. Empty on the laptop, where everything is local.
+DOCKER_HOSTS = [h for h in os.getenv("ORBIT_DOCKER_HOSTS", "").split(",") if h]
+NET_HOSTS = [h for h in os.getenv("ORBIT_NET_HOSTS", "").split(",") if h]
 
 
 def _run(cmd, **kw):
@@ -60,6 +65,18 @@ def _run(cmd, **kw):
     if r.returncode != 0:
         raise RuntimeError(f"{' '.join(cmd[:4])}... failed: {(r.stderr or r.stdout)[-400:]}")
     return r.stdout
+
+
+def _on(host, cmd):
+    """Run cmd (a list) locally (host None or "local") or on host over SSH."""
+    if host in (None, "local"):
+        return _run(cmd)
+    import shlex
+    return _run(["ssh", "-o", "BatchMode=yes", host, " ".join(shlex.quote(c) for c in cmd)])
+
+
+def _docker(host, *args):
+    return _on(host, (["sudo"] if host not in (None, "local") else []) + ["docker", *args])
 
 
 def code():
@@ -119,15 +136,17 @@ def fabric():
     # Tags are not versions: on this host `fabric-peer:latest` happens to be the
     # 2.5.0 image while `fabric-ccenv:2.5` (the chaincode builder) is 2.5.12.
     # Record image ids and the binaries' own version strings.
-    images = {}
-    for line in _run(["docker", "ps", "--format", "{{.Names}}|{{.Image}}"]).split():
-        name, tag = line.split("|", 1)
-        if "hyperledger" in tag or "couchdb" in tag:
-            iid = _run(["docker", "inspect", "-f", "{{.Image}}", name]).strip()
-            images[name] = f"{tag}@{iid[:19]}"
+    images, where = {}, {}
+    for host in (DOCKER_HOSTS or [None]):
+        for line in _docker(host, "ps", "--format", "{{.Names}}|{{.Image}}").split():
+            name, tag = line.split("|", 1)
+            if "hyperledger" in tag or "couchdb" in tag:
+                iid = _docker(host, "inspect", "-f", "{{.Image}}", name).strip()
+                images[name] = f"{tag}@{iid[:19]}" + (f" on {host}" if host else "")
+                where[name] = host
 
     def binver(container, binary):
-        out = _run(["docker", "exec", container, binary, "version"])
+        out = _docker(where.get(container), "exec", container, binary, "version")
         return next((ln.split(":", 1)[1].strip() for ln in out.splitlines()
                      if ln.strip().startswith("Version:")), None)
     versions = {"peer": binver("peer0.org1.example.com", "peer"),
@@ -198,15 +217,44 @@ def host():
                                              "gunicorn", "requests")}}
 
 
+IMDS = ("curl -s -m 3 -H Metadata:true 'http://169.254.169.254/metadata/instance/compute"
+        "?api-version=2021-02-01&format=json' | jq -c '{vmSize, location, zone}' || echo null")
+
+
+def network():
+    """Per-host shaping and placement. `tc` state is hashed, so a netem delay
+    (WS2 delay sweep) is part of the configuration it was measured under."""
+    out = {"topology_mode": os.getenv("ORBIT_TOPOLOGY", "single_host"), "hosts": {}}
+    for h in (NET_HOSTS or [None]):
+        key = h or "local"
+        tc = _on(h, ["sh", "-c", "tc qdisc show dev eth0; tc filter show dev eth0 | grep -E 'match|flowid' || true"])
+        vm = _on(h, ["sh", "-c", IMDS]).strip()
+        out["hosts"][key] = {"tc": [ln.strip() for ln in tc.splitlines() if ln.strip()],
+                             "vm": json.loads(vm) if vm.startswith("{") else None}
+    return out
+
+
+def clock():
+    """NTP state per host (recorded, not hashed)."""
+    out = {}
+    for h in (NET_HOSTS or [None]):
+        try:
+            t = _on(h, ["sh", "-c", "chronyc tracking | grep -E 'System time|Frequency|Leap status'"])
+            out[h or "local"] = [ln.strip() for ln in t.splitlines()]
+        except Exception as e:  # the laptop has no chrony
+            out[h or "local"] = f"unavailable: {e.__class__.__name__}"
+    return out
+
+
 def _stable(d):
     return {sec: ({k: v for k, v in val.items() if (sec, k) not in VOLATILE}
                   if isinstance(val, dict) else val)
-            for sec, val in d.items()}
+            for sec, val in d.items() if sec not in VOLATILE_SECTIONS}
 
 
 def collect():
     d = {"code": code(), "ethereum": ethereum(), "fabric": fabric(),
-         "services": services(), "host": host()}
+         "services": services(), "host": host(), "network": network(), "clock": clock()}
     blob = json.dumps(_stable(d), sort_keys=True, separators=(",", ":"), default=list)
     d["config_hash"] = hashlib.sha256(blob.encode()).hexdigest()[:12]
     d["config_hash_covers"] = "all fields except " + ", ".join(
