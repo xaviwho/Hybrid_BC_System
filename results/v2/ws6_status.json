@@ -1,0 +1,8 @@
+{
+ "id": "WS6",
+ "status": "NOT_RUN",
+ "workstream": "BFT ordering (SmartBFT, Fabric v3.x, 4 orderers, f = 1)",
+ "reason": "Not attempted. SmartBFT channels require Fabric v3.x on every node, peers included, so it is a migration of the whole network (images, channel re-creation with BFT consenter identities, chaincode redeploy), not an orderer swap; a fifth deployment beside the single v2 deployment every other v2 result uses would break the single-deployment rule for the chain-independent comparison. Four orderer nodes as separate failure domains also exceed the Azure for Students quota (6 vCPU per region; the four testbed VMs use 4 per region).",
+ "consequence": "The evaluation is scoped to crash-fault tolerance. Ordering is a single-consenter Raft orderer, as in v1 (run digest: fabric.orderer.consenters = 1), so it tolerates no orderer failure; relay-side crash tolerance is WS3. Byzantine ordering is future work.",
+ "recorded": "2026-09-29"
+}
