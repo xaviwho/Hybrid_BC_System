@@ -47,7 +47,7 @@ from twin_manager import (  # noqa: E402
     KIND_CHECKPOINT,
 )
 
-OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp8")
+OUTPUT_DIR = os.path.join(os.getenv("ORBIT_RESULTS_DIR", os.path.join(_REPO, "experiments", "results")), "exp8")
 
 TOTAL_VERSIONS = 1001          # head version n = 1001, index 1000
 # Near-head targets {990, 995, 999} added in the Phase 3 follow-up. The original

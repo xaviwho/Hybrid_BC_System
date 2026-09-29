@@ -38,7 +38,7 @@ sys.path.insert(0, os.path.join(_REPO, "ml"))
 from privacy_filter import policy_engine  # noqa: E402
 from privacy_filter.policy_engine import Sensitivity, classify_record, PUBLIC_LEDGER_THRESHOLD  # noqa: E402
 
-OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp2")
+OUTPUT_DIR = os.path.join(os.getenv("ORBIT_RESULTS_DIR", os.path.join(_REPO, "experiments", "results")), "exp2")
 
 
 @dataclass

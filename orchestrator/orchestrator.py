@@ -186,6 +186,25 @@ if RELAY_MODE not in ("external", "inprocess", "off"):
 
 outbox = Outbox(OUTBOX_DB)
 
+# Anchoring mode (WS4 baseline):
+#   async_outbox  (default) OrBIT: acknowledge after the private commit; the
+#                 relay anchors later.
+#   sync_anchor   acknowledge only after the anchor is mined. Same route, policy,
+#                 payload, commitment and on-chain call; the request thread
+#                 delivers the outbox row itself (Outbox.deliver, the relay's code
+#                 path), from eth.accounts[SYNC_ACCOUNT_INDEX]. Run with no relay.
+ORCH_MODE = os.getenv("ORCH_MODE", "async_outbox").lower()
+if ORCH_MODE not in ("async_outbox", "sync_anchor"):
+    raise SystemExit(f"FATAL: ORCH_MODE must be async_outbox|sync_anchor, got {ORCH_MODE!r}")
+if ORCH_MODE == "sync_anchor":
+    if RELAY_MODE == "inprocess":
+        raise SystemExit("FATAL: sync_anchor anchors on the request path; do not also run a relay")
+    _sync_account = web3.eth.accounts[int(os.getenv("SYNC_ACCOUNT_INDEX", "1"))]
+    outbox.anchor_fn = make_anchor_fn(web3, iot_data_registry_contract, _sync_account)
+    outbox.relay_id = f"sync-{os.getpid()}"
+    outbox.relay_account = _sync_account
+    print(f"ORCH_MODE sync_anchor: anchors on the request path from {_sync_account}")
+
 if RELAY_MODE == "inprocess":
     # Not in the Werkzeug reloader's parent process (two relays on one queue).
     if not os.getenv("WERKZEUG_RUN_MAIN") or os.getenv("WERKZEUG_RUN_MAIN") == "true":
@@ -319,6 +338,7 @@ def health_check():
         "server_threads": os.getenv("ORBIT_SERVER_THREADS"),
         "pid": os.getpid(),
         "relay_mode": RELAY_MODE,
+        "orch_mode": ORCH_MODE,
         "fabric_readback": FABRIC_READBACK,
         "commitment_scheme": "v2: c=keccak(canon(sigma)), h=keccak(canon(m))",
     }), 200
@@ -448,6 +468,14 @@ def ingest_data():
 
     t_fabric = time.perf_counter()
 
+    # Test-only (WS5 crash-window experiment): die after the private commit and
+    # before the outbox transaction — the one window in which a record can be
+    # committed privately and never anchored (outbox.py docstring). gunicorn
+    # replaces the worker; the reconciliation sweep must find the orphan.
+    if os.getenv("TEST_CRASH_AFTER_FABRIC", "").lower() in ("1", "true", "yes"):
+        print(f"TEST CRASH after Fabric commit of {fabric_key} (txid {nu})", flush=True)
+        os._exit(137)
+
     # sigma is built from what Fabric STORED (read back), so the auditor, who
     # reads the same record, reconstructs the same sigma. On a retry the stored
     # envelope is the first one and its t0 wins.
@@ -504,8 +532,23 @@ def ingest_data():
 
         t_enqueue = time.perf_counter()
         timing_ms["outbox_ms"] = round((t_enqueue - t_fabric) * 1000, 3)
-        # Acknowledgement latency: t0 -> 202. The client-visible number.
-        timing_ms["ack_ms"] = round((t_enqueue - t_ingress) * 1000, 3)
+        t_done = t_enqueue
+        if ORCH_MODE == "sync_anchor" and anchor_required:
+            # WS4 baseline: anchor now, on this thread, and wait for the receipt.
+            row = outbox.get(idempotency_key)
+            tx = outbox.deliver(row) if row and row["state"] == "pending" else (row or {}).get("eth_tx_hash")
+            t_done = time.perf_counter()
+            timing_ms["sync_anchor_ms"] = round((t_done - t_enqueue) * 1000, 3)
+            if not tx:
+                release_idempotency_slot(idempotency_key)
+                return jsonify({"error": "synchronous anchor failed",
+                                "outbox_id": idempotency_key,
+                                "last_error": (outbox.get(idempotency_key) or {}).get("last_error")}), 502
+            final_response["anchor_state"] = "delivered"
+            final_response["ethereum_tx_hash"] = tx
+        # Acknowledgement latency: t0 -> response. The client-visible number.
+        timing_ms["ack_ms"] = round((t_done - t_ingress) * 1000, 3)
+        timing_ms["orch_mode"] = ORCH_MODE
         final_response["timing_ms"] = timing_ms
 
         complete_idempotency(idempotency_key, final_response)

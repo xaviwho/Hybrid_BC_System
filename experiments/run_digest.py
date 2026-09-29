@@ -191,7 +191,7 @@ def services():
     p = _get_json(POLICY + "/health")
     return {"orchestrator": {k: h.get(k) for k in (
                 "server", "server_profile", "server_mode", "server_workers", "server_threads",
-                "relay_mode", "fabric_readback", "commitment_scheme", "outbox_db",
+                "relay_mode", "orch_mode", "fabric_readback", "commitment_scheme", "outbox_db",
                 "contract_addr")},
             "orchestrator_pid": h.get("pid"),
             "relays": sorted({(r["relay_id"], r["account"]) for r in st.get("relays", [])}),

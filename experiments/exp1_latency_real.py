@@ -211,6 +211,8 @@ def one_request(cls, i, follow_anchor=False, sample_depth=False):
             "readback_ms": t.get("readback_ms"),      # Alg. 1 l.22 query (v2)
             "fabric_stage_ms": t.get("fabric_stage_ms"),
             "outbox_ms": t.get("outbox_ms"),
+            "sync_anchor_ms": t.get("sync_anchor_ms"),        # WS4 baseline only
+            "orch_mode": t.get("orch_mode"),
             "route": j.get("route"),
             "ack_ms": t.get("ack_ms"),
             "fabric_invoked": t.get("fabric_invoked"),
@@ -500,6 +502,7 @@ def measure_throughput(cls):
             "stage_fabric_ms": _stats([r.get("fabric_ms") for r in ok]),
             "stage_readback_ms": _stats([r.get("readback_ms") for r in ok]),
             "stage_outbox_ms": _stats([r.get("outbox_ms") for r in ok]),
+            "stage_sync_anchor_ms": _stats([r.get("sync_anchor_ms") for r in ok]),
             # outbox_ms spans commit_and_enqueue, so it absorbs any SQLite
             "anchors_enqueued": {"kind": "measured",
                                  "value": sum(1 for r in ok if r.get("anchor_enqueued"))},

@@ -38,13 +38,18 @@ from web3 import Web3
 _REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(_REPO, "orchestrator"))
 import contract_registry  # noqa: E402  — the SINGLE address-selection rule
-OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp3")
+sys.path.insert(0, os.path.join(_REPO, "tools", "auditor"))
+import merkle  # noqa: E402  — the auditor's Keccak tree (Eq. 13a/13b)
+from commitment import canon, h_hex, metadata_hash, onchain_id  # noqa: E402
+
+OUTPUT_DIR = os.path.join(os.getenv("ORBIT_RESULTS_DIR", os.path.join(_REPO, "experiments", "results")), "exp3")
 CONTRACT_JSON = os.path.join(
     _REPO, "blockchain", "setup", "ethereum", "build", "contracts", "IoTDataRegistry.json")
 GANACHE_URL = os.getenv("GANACHE_URL", "http://127.0.0.1:8545")
 
-BATCH_SIZES = [1, 2, 5, 10, 20, 50, 100, 200]
-REPS = 3          # >= 3 real transactions per batch size (spec, Change 3)
+# v2 (WS7): extended to 500 and 1000; 5 real transactions per point (rule 7).
+BATCH_SIZES = [int(x) for x in os.getenv("EXP3_BATCH_SIZES", "1,2,5,10,20,50,100,200,500,1000").split(",")]
+REPS = int(os.getenv("EXP3_REPS", "5"))
 FLAT_TOLERANCE = 0.01   # root gas considered flat across N within 1%
 
 
@@ -55,24 +60,21 @@ def _record_metadata(i):
 
 
 def _merkle(n, salt):
-    """Real Merkle tree over n leaves. Returns (root_bytes, depth, proof_len).
+    """Real Keccak Merkle tree over n leaves h_i = H(m_i) (Eq. 13a), built with the
+    auditor's module so every root here has proofs the auditor can verify.
+    Returns (root_bytes, depth, proof_len, proof_ok) where proof_ok checks one
+    inclusion proof per tree (first, middle and last leaf) against the root.
 
-    proof_len is the number of sibling hashes an inclusion proof carries, i.e.
-    the tree depth — the verifier-side cost that batching trades against.
+    v1 used SHA-256 over synthetic strings; gas is unaffected (only the 32-byte
+    root reaches the chain) but the construction now matches the manuscript.
     """
-    leaves = [hashlib.sha256(f"{salt}-{k}".encode()).digest() for k in range(n)]
-    if not leaves:
-        return b"\x00" * 32, 0, 0
-    level, depth = leaves, 0
-    while len(level) > 1:
-        nxt = []
-        for j in range(0, len(level), 2):
-            a = level[j]
-            b = level[j + 1] if j + 1 < len(level) else level[j]
-            nxt.append(hashlib.sha256(a + b).digest())
-        level = nxt
-        depth += 1
-    return level[0], depth, depth
+    leaves = [metadata_hash(json.loads(_record_metadata(k)) | {"batch": salt}) for k in range(n)]
+    levels = merkle.build(leaves)
+    root = levels[-1][0]
+    depth = len(levels) - 1
+    probe = sorted({0, n // 2, n - 1})
+    ok = all(merkle.verify(leaves[j], merkle.proof(leaves, j), "0x" + root.hex()) for j in probe)
+    return root, depth, depth, ok
 
 
 def _stats(xs):
@@ -117,17 +119,20 @@ def main():
     tx_hashes = []
 
     def anchor(data_id_str, dhash, metadata_str):
-        did = hashlib.sha256(data_id_str.encode()).digest()
+        did = onchain_id(data_id_str)            # the relay's slot rule (keccak of id)
         txh = c.functions.registerData(did, dhash, metadata_str).transact()
         rcpt = w3.eth.wait_for_transaction_receipt(txh)
         tx_hashes.append(rcpt.transactionHash.hex())
         return rcpt.gasUsed, rcpt.transactionHash.hex()
 
     # --- Baseline: single-record anchoring, one tx per record ---
+    # v2: the live relay's exact call shape — c = H(sigma) (66 chars) and canon(m).
     single_gas, single_txs = [], []
     for i in range(REPS):
-        md = _record_metadata(i)
-        g, h = anchor(f"single-{run_salt}-{i}", hashlib.sha256(md.encode()).hexdigest(), md)
+        m = json.loads(_record_metadata(i))
+        sigma = {"id": f"single-{run_salt}-{i}", "k": f"single-{run_salt}-{i}",
+                 "nu": "0" * 64, "tau": 1700000000000000 + i, "h": metadata_hash(m)}
+        g, h = anchor(f"single-{run_salt}-{i}", h_hex(canon(sigma)), canon(m).decode("utf-8"))
         single_gas.append(g)
         single_txs.append(h)
     single_avg = statistics.fmean(single_gas)
@@ -138,8 +143,10 @@ def main():
     for n in BATCH_SIZES:
         gas_samples, txs = [], []
         root_hex = depth = proof_len = None
+        proofs_ok = True
         for r in range(REPS):
-            root, depth, proof_len = _merkle(n, f"{run_salt}-N{n}-r{r}")
+            root, depth, proof_len, ok = _merkle(n, f"{run_salt}-N{n}-r{r}")
+            proofs_ok = proofs_ok and ok
             root_hex = "0x" + root.hex()
             g, h = anchor(f"root-{run_salt}-N{n}-r{r}", root_hex, root_hex)
             gas_samples.append(g)
@@ -154,6 +161,8 @@ def main():
             "tree_depth": depth,
             "proof_len_hashes": proof_len,
             "proof_size_bytes": proof_len * 32,
+            "sample_proofs_verify": {"kind": "measured", "value": proofs_ok,
+                                     "note": "first/middle/last leaf per tree, tools/auditor/merkle.verify"},
             "calldata_bytes": len(root_hex.encode()),
             "root_anchor_gas": {"kind": "measured", **root_stats},
             "batched_gas_per_record": {
@@ -185,6 +194,11 @@ def main():
             "data_source": "real transactions against deployed IoTDataRegistry",
             "chain_id": w3.eth.chain_id,
             "contract_address": addr,
+            "contract_addr": addr,
+            "call_shape": {"single": "registerData(keccak(id), H(sigma) [66 chars], canon(m)) — the relay's call",
+                           "root": "registerData(keccak(id), root [66 chars], root) — as v1",
+                           "merkle": "Keccak-256, leaves H(m_i), odd node paired with itself"},
+            "sender": acct,
             "reps_per_batch_size": REPS,
             "batch_sizes": BATCH_SIZES,
             "total_transactions": len(tx_hashes),

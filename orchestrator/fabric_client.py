@@ -131,6 +131,29 @@ def read_iot_data(data_id):
         return None
 
 
+def list_records(page_size=200, bookmark=""):
+    """ListRecords(pageSize, bookmark) (chaincode v2.1): one page of
+    {"records": [{"key", "envelope", "txid"}], "bookmark"}; raises on failure."""
+    args = json.dumps({"function": "ListRecords", "Args": [str(page_size), bookmark]})
+    res = subprocess.run([f"{FABRIC_BIN}/peer", "chaincode", "query", "-C", CHANNEL,
+                          "-n", CC_NAME, "-c", args], env=_peer_env(),
+                         capture_output=True, text=True, timeout=INVOKE_TIMEOUT)
+    if res.returncode != 0:
+        raise RuntimeError(f"ListRecords failed: {(res.stderr or '')[-400:]}")
+    return json.loads(res.stdout.strip())
+
+
+def iter_records(page_size=int(os.getenv("FABRIC_LIST_PAGE", "500"))):
+    """Every record on the ledger, in key order."""
+    bookmark = ""
+    while True:
+        page = list_records(page_size, bookmark)
+        yield from page["records"]
+        if not page["records"] or not page.get("bookmark"):
+            return
+        bookmark = page["bookmark"]
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     import sys

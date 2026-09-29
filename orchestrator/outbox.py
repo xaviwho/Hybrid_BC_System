@@ -92,6 +92,22 @@ CREATE TABLE IF NOT EXISTS dedup (
   created_at    REAL NOT NULL
 );
 
+-- One row per delivery attempt (WS3): who tried, what the chain said, gas.
+CREATE TABLE IF NOT EXISTS relay_attempts (
+  seq           INTEGER PRIMARY KEY AUTOINCREMENT,
+  row_id        TEXT NOT NULL,
+  relay_id      TEXT,
+  coord         TEXT,
+  started_mono  REAL,
+  ended_mono    REAL,
+  outcome       TEXT,        -- delivered | preexisting | reverted_duplicate | withheld | error
+  tx_hash       TEXT,
+  tx_status     INTEGER,
+  gas_used      INTEGER,
+  error         TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_attempts_row ON relay_attempts(row_id);
+
 -- One row per relay process (or in-process relay thread).
 CREATE TABLE IF NOT EXISTS relays (
   relay_id       TEXT PRIMARY KEY,
@@ -131,7 +147,7 @@ class Outbox:
                  backoff_base_s=BACKOFF_BASE_S,
                  backoff_cap_s=BACKOFF_CAP_S,
                  lease_s=LEASE_S,
-                 relay_id=None, relay_account=None):
+                 relay_id=None, relay_account=None, coord="lease"):
         self.db_path = db_path
         self.anchor_fn = anchor_fn
         self.poll_interval_s = poll_interval_s
@@ -141,12 +157,22 @@ class Outbox:
         self.lease_s = lease_s
         self.relay_id = relay_id or f"inproc-{os.getpid()}"
         self.relay_account = relay_account
+        # WS3 coordination between k relays:
+        #   lease  claim under BEGIN IMMEDIATE; a claimed row is skipped by others
+        #          until its lease expires (claimant crashed).
+        #   race   no coordination: every relay attempts the oldest pending row;
+        #          the registry's uniqueness revert decides, and an
+        #          already-registered result counts as delivered.
+        if coord not in ("lease", "race"):
+            raise ValueError(f"coord must be lease|race, got {coord!r}")
+        self.coord = coord
 
         self._local = threading.local()
         self._worker = None
         self._stop = threading.Event()
         self._delivered_count = 0
         self._failed_count = 0
+        self._attempt_count = 0     # chain calls started by this relay (crash-hook trigger)
         self._last_beat = 0.0
 
         d = os.path.dirname(os.path.abspath(db_path))
@@ -453,16 +479,46 @@ class Outbox:
             c.execute("ROLLBACK")
             raise
 
+    def _next_race(self):
+        """race mode: the oldest due pending row, with no claim and no lease."""
+        r = self._conn().execute(
+            "SELECT * FROM outbox WHERE state=? AND next_attempt_at<=?"
+            " ORDER BY created_mono LIMIT 1", (STATE_PENDING, time.monotonic())
+        ).fetchone()
+        return dict(r) if r else None
+
+    def crash_point(self, name, row_id=None):
+        """Test-only fault injection (WS3). With TEST_CRASH_HOOK=name set, the
+        process exits abruptly the first time `name` is reached after
+        TEST_CRASH_AFTER delivery attempts by this relay (attempts, not wins: in
+        race mode a relay may lose every race and never deliver). Before exiting it records a
+        `crashed` row in relay_attempts (instrumentation only: the outbox row,
+        its lease and its state are left exactly as a real crash leaves them),
+        so the harness can time the recovery of the row the relay died holding."""
+        if os.getenv("TEST_CRASH_HOOK") == name and \
+                self._attempt_count >= int(os.getenv("TEST_CRASH_AFTER", "0")):
+            print(f"[{self.relay_id}] TEST CRASH at {name} on {row_id} after "
+                  f"{self._delivered_count} deliveries", flush=True)
+            try:
+                with self._conn() as c:
+                    c.execute("INSERT INTO relay_attempts (row_id, relay_id, coord, started_mono,"
+                              " ended_mono, outcome, error) VALUES (?,?,?,?,?,?,?)",
+                              (row_id, self.relay_id, self.coord, time.monotonic(), time.monotonic(),
+                               "crashed", name))
+            finally:
+                os._exit(137)
+
     def run_relay(self):
         """The relay loop. Used by start_relay() and by relay_worker.py."""
         self._heartbeat(force=True)
         while not self._stop.is_set():
             try:
                 self._heartbeat()
-                row = self._claim_one()
+                row = self._claim_one() if self.coord == "lease" else self._next_race()
                 if row is None:
                     self._stop.wait(self.poll_interval_s)
                     continue
+                self.crash_point("mid_poll", row["id"])     # (c): claimed, nothing sent
                 self.deliver(row)
             except Exception as e:  # never let the worker die
                 print(f"[outbox] relay loop error: {e}")
@@ -489,28 +545,50 @@ class Outbox:
             return current["eth_tx_hash"]
 
         # Stamp when the chain call actually begins, so queue wait and anchor
-        # cost can be separated (see timing_of).
+        # cost can be separated (see timing_of). First attempt wins: in race
+        # mode several relays start the same row.
+        self._attempt_count += 1
         started, started_mono = time.time(), time.monotonic()
         with self._conn() as c:
-            c.execute("UPDATE outbox SET delivery_started_at=?, started_mono=? WHERE id=?",
+            c.execute("UPDATE outbox SET delivery_started_at=COALESCE(delivery_started_at, ?),"
+                      " started_mono=COALESCE(started_mono, ?) WHERE id=?",
                       (started, started_mono, rid))
         try:
-            tx_hash = self.anchor_fn(row)
+            res = self.anchor_fn(row)
+            # anchor_fn returns a tx hash (str) or, from anchoring.py, a dict
+            # {result, tx, status, gas_used, outcome} describing the chain call.
+            info = res if isinstance(res, dict) else {"result": res}
+            tx_hash = info["result"]
+            self.crash_point("after_receipt", rid)   # (b): anchored, not yet recorded
             now, mono = time.time(), time.monotonic()
             c = self._conn()
             with c:
                 # Conditional update: only a still-pending row transitions, so two
                 # racing workers cannot both record a delivery.
-                c.execute(
+                cur = c.execute(
                     "UPDATE outbox SET state=?, eth_tx_hash=?, delivered_at=?,"
                     " delivered_mono=?, delivered_by=?, lease_until_mono=NULL,"
                     " attempts=attempts+1, last_error=NULL WHERE id=? AND state=?",
                     (STATE_DELIVERED, tx_hash, now, mono, self.relay_id,
                      rid, STATE_PENDING),
                 )
-            self._delivered_count += 1
+                outcome = info.get("outcome") or (
+                    "preexisting" if str(tx_hash).startswith("preexisting:") else "delivered")
+                c.execute(
+                    "INSERT INTO relay_attempts (row_id, relay_id, coord, started_mono,"
+                    " ended_mono, outcome, tx_hash, tx_status, gas_used) VALUES (?,?,?,?,?,?,?,?,?)",
+                    (rid, self.relay_id, self.coord, started_mono, mono, outcome,
+                     info.get("tx"), info.get("status"), info.get("gas_used")))
+            if cur.rowcount:
+                self._delivered_count += 1
             return tx_hash
         except Exception as e:
+            with self._conn() as c:
+                c.execute(
+                    "INSERT INTO relay_attempts (row_id, relay_id, coord, started_mono,"
+                    " ended_mono, outcome, error) VALUES (?,?,?,?,?,?,?)",
+                    (rid, self.relay_id, self.coord, started_mono, time.monotonic(),
+                     "error", str(e)[:300]))
             attempts = row["attempts"] + 1
             backoff = min(self.backoff_base_s * (2 ** (attempts - 1)), self.backoff_cap_s)
             state = STATE_FAILED if attempts >= self.max_attempts else STATE_PENDING

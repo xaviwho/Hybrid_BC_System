@@ -29,7 +29,7 @@ _REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(_REPO, "orchestrator"))
 from twin_manager import TwinManager  # noqa: E402
 
-OUTPUT_DIR = os.path.join(_REPO, "experiments", "results", "exp4")
+OUTPUT_DIR = os.path.join(os.getenv("ORBIT_RESULTS_DIR", os.path.join(_REPO, "experiments", "results")), "exp4")
 
 WARMUP = 20
 REPS = 200            # repetitions per measured point
