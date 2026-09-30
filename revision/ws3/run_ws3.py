@@ -53,7 +53,9 @@ def drain_run(ob, k, coord, lam, T, d, tag):
         for i in range(n):                          # open loop: row i due at t_start + i/lam
             due = t_start + i / lam
             while time.monotonic() < due:
-                time.sleep(min(0.002, due - time.monotonic()))
+                remaining = due - time.monotonic()
+                if remaining > 0:
+                    time.sleep(min(0.002, remaining))
             m = {"deviceId": "ws3", "seq": i, "run": tag}
             c = cm_commit(tag, i)
             ob.commit_and_enqueue(record_id=f"{prefix}-{i}", commitment=c, fabric_tx_id=None,
