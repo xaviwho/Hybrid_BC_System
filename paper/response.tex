@@ -1,73 +1,141 @@
-\documentclass[11pt]{article}
+\documentclass{article}
+\usepackage[letterpaper, margin=1in]{geometry}
 
-\usepackage[a4paper,margin=2.2cm]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+%%%%%i added this
+\newtheorem{theorem}{Theorem}{}
+\newtheorem{corollary}{Corollary}{}
+\newtheorem{remark}{Remark}{}
 \usepackage[table]{xcolor}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{ragged2e}
-\usepackage{microtype}
+\usepackage{type1cm}
+\usepackage{lettrine}
+\usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\usepackage{amsmath,amsfonts}
+\usepackage[left=0.9cm,right=0.9cm,top=1.9cm]{geometry}
+\usepackage{array}
+%\usepackage{algorithmic}
+%\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{amsmath,amssymb,amsfonts, bm}
+\usepackage{algorithmic}
+\usepackage[ruled,linesnumbered]{algorithm2e}
 
-\hypersetup{colorlinks=true,linkcolor=blue!70!black,urlcolor=blue!70!black}
+%%%%%%%
 
+
+\usepackage[utf8]{inputenc} % make more characters printable when copy-pasted here
+\usepackage{xcolor} % to facilitate the myNotes and myTodo commands.
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{titling}
+\usepackage{soul}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}%
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}%
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+\usepackage[article]{ragged2e}
+% Created by Jack Baker, last modified 11/3/2020
+
+% initialize counters for reviewer number and comment number
 \newcounter{reviewer}
+\setcounter{reviewer}{0}
 \newcounter{point}[reviewer]
-\renewcommand{\thepoint}{R\thereviewer.\arabic{point}}
-\newcommand{\reviewersection}{\stepcounter{reviewer}\setcounter{point}{0}\section*{Response to Reviewer \#\thereviewer}}
-\newcommand{\point}[1]{\refstepcounter{point}\bigskip\hrule\medskip\noindent\textbf{Comment \thepoint.}\quad\textit{#1}\par}
-\newcommand{\reply}[1]{\medskip\noindent\textbf{Response.}\quad #1\par}
+\setcounter{point}{0}
+\setcounter{figure}{2}
+\renewcommand{\thetable}{\Roman{table}}
+\setcounter{table}{0}
+\usepackage{blindtext}
+\usepackage{parskip}
+\usepackage{caption} 
+\captionsetup[table]{skip=10pt}
 
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt}
-\renewcommand{\arraystretch}{1.15}
+\usepackage{multirow}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+% Set the format of reviewer comment numbers and responses.
+\renewcommand{\thepoint}{Review\,\thereviewer.\arabic{point}} 
+\newcommand{\point}[1]{\refstepcounter{point}  \bigskip \hrule \medskip \noindent \textit{{\fontseries{b}\selectfont \thepoint } #1}\par}
+\newcommand{\reply}{\medskip \noindent \textbf{Reply}:\ }   
 
-\title{\textbf{Response to the Reviewers}\\[4pt]
-\large OrBIT: Orchestrated Hybrid-Blockchain Twins for Verifiable
-Privacy-Preserving Provenance}
-\author{The Authors}
-\date{}
+% Set the format for reviewer headings
+\newcommand{\reviewersection}{\stepcounter{reviewer}
+                  \section*{To Reviewer \#\thereviewer}}
+                  
+% Set the format for reviewer headings
+\newcommand{\editorsection}{\section*{To Associate Editor}}
 
+% Set the format for notes on in-progress responses
+\newcommand\myNotes[1]{\textcolor{red}{#1}}
+\newcommand\myTodo[1]{\textcolor{blue}{#1}}
+
+%Table Space
+\newcommand\T{\rule{0pt}{2.5ex}}       % Top strut
+\newcommand\B{\rule[-1.3ex]{0pt}{0pt}} % Bottom strut
+
+
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!80!black},
+    citecolor={blue!80!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{OrBIT: Orchestrated Hybrid-Blockchain Twins for Verifiable Privacy-Preserving Provenance \\ (Paper Number: IOT-D-26-03176 )}
+\author{}
 \begin{document}
+
 \maketitle
 
-\section*{General Response}
+\vspace{10 pt}
 
-We thank the reviewers for their careful and constructive assessment. We have
-substantially revised the manuscript and performed a new distributed evaluation
-rather than relying on the original single-host measurements. Reviewer comments
-are reproduced verbatim in italics below, followed by our responses and the
-corresponding manuscript changes. All additions and substantive revisions in the
-manuscript are shown directly in \textcolor{blue}{blue}.
+% \noindent
+% \textit{[Jack Baker comments: This is a simple Latex template for listing your paper review comments and responses. 
+% It could easily be done in Microsoft Word as well, but I prefer Latex if the original paper is in Latex, because it is easier to copy-and-paste passages from the paper into the replies.
+% The template has a few simple commands (myNotes and myTodo) that I like to use to leave colored text passages of in-progress items, but otherwise is a bare-bones template.]}
 
-The principal changes are summarised below.
 
-\begin{table}[!htbp]
-\centering
-\small
-\caption{Summary of the principal revisions.}
-\label{tab:response_summary}
-\begin{tabular}{@{}p{0.17\textwidth}p{0.56\textwidth}p{0.17\textwidth}@{}}
-\toprule
-\textbf{Comment} & \textbf{Revision} & \textbf{Outcome} \\
-\midrule
-R1.1 & Four-VM, two-region Azure deployment; two-organisation endorsement;
-Gunicorn; controlled network-delay and ordering-policy sweeps; five repetitions
-per configuration. & Addressed; Byzantine ordering explicitly scoped as not run. \\
-R1.2 & Multiple independent relays, lease and race coordination, four crash
-points, tampering and withholding tests, standalone auditing, and reconciliation. &
-Addressed for crash faults; no claim of a trustless bridge. \\
-R1.3 & Synchronous-anchor, asynchronous-outbox, Fabric-only, lease, and race
-baselines; discussion of all three suggested works. & Addressed with
-protocol-comparable baselines. \\
-R2.1--R2.5 & Rewritten motivation and contributions; three pseudocode
-algorithms; enlarged Figure~1; language and consistency editing; seven new
-review-suggested references. & Addressed. \\
-\bottomrule
-\end{tabular}
-\end{table}
+% \vspace{20 pt}
 
+% \noindent \textit{[A place for general comments regarding the comments and responses, plus a than-you to the reviewers.]}
+
+% The reviewer's comments have been listed in order below in italic text, followed by our responses in normal text. 
+% \pagewiselinenumbers
+\newpage
+\editorsection
+\justifying{Thank you for your thoughtful remarks. According to your letter, our paper (IOT-D-26-03176) goes through mandatory major revisions based on the comments of reviewers 1 and 2. Regarding the corrections and suggestions from the reviewer, we have modified the manuscripts.  Below are the reviewer's remarks in italic text, followed by our reply in regular style, and the manuscript modifications are highlighted in \textcolor{blue}{blue}. Table \ref{edited} summarizes major differences between the old version and the enhanced version affected based on the review comments. 
+
+ \begin{table}[!thbp]
+    \caption{Summary of major differences between the previous manuscript and the Revised version.}
+    \label{edited}
+    \centering
+    \begin{tabular}{l|c|c}
+    \hline\hline
+    Paper Changes   & Old Manuscript& Revised Manuscript\T\B\\ \hline\hline
+    Number of pages                         & 18  & 19  \T\B\\\hline
+        Number of Figures                      & 7 &  10 \T\B\\\hline
+        Number of Tables                            & 7 & 4     \T\B\\\hline
+
+        Number of References                               & 17 &   24 \T\B\\ \hline\hline
+    \multicolumn{2}{l}{\parbox{3.3in}{}}
+    \end{tabular}
+    \vspace{-4mm}
+    \end{table}
+
+\newpage
 \reviewersection
 
 We thank the reviewer for identifying limitations in the original experimental
@@ -267,15 +335,11 @@ reconstruction, digest verification, and rollback.}
 for clear view.}
 
 \reply{Figure~1 is now a two-column \texttt{figure*} rendered at
-0.98\,\texttt{textwidth}, rather than a single-column figure. We also moved its
+0.80\,\texttt{textwidth}, rather than a single-column figure. We also moved its
 in-text introduction before the figure and expanded the caption so that the
 data and control directions remain interpretable at print scale. During the
 same figure audit, we introduced and interpreted every experimental figure in
-the body text before its corresponding float, with panel-specific references
-for all multi-panel results. We also redrew the relay-capacity and fault-injection
-figures as vector graphics: coordination modes are separated in Figure~8, while
-Figure~9 now separates recovery-time confidence intervals from reverted-transaction
-counts instead of crowding both results into one annotated axis.}
+the body text before its corresponding float.}
 
 \begin{quote}
 \textbf{Change in the manuscript (Introduction, Figure~1):}
