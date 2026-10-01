@@ -190,14 +190,14 @@ lifecycle information management~\cite{kanu2024blockchain}.
 flow from physical assets through edge processing and hybrid-ledger governance to the digital
 twin, while verified decisions and lifecycle updates flow back to the physical system.}
 
-\begin{figure*}[!htbp]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{images/system_intro.jpg}
+\includegraphics[width=0.48\textwidth]{images/system_intro.jpg}
 \caption{\textcolor{blue}{Conceptual relationship between physical entities and the digital
 twin, illustrating IoT-driven data acquisition, edge-level processing, and hybrid
 blockchain integration for secure, verifiable lifecycle synchronization. The figure is enlarged across both columns to preserve labels and flow directions at print scale.}}
 \label{fig:dt_concept}
-\end{figure*}
+\end{figure}
 Advancements in artificial intelligence (AI), machine learning (ML), and IoT technologies
 have further expanded the capabilities of DT systems. AI- and ML-enhanced DTs have been
 applied to optimize energy performance, improve predictive analytics, and strengthen
@@ -1001,6 +1001,13 @@ Performance, scalability, and correctness were assessed using the following metr
 
 \textbf{Relay drain rate} ($\mu_{\mathrm{relay}}$): the sustained rate at which the relay worker clears outbox events, together with the observed queue depth, bounding public-ledger currency independently of ingestion throughput.
 
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/fig5_orchestration_v2.pdf}
+\caption{\textcolor{blue}{Multi-region orchestration performance over five repetitions per point. The figure reports acknowledgement latency and throughput for all four routing fixtures on the Azure deployment; the base block-cut boundary is $c=10$. Error bars show between-repetition variation.}}
+\label{fig:c1_panel}
+\end{figure*}
+
 \textbf{Gas consumption} ($G_{\mathrm{tx}}$): the per-record cost of Ethereum anchoring, from receipt \texttt{gasUsed}, comparing direct single-record anchoring against Merkle-batched anchoring as a function of $N$, together with the Merkle proof length borne by a verifier.
 
 \textbf{Storage ratio}: stored bytes against the per-version snapshot equivalent, reported for both the sparse and the dense state-evolution model.
@@ -1069,56 +1076,54 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \textcolor{blue}{\textbf{Production serving.} On the controlled single host, replacing Werkzeug with Gunicorn did not remove the two-regime response. Below the block-cut threshold, the paired production/development TPS ratios were 0.985 (all-public), 0.994 (all-sensitive), 0.994 (mixed), and 1.001 (Fabric-only). No per-level 95\% confidence interval excluded one. Above the threshold the ratios were noisier (0.883--1.040), but the same non-significance result held. The application server is therefore not the measured bottleneck; subsequent results use Gunicorn while retaining the Fabric commit path.}
 
-\textcolor{blue}{\textbf{Geographically distributed baseline.} Figure~\ref{fig:c1_panel}(a) reports throughput and Figure~\ref{fig:c1_panel}(b) reports acknowledgement latency for the same four routing fixtures. In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. Both panels show a common regime transition at $c=10$, matching $B_{\max}=10$: throughput rises to 9.09--9.32\,TPS while acknowledgement latency falls sharply as requests begin filling blocks before the timeout. Because the transition occurs for both anchoring and non-anchoring fixtures, the evidence attributes it to Fabric block cutting rather than to the public-ledger path. The stage probe further attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation, directly measuring the cross-organisation overhead that the original single-host evaluation could not expose.}
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{images/fig_blockcut_sweep.pdf}
+\caption{\textcolor{blue}{Controlled ordering-policy sweep on the multi-region deployment. Reducing \texttt{MaxMessageCount} from 10 to 5 moves the detected transition from $c=10$ to $c=5$ for both mixed and Fabric-only traffic. No detector-confirmed transition is claimed for every configuration outside the sampled concurrency range.}}
+\label{fig:blockcut_v2}
+\end{figure*}
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{images/fig5_orchestration_v2.pdf}
-\caption{\textcolor{blue}{Multi-region orchestration performance over five repetitions per point. The figure reports acknowledgement latency and throughput for all four routing fixtures on the Azure deployment; the base block-cut boundary is $c=10$. Error bars show between-repetition variation.}}
-\label{fig:c1_panel}
+\includegraphics[width=0.75\textwidth]{images/fig_delay_sweep.pdf}
+\caption{\textcolor{blue}{Acknowledgement floor under 0, 20, 50, and 100\,ms added round-trip delay. Both routing paths show approximately linear amplification because one logical Fabric commit traverses multiple sequential network exchanges.}}
+\label{fig:delay_v2}
 \end{figure*}
+
+\textcolor{blue}{\textbf{Geographically distributed baseline.} Figure~\ref{fig:c1_panel}(a) reports throughput and Figure~\ref{fig:c1_panel}(b) reports acknowledgement latency for the same four routing fixtures. In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. Both panels show a common regime transition at $c=10$, matching $B_{\max}=10$: throughput rises to 9.09--9.32\,TPS while acknowledgement latency falls sharply as requests begin filling blocks before the timeout. Because the transition occurs for both anchoring and non-anchoring fixtures, the evidence attributes it to Fabric block cutting rather than to the public-ledger path. The stage probe further attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation, directly measuring the cross-organisation overhead that the original single-host evaluation could not expose.}
+
 
 \textcolor{blue}{\textbf{Block cutting and network delay.} Figure~\ref{fig:blockcut_v2}(a) tests whether the latency transition follows the configured message-count policy. With $B_{\max}=5$, the transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ sweep did not yield a detector-confirmed transition at every sampled level, so its floor and peak are reported without extrapolating a threshold. Figure~\ref{fig:blockcut_v2}(b) isolates the timeout term: reducing $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s lowers the Fabric-only $c=1$ floor from 2653.8 to 1647.5 and 1132.2\,ms. Figure~\ref{fig:delay_v2}(a) then shows the full concurrency curves under 0--100\,ms added round-trip delay, while Figure~\ref{fig:delay_v2}(b) fits the $c=1$ floors. The least-squares slopes are 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{images/fig_blockcut_sweep.pdf}
-\caption{\textcolor{blue}{Controlled ordering-policy sweep on the multi-region deployment. Reducing \texttt{MaxMessageCount} from 10 to 5 moves the detected transition from $c=10$ to $c=5$ for both mixed and Fabric-only traffic. No detector-confirmed transition is claimed for every configuration outside the sampled concurrency range.}}
-\label{fig:blockcut_v2}
-\end{figure*}
-
-\textcolor{blue}{\textbf{Block cutting and network delay.} With $B_{\max}=5$, the measured transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ and shortened-timeout sweeps did not yield a detector-confirmed transition at every sampled level, so we report their floors and peaks without extrapolating a threshold. Lowering $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s reduced the Fabric-only floor from 2653.8 to 1647.5 and 1132.2\,ms. Under controlled delay, least-squares slopes were 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{images/fig_delay_sweep.pdf}
-\caption{\textcolor{blue}{Acknowledgement floor under 0, 20, 50, and 100\,ms added round-trip delay. Both routing paths show approximately linear amplification because one logical Fabric commit traverses multiple sequential network exchanges.}}
-\label{fig:delay_v2}
-\end{figure*}
-
-\textcolor{blue}{\textbf{Protocol baselines.} Figure~\ref{fig:sync_async_v2}(a) compares acknowledgement latency and Figure~\ref{fig:sync_async_v2}(b) compares throughput for the three modes on the same topology and workload. At one client, synchronous anchoring produced a 3082.0\,ms acknowledgement and 0.324\,TPS, compared with 2628.1\,ms and 0.380\,TPS for the asynchronous outbox; asynchronous completion, including the anchor, was 3171.7\,ms. Above the block-cut boundary, panel~(a) shows synchronous acknowledgement latency continuing to grow while asynchronous and Fabric-only latency remain close. Correspondingly, at $c=32$ in panel~(b), synchronous throughput remains 2.73\,TPS whereas asynchronous and Fabric-only throughput reach 9.05 and 9.09\,TPS. Thus the outbox moves public-chain work out of the response path without pretending that the work disappears: it remains visible in $T_{\mathrm{cmp}}$ and queue age.}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{images/fig_sync_vs_async.pdf}
+\includegraphics[width=0.70\textwidth]{images/fig_sync_vs_async.pdf}
 \caption{\textcolor{blue}{Synchronous anchor, asynchronous outbox, and Fabric-only baselines on the same distributed topology. Decoupling reduces acknowledgement latency and avoids the public call becoming the ingestion throughput ceiling.}}
 \label{fig:sync_async_v2}
 \end{figure*}
 
-\textcolor{blue}{\textbf{Multi-relay capacity and fault tolerance.} Figure~\ref{fig:relay_v2}(a) reports lease-coordinated drain rates and Figure~\ref{fig:relay_v2}(b) reports the uncoordinated race control; each panel separates $k=1,2,3$ relays and shows 95\% confidence intervals. Lease coordination sustains 1.999--3.961 anchors/s across the sampled loads and consumes zero gas on redundant transactions. Race mode was measured only at the saturated offered rates shown in panel~(b), where it reaches 5.222--5.668 anchors/s but generates reverted transactions and substantial wasted gas; it is therefore a throughput-oriented negative control, not a safe design. Queue p95 remains below 58\,ms when offered load does not exceed service capacity and grows to tens or hundreds of seconds once $\lambda>\mu_{\mathrm{relay}}$, empirically confirming the stability condition in~\eqref{eq:util}.}
-
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{images/fig_mu_relay.pdf}
+\includegraphics[width=0.67\textwidth]{images/fig_mu_relay.pdf}
 \caption{\textcolor{blue}{Measured relay drain rate by worker count and offered load: (a) lease coordination and (b) uncoordinated race mode. Error bars are 95\% confidence intervals over five repetitions. Race mode was sampled only at offered rates of 8 and 16 rows/s.}}
 \label{fig:relay_v2}
 \end{figure*}
+
+\textcolor{blue}{\textbf{Block cutting and network delay.} With $B_{\max}=5$, the measured transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ and shortened-timeout sweeps did not yield a detector-confirmed transition at every sampled level, so we report their floors and peaks without extrapolating a threshold. Lowering $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s reduced the Fabric-only floor from 2653.8 to 1647.5 and 1132.2\,ms. Under controlled delay, least-squares slopes were 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
+
+
+\textcolor{blue}{\textbf{Protocol baselines.} Figure~\ref{fig:sync_async_v2}(a) compares acknowledgement latency and Figure~\ref{fig:sync_async_v2}(b) compares throughput for the three modes on the same topology and workload. At one client, synchronous anchoring produced a 3082.0\,ms acknowledgement and 0.324\,TPS, compared with 2628.1\,ms and 0.380\,TPS for the asynchronous outbox; asynchronous completion, including the anchor, was 3171.7\,ms. Above the block-cut boundary, panel~(a) shows synchronous acknowledgement latency continuing to grow while asynchronous and Fabric-only latency remain close. Correspondingly, at $c=32$ in panel~(b), synchronous throughput remains 2.73\,TPS whereas asynchronous and Fabric-only throughput reach 9.05 and 9.09\,TPS. Thus the outbox moves public-chain work out of the response path without pretending that the work disappears: it remains visible in $T_{\mathrm{cmp}}$ and queue age.}
+
+
+
+\textcolor{blue}{\textbf{Multi-relay capacity and fault tolerance.} Figure~\ref{fig:relay_v2}(a) reports lease-coordinated drain rates and Figure~\ref{fig:relay_v2}(b) reports the uncoordinated race control; each panel separates $k=1,2,3$ relays and shows 95\% confidence intervals. Lease coordination sustains 1.999--3.961 anchors/s across the sampled loads and consumes zero gas on redundant transactions. Race mode was measured only at the saturated offered rates shown in panel~(b), where it reaches 5.222--5.668 anchors/s but generates reverted transactions and substantial wasted gas; it is therefore a throughput-oriented negative control, not a safe design. Queue p95 remains below 58\,ms when offered load does not exceed service capacity and grows to tens or hundreds of seconds once $\lambda>\mu_{\mathrm{relay}}$, empirically confirming the stability condition in~\eqref{eq:util}.}
+
 
 \textcolor{blue}{Figure~\ref{fig:fault_v2}(a) reports end-to-end recovery time, including 95\% confidence intervals, for the four crash points and both $k=2,3$ relay configurations. Recovery means span 16.56--29.27\,s; the wide interval for the $k=3$ race \texttt{SIGKILL} case is retained rather than hidden. Across all 16 configurations, contract event logs show anchors equal to records and zero duplicate anchors. Figure~\ref{fig:fault_v2}(b) exposes the efficiency difference that the former crowded plot obscured: lease coordination produces zero reverted transactions at every crash point, whereas race mode produces 13--27 reverts for $k=2$ and 180--244 for $k=3$. The independent auditor additionally detected 100\% of commitment-tampering and withholding trials, and all withheld records were repaired. A separate crash-window sweep created 150 private-ledger orphans; reconciliation detected and repaired all 150, after which all 150 anchors passed audit. These results establish crash-fault tolerance and detectable end-to-end integrity without assuming that a particular relay remains alive.}
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{images/fig_fault_injection.pdf}
+\includegraphics[width=0.75\textwidth]{images/fig_fault_injection.pdf}
 \caption{\textcolor{blue}{Relay fault injection over five repetitions per configuration: (a) mean end-to-end recovery time with 95\% confidence intervals and (b) reverted transactions in uncoordinated race mode. Contract event logs confirmed anchors equal to records and zero duplicate anchors in all 16 configurations; lease mode incurred zero reverts throughout.}}
 \label{fig:fault_v2}
 \end{figure*}
@@ -1368,7 +1373,7 @@ unknown\_field        & sensitive & sensitive & mysteryReading (fail-closed) \\
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{images/fig7_batching_v2.pdf}
+\includegraphics[width=0.80\textwidth]{images/fig7_batching_v2.pdf}
 \caption{\textcolor{blue}{Merkle-batched anchoring efficiency from the v2 contract. The direct single-record baseline is 298{,}464.6 gas; root cost remains approximately 298{,}479 gas across $N$, so amortised per-record cost falls as $1/N$ while proof size grows logarithmically.}}
 \label{fig:gas_panel}
 \end{figure*}
