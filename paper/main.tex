@@ -185,23 +185,22 @@ manipulation~\cite{cunat2024blockchain}.
 Blockchain technology has consequently emerged as a promising complement to DT architectures,
 offering immutability, decentralized trust, auditable event logging, and tamper-resistant
 lifecycle information management~\cite{kanu2024blockchain}.
-\textcolor{blue}{Figure~\ref{fig:dt_concept} summarises the resulting closed loop: IoT observations
-flow from physical assets through edge processing and hybrid-ledger governance to the digital
-twin, while verified decisions and lifecycle updates flow back to the physical system.}
 
-\begin{figure*}[!htbp]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.98\textwidth]{images/system_intro.jpg}
+\includegraphics[width=0.85\linewidth]{images/system_intro.jpg}
 \caption{\textcolor{blue}{Conceptual relationship between physical entities and the digital
 twin, illustrating IoT-driven data acquisition, edge-level processing, and hybrid
 blockchain integration for secure, verifiable lifecycle synchronization. The figure is enlarged across both columns to preserve labels and flow directions at print scale.}}
 \label{fig:dt_concept}
-\end{figure*}
+\end{figure}
 Advancements in artificial intelligence (AI), machine learning (ML), and IoT technologies
 have further expanded the capabilities of DT systems. AI- and ML-enhanced DTs have been
 applied to optimize energy performance, improve predictive analytics, and strengthen
 building operations, while IoT networks continuously deliver real-time contextual
-data~\cite{sadri2023integration, zhang2025blockchain}. Despite these individual advancements, the
+data~\cite{sadri2023integration, zhang2025blockchain}. Figure~\ref{fig:dt_concept}
+illustrates the digital twin--physical entity feedback loop and the role of blockchain in
+enforcing trustworthy lifecycle synchronization. Despite these individual advancements, the
 integration of these technologies with blockchain-based trust and provenance mechanisms
 remains limited.
 Research continues to report persistent challenges in cybersecurity, privacy protection,
@@ -287,6 +286,20 @@ The rest of the paper is organised as follows: Section~\ref{sec:review} explores
 
 \textcolor{blue}{The three additional works suggested during review occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care~\cite{yang2026cardiotwin}; FedLiverNet protects collaborative liver-image learning~\cite{lou2026fedlivernet}; and NeuroShield-Diabetes applies neural cryptography to health-data exchange~\cite{yang2026neuroshield}. They provide application- or model-level privacy mechanisms but do not specify a permissioned-to-public cross-chain commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
 
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{images/system_arch.png}
+\caption{Functional architecture of the OrBIT framework. The pipeline processes IoT
+telemetry through three stages: (1)~a deterministic privacy policy engine that assigns each
+field a sensitivity level from name- and value-based rules grounded in
+HIPAA/GDPR/PCI-DSS, failing closed for unrecognized fields; (2)~orchestration, where an
+idempotency-aware executor performs policy-driven routing and enforces exactly-once
+effects; and (3)~hybrid storage, where the full payload is committed to Hyperledger Fabric
+(private path) while redacted commitments are Merkle-batched and anchored on Ethereum
+(public path).}
+\label{fig:system}
+\end{figure*}
+
 Access control and data governance are significant areas of focus in the DT security literature. Authors~\cite{dai2024blockchain} developed a CP ABE  and IPFS-enabled DT access control framework that provides fine-grained authorisation and efficient distributed storage. Although technically rigorous, this model prioritises cryptographic enforcement and does not address lifecycle-aware behavioural verification. Authors~\cite{samaniego2023digital}, through their digital twin as proxy architecture, positioned twins as intermediaries to prevent direct sensor access and maintain auditability using Ethereum-backed trust registries. While this model enhances IoT device privacy, it remains domain-restrictive and lacks orchestration logic for multi-twin governance. These studies reinforce the necessity for secure access governance that integrates DT semantics, evolving states, and operational context.
 
 Other technically advanced contributions explore blockchain-driven optimisation and cyber resilience mechanisms within DT-enabled networks. Authors~\cite{du2025blockchain} designed a blockchain-empowered caching system enhanced with digital twin state prediction and reinforcement learning (PPO) to improve reliability and resource efficiency in D2D networks. Their approach demonstrates the potential of combining DT prediction with decentralised trust but remains confined to communication-level optimisation. Similarly, authors~\cite{swathi2025secure} introduced a federated, blockchain-secured, risk-adaptive deep learning framework to improve edge intelligence robustness, integrating zk SNARK verification, adversarial simulation, and energy-aware synchronisation. Although highly technical, it remains focused on federated learning rather than DT lifecycle coherence. These studies expose a growing interest in unifying intelligence, decentralisation, and behavioural modelling, yet none address the holistic governance challenges of multi-actor DT ecosystems.
@@ -324,21 +337,7 @@ offering:}
 \label{sec:system_design}
 
 \subsection{\textbf{System Architecture Overview}}
-The proposed OrBIT architecture, illustrated in Figure~\ref{fig:system}, integrates five coordinated components into a deterministic and auditable pipeline. At the edge, a deterministic privacy policy engine evaluates each incoming digital twin payload at the field level and selects the appropriate processing path. Full payloads are handled by a permissioned Hyperledger Fabric network using channel isolation and multi-version concurrency control for secure and consistent storage. A public accountability layer on Ethereum records Keccak-based commitments through Merkle-batched anchors, ensuring tamper-evident verification without exposing sensitive content. An event-driven orchestrator assigns content-addressed identifiers, performs policy-driven routing, and enforces exactly-once effects across the two heterogeneous ledgers through a transactional outbox and an asynchronous relay worker. Finally, a digital twin manager maintains append-only versions via reversible deltas, periodic checkpoints, integrity-verified rollback, and DAG-based provenance for parent-to-child twin relationships. Together, these components deliver verifiable state transitions, provable privacy-preserving routing, and end-to-end integrity across the digital twin lifecycle.
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.8\textwidth]{images/system_arch.png}
-\caption{Functional architecture of the OrBIT framework. The pipeline processes IoT
-telemetry through three stages: (1)~a deterministic privacy policy engine that assigns each
-field a sensitivity level from name- and value-based rules grounded in
-HIPAA/GDPR/PCI-DSS, failing closed for unrecognized fields; (2)~orchestration, where an
-idempotency-aware executor performs policy-driven routing and enforces exactly-once
-effects; and (3)~hybrid storage, where the full payload is committed to Hyperledger Fabric
-(private path) while redacted commitments are Merkle-batched and anchored on Ethereum
-(public path).}
-\label{fig:system}
-\end{figure*}
+The proposed OrBIT architecture, illustrated in Fig.~\ref{fig:system}, integrates five coordinated components into a deterministic and auditable pipeline. At the edge, a deterministic privacy policy engine evaluates each incoming digital twin payload at the field level and selects the appropriate processing path. Full payloads are handled by a permissioned Hyperledger Fabric network using channel isolation and multi-version concurrency control for secure and consistent storage. A public accountability layer on Ethereum records Keccak-based commitments through Merkle-batched anchors, ensuring tamper-evident verification without exposing sensitive content. An event-driven orchestrator assigns content-addressed identifiers, performs policy-driven routing, and enforces exactly-once effects across the two heterogeneous ledgers through a transactional outbox and an asynchronous relay worker. Finally, a digital twin manager maintains append-only versions via reversible deltas, periodic checkpoints, integrity-verified rollback, and DAG-based provenance for parent-to-child twin relationships. Together, these components deliver verifiable state transitions, provable privacy-preserving routing, and end-to-end integrity across the digital twin lifecycle.
 
 \subsection{\textbf{Deterministic Privacy Policy Engine}}
 \label{sec:policy}
@@ -517,6 +516,18 @@ The independence of $G_{\text{root}}$ from $N$ is the property on which the enti
 \label{eq:eth_tps}
 \end{equation}
 
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{images/orchestra.png}
+\caption{Detailed orchestration sequence and consistency protocol. Exactly-once delivery is ensured by an idempotency check (Steps 1a--2) before processing. Latency is bounded by acknowledging the client (Step 7) immediately after the private Fabric commit (Step 5), decoupling the slower public anchoring (Steps 8--13) into an asynchronous background process via the transactional-outbox pattern. Routing is determined by the deterministic policy engine (Steps 3--4), which returns each field's sensitivity level and legal basis rather than a probabilistic classification.}
+\label{fig:orbit_sequence}
+\end{figure*}
+% FIGURE FIX REQUIRED in orchestra.png:
+%   Step 7  : "200 OK" -> "202 Accepted"
+%   Step 9  : "registerAnchor(id, h)" -> "registerData(id, h, metadata)"
+%   Step 7 payload must not show ethereum_tx_hash; it carries the Fabric
+%   tx id, an outbox id, and anchor_state=pending.
+
 To quantify the efficiency gained through Merkle batching, we define the gas-reduction ratio relative to the single-item anchoring baseline. Let $G_{\text{single}}$ denote the gas cost of anchoring one record individually (Eq.~\ref{eq:gas_single}), and let $\bar{G}_{\text{item}}(N)$ denote the amortized gas cost per record when batching $N$ items (Eq.~\ref{eq:gas_batch}). The reduction achieved at batch size $N$ is
 \begin{equation}
 \mathrm{Reduction}(N)
@@ -567,19 +578,12 @@ Security on Ethereum is maintained through immutability, replay protection (nonc
 \subsection{\textbf{Orchestrator Integration Layer}}
 \label{sec:orchestrator}
 
-The OrBIT orchestrator is an event-driven microservice that implements the end-to-end control plane for secure ingestion, policy evaluation, routing, and hybrid-ledger coordination, as illustrated in Figure~\ref{fig:orbit_sequence}. The sequence makes the consistency boundary explicit: the client is acknowledged after the private commit and durable outbox insertion, whereas public anchoring proceeds independently. Each telemetry payload $\mathbf{x}$ is submitted by an IoT device via a REST interface and timestamped at ingress time $t_0$. Upon reception, the orchestrator deterministically derives a content-addressed identifier
+The OrBIT orchestrator is an event-driven microservice that implements the end-to-end control plane for secure ingestion, policy evaluation, routing, and hybrid-ledger coordination, as illustrated in Fig.~\ref{fig:orbit_sequence}. Each telemetry payload $\mathbf{x}$ is submitted by an IoT device via a REST interface and timestamped at ingress time $t_0$. Upon reception, the orchestrator deterministically derives a content-addressed identifier
 \begin{equation}
   \texttt{id}=\mathcal{H}(\mathbf{x}\Vert t_0),
   \label{eq:orc_id}
 \end{equation}
 which serves as a global idempotency key and uniquely identifies the request across retries, crashes, and cross-chain effects (Fig.~\ref{fig:orbit_sequence}, Steps~1--1b).
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.90\textwidth]{images/orchestra_v2.png}
-\caption{Detailed orchestration sequence and consistency protocol. Exactly-once delivery is ensured by an idempotency check (Steps 1a--2) before processing. Latency is bounded by acknowledging the client with \texttt{202 Accepted} (Step 7) immediately after the private Fabric commit (Step 5), decoupling the slower public anchoring (Steps 8--13) into an asynchronous background process via the transactional-outbox pattern. Routing is determined by the deterministic policy engine (Steps 3--4), which returns each field's sensitivity level and legal basis rather than a probabilistic classification.}
-\label{fig:orbit_sequence}
-\end{figure*}
 
 \paragraph*{\textbf{Idempotent ingress and fast-path acknowledgement}}
 Before any side effects are executed, the orchestrator checks whether \texttt{id} already exists in a persistent deduplication set $\mathcal{D}$. If the identifier is found, the orchestrator immediately returns a cached response containing the previously issued Fabric transaction identifier and anchor commitment, without re-evaluating the policy or repeating ledger writes (Fig.~\ref{fig:orbit_sequence}, \textit{alt} path). This mechanism enforces exactly-once semantics under retries while providing fast responses for duplicate submissions.
@@ -1013,6 +1017,13 @@ Performance, scalability, and correctness were assessed using the following metr
 
 \textcolor{blue}{For lifecycle recovery, checkpoint-based forward reconstruction is compared against inverse-delta reconstruction from the head across a range of target version indices. For storage, the delta-and-checkpoint format is compared against per-version snapshots under sparse and dense evolution. For anchoring cost, Merkle batches are compared with direct single-record anchoring across the crossover of~\eqref{eq:gas_crossover}.}
 
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{images/fig5_orchestration_v2.pdf}
+\caption{\textcolor{blue}{Multi-region orchestration performance over five repetitions per point. The figure reports acknowledgement latency and throughput for all four routing fixtures on the Azure deployment; the base block-cut boundary is $c=10$. Error bars show between-repetition variation.}}
+\label{fig:c1_panel}
+\end{figure*}
+
 \subsection{\textbf{Validation Objectives}}
 The experimental evaluation aims to demonstrate that OrBIT achieves: (i) deterministic and verifiable end-to-end execution across the two ledgers, with both routing paths of Algorithm~\ref{alg:routing} exercised and distinguished; (ii) provable privacy-preserving routing in which no field above the publication threshold reaches the public ledger; (iii) integrity-verified lifecycle recovery with reconstruction cost bounded by the checkpoint interval and independent of history depth; and (iv) cost-efficient public anchoring through Merkle-batched gas amortization, including identification of the batch size below which batching is a net cost. Together, these objectives characterize OrBIT's ability to provide auditable, privacy-preserving digital twin lifecycle management across a hybrid blockchain environment.
 
@@ -1068,16 +1079,7 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \textcolor{blue}{\textbf{Production serving.} On the controlled single host, replacing Werkzeug with Gunicorn did not remove the two-regime response. Below the block-cut threshold, the paired production/development TPS ratios were 0.985 (all-public), 0.994 (all-sensitive), 0.994 (mixed), and 1.001 (Fabric-only). No per-level 95\% confidence interval excluded one. Above the threshold the ratios were noisier (0.883--1.040), but the same non-significance result held. The application server is therefore not the measured bottleneck; subsequent results use Gunicorn while retaining the Fabric commit path.}
 
-\textcolor{blue}{\textbf{Geographically distributed baseline.} Figure~\ref{fig:c1_panel} presents the acknowledgement-latency and throughput curves for all four routing fixtures. In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. All four fixtures transitioned at $c=10$, matching $B_{\max}=10$, and reached derived peak throughputs of 9.09--9.32\,TPS within the tested range. The common transition across anchoring and non-anchoring fixtures shows that Fabric block cutting, rather than the public-ledger path, governs the regime change. The stage probe attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation. This directly measures the cross-organisation overhead that the original single-host evaluation could not expose.}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{images/fig5_orchestration_v2.pdf}
-\caption{\textcolor{blue}{Multi-region orchestration performance over five repetitions per point. The figure reports acknowledgement latency and throughput for all four routing fixtures on the Azure deployment; the base block-cut boundary is $c=10$. Error bars show between-repetition variation.}}
-\label{fig:c1_panel}
-\end{figure*}
-
-\textcolor{blue}{\textbf{Block cutting and network delay.} Figure~\ref{fig:blockcut_v2} tests whether the observed throughput transition follows the configured ordering policy. With $B_{\max}=5$, the measured transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ and shortened-timeout sweeps did not yield a detector-confirmed transition at every sampled level, so we report their floors and peaks without extrapolating a threshold. Figure~\ref{fig:delay_v2} then isolates the network component: lowering $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s reduced the Fabric-only floor from 2653.8 to 1647.5 and 1132.2\,ms, while controlled delay produced least-squares slopes of 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
+\textcolor{blue}{\textbf{Geographically distributed baseline.} In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. All four fixtures transitioned at $c=10$, matching $B_{\max}=10$, and reached derived peak throughputs of 9.09--9.32\,TPS within the tested range. The stage probe attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation. This directly measures the cross-organisation overhead that the original single-host evaluation could not expose.}
 
 \begin{figure*}[!htbp]
 \centering
@@ -1086,6 +1088,8 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 \label{fig:blockcut_v2}
 \end{figure*}
 
+\textcolor{blue}{\textbf{Block cutting and network delay.} With $B_{\max}=5$, the measured transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ and shortened-timeout sweeps did not yield a detector-confirmed transition at every sampled level, so we report their floors and peaks without extrapolating a threshold. Lowering $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s reduced the Fabric-only floor from 2653.8 to 1647.5 and 1132.2\,ms. Under controlled delay, least-squares slopes were 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
+
 \begin{figure*}[!htbp]
 \centering
 \includegraphics[width=0.95\textwidth]{images/fig_delay_sweep.pdf}
@@ -1093,7 +1097,7 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 \label{fig:delay_v2}
 \end{figure*}
 
-\textcolor{blue}{\textbf{Protocol baselines.} Figure~\ref{fig:sync_async_v2} compares the three modes on the same topology and workload. At one client, synchronous anchoring produced a 3082.0\,ms acknowledgement and 0.324\,TPS, compared with 2628.1\,ms and 0.380\,TPS for the asynchronous outbox; asynchronous completion, including the anchor, was 3171.7\,ms. At $c=32$, synchronous throughput remained 2.73\,TPS whereas asynchronous and Fabric-only throughput reached 9.05 and 9.09\,TPS. Thus the outbox moves public-chain work out of the response path without pretending that the work disappears: it is visible in $T_{\mathrm{cmp}}$ and queue age.}
+\textcolor{blue}{\textbf{Protocol baselines.} At one client, synchronous anchoring produced a 3082.0\,ms acknowledgement and 0.324\,TPS, compared with 2628.1\,ms and 0.380\,TPS for the asynchronous outbox; asynchronous completion, including the anchor, was 3171.7\,ms. At $c=32$, synchronous throughput remained 2.73\,TPS whereas asynchronous and Fabric-only throughput reached 9.05 and 9.09\,TPS. Thus the outbox moves public-chain work out of the response path without pretending that the work disappears: it is visible in $T_{\mathrm{cmp}}$ and queue age.}
 
 \begin{figure*}[!htbp]
 \centering
@@ -1102,21 +1106,21 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 \label{fig:sync_async_v2}
 \end{figure*}
 
-\textcolor{blue}{\textbf{Multi-relay capacity and fault tolerance.} Figure~\ref{fig:relay_v2} relates drain rate to relay count, coordination mode, and offered load. Lease-coordinated configurations with $k\in\{1,2,3\}$ sustained 1.999--3.961 anchors/s and consumed zero gas on redundant transactions. Uncoordinated race relays reached 5.222--5.668 anchors/s in saturated measured cases but generated reverted transactions and substantial wasted gas; they are a throughput-oriented negative control, not a safe design. Queue p95 remained below 58\,ms when offered load did not exceed service capacity and grew to tens or hundreds of seconds once $\lambda>\mu_{\mathrm{relay}}$, empirically confirming the stability condition in~\eqref{eq:util}.}
+\textcolor{blue}{\textbf{Multi-relay capacity and fault tolerance.} Lease-coordinated configurations with $k\in\{1,2,3\}$ sustained 1.999--3.961 anchors/s and consumed zero gas on redundant transactions. Uncoordinated race relays reached 5.222--5.668 anchors/s in saturated measured cases but generated reverted transactions and substantial wasted gas; they are a throughput-oriented negative control, not a safe design. Queue p95 remained below 58\,ms when offered load did not exceed service capacity and grew to tens or hundreds of seconds once $\lambda>\mu_{\mathrm{relay}}$, empirically confirming the stability condition in~\eqref{eq:util}.}
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.70\textwidth]{images/fig_mu_relay.pdf}
-\caption{\textcolor{blue}{Measured relay drain rate by worker count, coordination mode, and offered load. Error bars show between-repetition variation; lease and race modes are reported separately for each relay count.}}
+\includegraphics[width=0.55\linewidth]{images/fig_mu_relay.pdf}
+\caption{\textcolor{blue}{Measured relay drain rate by worker count, coordination mode, and offered load. Lease coordination prevents redundant on-chain work; race mode is faster in some saturated cases but wastes gas through reverted submissions.}}
 \label{fig:relay_v2}
 \end{figure*}
 
-\textcolor{blue}{Figure~\ref{fig:fault_v2} summarises the fault campaign. Crashes were injected at mid-poll, after broadcast, after receipt, and through \texttt{SIGKILL}, with five repetitions for each relay-count/mode combination. In every lease-coordinated scenario the number of anchors equalled the number of records, duplicate anchors and reverted transactions were zero, and recovery completed after lease expiry; mean end-to-end recovery ranged from 24.68 to 29.27\,s in the reported $k=2,3$ cases. The independent auditor detected 100\% of commitment-tampering trials and 100\% of withholding trials, and all withheld records were repaired. A separate crash-window sweep created 150 private-ledger orphans; reconciliation detected and repaired all 150, after which all 150 anchors passed audit. These results establish crash-fault tolerance and detectable end-to-end integrity without assuming that a particular relay remains alive.}
+\textcolor{blue}{Crashes were injected at mid-poll, after broadcast, after receipt, and through \texttt{SIGKILL}, with five repetitions for each relay-count/mode combination. In every lease-coordinated scenario the number of anchors equalled the number of records, duplicate anchors and reverted transactions were zero, and recovery completed after lease expiry; mean end-to-end recovery ranged from 24.68 to 29.27\,s in the reported $k=2,3$ cases. The independent auditor detected 100\% of commitment-tampering trials and 100\% of withholding trials, and all withheld records were repaired. A separate crash-window sweep created 150 private-ledger orphans; reconciliation detected and repaired all 150, after which all 150 anchors passed audit. These results establish crash-fault tolerance and detectable end-to-end integrity without assuming that a particular relay remains alive.}
 
 \begin{figure*}[!htbp]
 \centering
 \includegraphics[width=0.95\textwidth]{images/fig_fault_injection.pdf}
-\caption{\textcolor{blue}{Fault-injection recovery time across relay counts, coordination modes, and crash points. Each bar is annotated with the duplicate-anchor count and anchor-to-record equality obtained independently from contract event logs.}}
+\caption{\textcolor{blue}{Fault-injection outcomes across relay counts, coordination modes, and crash points. Lease-coordinated delivery preserves one anchor per record with no reverted transactions; the auditor and reconciliation sweep expose omission and alteration faults.}}
 \label{fig:fault_v2}
 \end{figure*}
 
@@ -1360,8 +1364,6 @@ unknown\_field        & sensitive & sensitive & mysteryReading (fail-closed) \\
 
 \subsection{\textbf{Gas Efficiency of Merkle-Batched Anchoring}}
 \label{sec:res_gas}
-
-\textcolor{blue}{Figure~\ref{fig:gas_panel} visualises the measured crossover between direct and Merkle-batched anchoring and places the gas reduction beside the logarithmic proof-size cost. The figure shows that batching is effectively neutral at $N=1$, becomes beneficial at $N=2$, and then reduces amortised gas approximately as $1/N$ without making verification evidence grow linearly.}
 
 \begin{figure*}[!htbp]
 \centering
