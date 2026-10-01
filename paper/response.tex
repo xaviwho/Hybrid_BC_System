@@ -1,0 +1,850 @@
+\documentclass{article}
+\usepackage[letterpaper, margin=1in]{geometry}
+
+%%%%%i added this
+\newtheorem{theorem}{Theorem}{}
+\newtheorem{corollary}{Corollary}{}
+\newtheorem{remark}{Remark}{}
+\usepackage[table]{xcolor}
+\usepackage{type1cm}
+\usepackage{lettrine}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\usepackage{amsmath,amsfonts}
+\usepackage[left=0.9cm,right=0.9cm,top=1.9cm]{geometry}
+\usepackage{array}
+%\usepackage{algorithmic}
+%\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{amsmath,amssymb,amsfonts, bm}
+\usepackage{algorithmic}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+%%%%%%%
+
+
+\usepackage[utf8]{inputenc} % make more characters printable when copy-pasted here
+\usepackage{xcolor} % to facilitate the myNotes and myTodo commands.
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{titling}
+\usepackage{soul}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}%
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}%
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+\usepackage[article]{ragged2e}
+% Created by Jack Baker, last modified 11/3/2020
+
+% initialize counters for reviewer number and comment number
+\newcounter{reviewer}
+\setcounter{reviewer}{0}
+\newcounter{point}[reviewer]
+\setcounter{point}{0}
+\setcounter{figure}{2}
+\renewcommand{\thetable}{\Roman{table}}
+\setcounter{table}{0}
+\usepackage{blindtext}
+\usepackage{parskip}
+\usepackage{caption} 
+\captionsetup[table]{skip=10pt}
+
+\usepackage{multirow}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+% Set the format of reviewer comment numbers and responses.
+\renewcommand{\thepoint}{Review\,\thereviewer.\arabic{point}} 
+\newcommand{\point}[1]{\refstepcounter{point}  \bigskip \hrule \medskip \noindent \textit{{\fontseries{b}\selectfont \thepoint } #1}\par}
+\newcommand{\reply}{\medskip \noindent \textbf{Reply}:\ }   
+
+% Set the format for reviewer headings
+\newcommand{\reviewersection}{\stepcounter{reviewer}
+                  \section*{To Reviewer \#\thereviewer}}
+                  
+% Set the format for reviewer headings
+\newcommand{\editorsection}{\section*{To Associate Editor}}
+
+% Set the format for notes on in-progress responses
+\newcommand\myNotes[1]{\textcolor{red}{#1}}
+\newcommand\myTodo[1]{\textcolor{blue}{#1}}
+
+%Table Space
+\newcommand\T{\rule{0pt}{2.5ex}}       % Top strut
+\newcommand\B{\rule[-1.3ex]{0pt}{0pt}} % Bottom strut
+
+
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!80!black},
+    citecolor={blue!80!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{PureProtX: A $\mathtt{PoA^{2}}$-Secured Deterministic Edge Inference Framework for Verifiable IoT-Distributed Scientific Computation \\ (Paper Number: 	IOT-D-26-03176 )}
+\author{}
+\begin{document}
+
+\maketitle
+
+\vspace{10 pt}
+
+% \noindent
+% \textit{[Jack Baker comments: This is a simple Latex template for listing your paper review comments and responses. 
+% It could easily be done in Microsoft Word as well, but I prefer Latex if the original paper is in Latex, because it is easier to copy-and-paste passages from the paper into the replies.
+% The template has a few simple commands (myNotes and myTodo) that I like to use to leave colored text passages of in-progress items, but otherwise is a bare-bones template.]}
+
+
+% \vspace{20 pt}
+
+% \noindent \textit{[A place for general comments regarding the comments and responses, plus a than-you to the reviewers.]}
+
+% The reviewer's comments have been listed in order below in italic text, followed by our responses in normal text. 
+% \pagewiselinenumbers
+\newpage
+\editorsection
+\justifying{Thank you for your thoughtful remarks. According to your letter, our paper (IoT-65232-2026) goes through mandatory major revisions based on the comments of reviewers 1 and 2. Regarding the corrections and suggestions from the reviewer, we have modified the manuscripts.  Below are the reviewer's remarks in italic text, followed by our reply in regular style, and the manuscript modifications are highlighted in \textcolor{blue}{blue}. Table \ref{edited} summarizes major differences between the old version and the enhanced version affected based on the review comments. 
+
+ \begin{table}[!thbp]
+    \caption{Summary of major differences between the previous manuscript and the Revised version.}
+    \label{edited}
+    \centering
+    \begin{tabular}{l|c|c}
+    \hline\hline
+    Paper Changes   & Old Manuscript& Revised Manuscript\T\B\\ \hline\hline
+    Number of pages                         & 15  & 18  \T\B\\\hline
+        Number of Figures                      & 10 &  13 \T\B\\\hline
+        Number of Tables                            & 11 & 13     \T\B\\\hline
+
+        Number of References                               & 34 &   34 \T\B\\ \hline\hline
+    \multicolumn{2}{l}{\parbox{3.3in}{}}
+    \end{tabular}
+    \vspace{-4mm}
+    \end{table}
+
+    
+\newpage
+\reviewersection
+\setcounter{table}{3}
+
+%The authors appreciate your constructive evaluations aimed at enriching the manuscript and your concerns about the limited contributions and originality of our work.
+
+\justifying{The authors appreciate your acknowledgment that our point-by-point responses addressed your concerns satisfactorily.}
+
+\point{The limitation on scalability ($>10^{6}$ compounds) and live validator
+failure testing are notable gaps that future work should address before this
+framework is considered production-ready.}
+
+\reply{We thank the reviewer for identifying these two gaps. We have closed
+the validator failure-testing gap with new empirical work (see our response
+to the following comment), so it is no longer merely acknowledged but
+measured. For scalability beyond $10^{6}$ compounds, we retain this as
+scoped future work but now state a concrete path rather than an open-ended
+limitation: Merkle batch anchoring already removes the per-record on-chain
+bottleneck, leaving distributed inference across edge nodes as the remaining
+requirement. The authors revised the manuscript by (a) rewriting the third
+and fourth items of the Limitations discussion (Section~V-L) so that
+validator fault tolerance is reported as measured and scalability is scoped
+with its concrete extension path; and (b) updating the corresponding
+future-work sentence in the Conclusion.}
+
+\begin{quote}
+\textbf{(a) Limitations (Section~V-N, revised):} \\
+\subsection{\textbf{Limitations}}
+\label{sec:discussion}
+
+PureProtX demonstrates that deterministic, cryptographically verifiable
+computation is achievable at IoT edge scale without prohibitive overhead.
+Merkle batch anchoring reduces per-record provenance cost to 21 ms at
+N=100 ($<$ 0.01\% overhead), making cryptographic auditability essentially
+free at realistic batch deployment scales. \textcolor{blue}{Measured on real
+ARM hardware, the full pipeline runs within the memory of a Raspberry Pi~4
+for all targets, and inference is bitwise-deterministic within a pinned
+runtime configuration across three CPU architectures (Section~V-F), with the
+two characterized exceptions noted there.}
+
+Several limitations should be noted. \textcolor{blue}{First, throughput
+differs measurably across devices---the Raspberry Pi~4 sustains roughly
+two-fifths of server throughput (Section~V-F)---so latency-sensitive
+deployments must size hardware to the target batch rate; this is a
+performance boundary rather than a correctness one, as all tested devices
+completed every target without failure.} Second, the MQTT bridge's
+sequential commit queue limits throughput to $\sim$20 compounds/s;
+Merkle-batched async commits are the path to order-of-magnitude improvement.
+Third, \textcolor{blue}{validator fault tolerance is now characterised
+empirically through controlled failure injection on a
+four-signer permissioned testnet
+(Section~V-B): the network
+maintains liveness under a single-signer fault, stalls
+only on loss of signing majority, and recovers within
+$1.04$~s on signer restart. Live failure-injection on the
+production PureChain deployment, and validation at larger
+signer-set sizes, remain future work.}
+Fourth, \textcolor{blue}{the present evaluation spans $71{,}853$~compounds;
+scaling to ultra-large libraries ($>10^6$~compounds) is
+not yet demonstrated. Merkle batch anchoring already
+removes the per-record on-chain bottleneck
+(Section~V-D), so the remaining
+requirement is distributed inference across multiple edge
+nodes---a direct extension of the consortium topology in
+Section~VIII-B that we leave to future work.}
+Fifth, the rigid-receptor docking protocol cannot
+capture induced-fit effects, as shown by PPAR$\gamma$
+and HIV-1~RT failures.
+Sixth, classical ML determinism, while suited to the
+framework's cryptographic requirements, may underperform
+deep learning where GPU non-determinism is acceptable. \\
+
+\textbf{(b) Conclusion (revised):} \\
+\textcolor{blue}{``Having validated the gap-condition mechanism through
+controlled failure injection on a permissioned testnet (Section~V-B), a
+natural next step is failure-injection on the production deployment and at
+larger signer-set sizes to confirm the recovery envelope at scale.''}
+\end{quote}
+
+
+\point{Live validator failure-injection testing is acknowledged as missing.}
+
+\reply{We agree, and this comment prompted the most substantial new
+experiment in the revision. We constructed a real four-signer go-ethereum
+v1.13.15 Clique testnet mirroring the PureChain genesis configuration
+(chain~ID~900520900520, block period~2~s) and injected abrupt validator
+failures via process termination, recovering signers by restart. We measured
+the fault-tolerance envelope directly and additionally implemented the
+gap-condition mechanism as an external controller that promotes a standby
+signer to prevent stalls. In the course of this work we also verified that
+the production PureChain deployment runs a permissioned Clique network; we
+have therefore reframed the PoA$^2$ reliability weighting and gap condition
+honestly, as a proposed control-layer mechanism validated over such a
+deployment rather than as a modification of the node software. The authors
+revised the manuscript by (a) reframing the PoA$^2$ consensus text in
+Section~III-G; (b) adding a new subsection in Section~V-B reporting the
+measured failure-injection envelope and gap-controller behaviour, with a new
+figure; and (c) correcting the validator-set attribution method in the
+Table~VI caption.}
+
+\begin{quote}
+\textbf{(a) Section~III-G (revised):} \\
+``The observed signer rotation (3 of 4 validators signing recent blocks) and
+$\sim$2~s consensus latency directly reflect this multi-validator
+architecture. \textcolor{blue}{The production PureChain deployment is a
+permissioned Proof-of-Authority network built on go-ethereum (Clique). We
+therefore present the PoA$^2$ reliability weighting and gap condition
+(Eq.~6--8) as a \emph{proposed control-layer mechanism} that operates over
+such a permissioned deployment through the standard signer-voting interface,
+rather than as a modification of the underlying node consensus. We validate
+this mechanism empirically via controlled failure injection on a faithful
+four-signer testnet built from the PureChain genesis configuration
+(chain~ID~900520900520); the measured fault-tolerance envelope and
+gap-condition recovery are reported in Section~V-B.}'' \\
+
+\textbf{(b) New subsection (Section~V-B):} \\
+
+ \textcolor{blue}{\subsubsection{Validator Failure Injection and Gap-Condition Recovery}
+To evaluate fault tolerance directly, we constructed a
+four-signer go-ethereum v1.13.15 Clique testnet mirroring
+the PureChain genesis (chain~ID~900520900520, block
+period~2~s) and injected abrupt signer failures via
+process termination, recovering signers by restart.
+Fig.~\ref{fig:failure}(a) shows the measured envelope:
+with all four signers the chain seals at the nominal
+$0.5$~blocks/s; termination of a single signer preserves
+liveness (three of four signers retain the sealing
+majority); termination of a second signer removes the
+majority and the chain stalls; restarting the terminated
+signers restores sealing within $1.04$~s. This confirms a
+majority-honest, minority-fault-tolerant envelope
+rather than classical one-third Byzantine fault tolerance.}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.65\columnwidth]{images/fig4_failure_timeline.png}
+\caption{\textcolor{blue}{Validator failure injection on a
+four-signer Clique testnet. (a)~Static signer set: block
+height over time across fault phases---single-signer fault
+preserves liveness, loss of signing majority stalls the
+chain, and signer restart recovers sealing in $1.04$~s.
+(b)~With the gap-condition controller: after a signer fault
+the controller detects the reliability gap ($18.6$~s) and
+promotes a standby signer to sealing ($33.1$~s), so a
+subsequent second fault does not stall the healed set.}}
+\label{fig:failure}
+\end{figure}
+
+\textcolor{blue}{Fig.~\ref{fig:failure}(b) demonstrates the gap-condition
+controller operating as an external layer over the same
+network. Following a signer fault, the controller detects
+the reliability gap after $18.6$~s and votes a standby
+signer into the active set (sealing) after $33.1$~s via the
+standard signer-voting interface, restoring a healthy
+four-signer majority. A subsequent second fault---which
+stalls the static four-signer set in
+Fig.~\ref{fig:failure}(a)---leaves the healed set with a
+three-of-four majority and no stall. The detection and
+promotion latencies are functions of the controller's
+observation window and threshold and are illustrative of
+the mechanism rather than universal constants.}
+
+
+\textbf{(c) Table~VI caption (revised):} \\
+
+\begin{table}[!t]
+\centering
+\caption{PureChain PoA$^2$ consensus latency (ms) and hash
+integrity. \textcolor{blue}{ Active signer set recovered from
+block-seal attribution; signer rotation observed (3 of 4 signers in recent blocks).}
+Blocks~1{,}012{,}544--1{,}012{,}680.}
+\label{tab:consensus}
+\scalebox{0.82}{
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{Phase} & \textbf{N}
+  & \textbf{Median} & \textbf{P95}
+  & \textbf{Min} & \textbf{Max}
+  & \textbf{Integrity} \\
+\midrule
+Baseline       & 20 & 1{,}904 & 2{,}756
+  & 1{,}096 & 3{,}111 & 20/20 \\
+Sustained load & 50 & 1{,}988 & 2{,}224
+  &   865   & 2{,}647 & --- \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize Long-term re-verify:
+  PASS at $+136$ blocks.}
+\end{tabular}}
+\end{table}
+
+``PureChain PoA$^2$ consensus latency (ms) and hash integrity.
+\textcolor{blue}{Active signer set recovered from block-seal attribution;
+signer rotation observed (3 of 4 signers in recent blocks).}''
+\end{quote}
+
+\point{The drug discovery workload, while realistic, serves primarily as a
+demonstration vehicle. The screening models are classical ML, and the
+performance is moderate. A brief discussion on whether the framework
+generalizes to other scientific domains would strengthen the contribution's
+broader impact.}
+
+\reply{We thank the reviewer for this observation, which helped us clarify
+the intended scope of the contribution. We agree that virtual screening is a
+demonstrator rather than the contribution itself, and that the classical-ML
+choice warrants explanation. We now state explicitly that the framework is
+domain-agnostic and give the conditions a workload must meet to use it, with
+concrete example domains; we also clarify that the use of classical ML is a
+deliberate consequence of the bitwise-determinism requirement, not an
+incidental performance limitation. The authors revised the manuscript by (a)
+reinforcing the demonstrator framing in the Architecture Overview
+(Section~III-A); and (b) adding a dedicated generalization subsection to the
+Discussion (Section~V).} \\
+
+\begin{quote}
+\textbf{(a) Section~III-A (revised):} \\
+``PureProtX is designed as a verifiable deterministic computation framework
+for IoT-distributed scientific pipelines, instantiated here on the
+drug-discovery workload of virtual compound screening.
+\textcolor{blue}{The screening workload serves as a concrete, scientifically
+demanding demonstrator; the framework's contribution is the
+verifiable-re-execution infrastructure itself, which applies to any workload
+meeting the requirements set out in Section~V.}'' \\
+
+\textbf{(b) New generalization subsection (Section~V, revised):} \\
+\textcolor{blue}{\subsection{Generalization Beyond Virtual Screening.} 
+Although
+demonstrated on virtual compound screening, the framework is domain-agnostic.
+It applies to any scientific workload satisfying three requirements:
+(i)~inference is deterministic within a pinned runtime configuration, so
+outputs are bit-for-bit reproducible (Section~V-E); (ii)~outputs admit a
+canonical, order-stable serialization, so a stable cryptographic digest can
+be computed; and (iii)~a permissioned ledger is available to anchor digests
+for independent verification. The drug-discovery pipeline exercises all
+three, but the same infrastructure transfers directly to other edge-oriented
+scientific settings---for example, environmental IoT sensor analytics,
+industrial predictive-maintenance inference, medical edge signal
+classification (e.g.\ ECG/EEG), and agricultural phenotyping---wherever
+results must be reproduced and audited across heterogeneous nodes. The
+classical-ML models used here are a deliberate consequence of
+requirement~(i): they trade the headline accuracy of GPU deep learning for
+the bitwise determinism the verification layer depends on, a trade-off
+appropriate whenever auditability is the priority.''}
+\end{quote}
+
+
+
+
+
+
+
+
+
+\newpage
+\reviewersection
+\justifying{The authors appreciate your thoughtful
+and insightful comments.}
+
+\point{
+This paper seems to mainly combine several existing techniques, such as
+ONNX, SHA-256, Merkle tree, MQTT, Docker, AutoDock Vina, and permissioned
+blockchain. The technical novelty of the proposed framework is not clear
+enough.}
+
+\reply{We thank the reviewer for this observation. We agree that the
+individual components are established primitives, and we have revised the
+framing so the contribution is stated as a property rather than a
+toolchain: independently verifiable deterministic re-execution---the ability
+of any party to re-run the pipeline on different hardware and cryptographically
+confirm the result is byte-identical to an on-chain record. We now state
+plainly that the primitives are commodity and locate the contribution in the
+coupling that yields a property none of them provides alone---in particular,
+pinning not only the result digest but also the model artifact and the exact
+runtime configuration on which determinism depends. The authors revised the
+manuscript by (a) rewriting the contributions list in the Introduction to
+name the property; (b) adding a novelty-as-property statement to the
+Architecture Overview (Section~III-A); and (c) tightening the
+verification-model entry for the proposed work in the related-work comparison
+(Table~I).} \\
+
+\begin{quote}
+\textbf{(a) Contributions list (Introduction, revised):} \\
+\begin{itemize}
+    \item \textcolor{blue}{We realize independently verifiable deterministic
+    re-execution: any party can re-run the pipeline on different hardware and
+    cryptographically confirm the result is byte-identical to an on-chain
+    record.}
+    \item \textcolor{blue}{We couple canonical serialization with on-chain
+    pinning of both the model artifact and the runtime configuration, which
+    determinism depends on but the underlying tools do not guarantee alone.}
+    \item We develop an edge-deployable architecture for lightweight ingestion,
+    portable inference, and efficient provenance anchoring,
+    \textcolor{blue}{validated on real ARM edge devices rather than
+    resource-capped simulation.}
+    \item We validate the framework on realistic screening workloads
+    \textcolor{blue}{and characterize honestly where it does and does not add
+    value.}
+\end{itemize}
+
+\textbf{(b) Architecture Overview (Section~III-A, added):} \\
+\textcolor{blue}{``The individual building blocks---ONNX export, canonical
+JSON, SHA-256, Merkle batching, MQTT ingestion, and a permissioned
+ledger---are established primitives. PureProtX composes them so that a result
+produced on one edge node can be re-executed on another and proven
+byte-identical against an on-chain record: a property reproducibility
+frameworks and provenance ledgers do not provide alone. Achieving it requires
+pinning the model artifact and exact runtime configuration on which
+determinism depends (Section~V-E), not only the result digest.''} \\
+
+\textbf{(c) Related-work comparison (Table~I, Proposed Work row, revised
+verification-model entry):} \\
+\textcolor{blue}{``Independently verifiable deterministic re-execution:
+byte-identity provable by any third party against an on-chain record.''}
+\end{quote}
+
+\point{The authors claim that the framework can support deterministic
+re-execution across heterogeneous edge nodes. However, the evidence is
+insufficient. ONNX Runtime does not necessarily guarantee bitwise-identical
+results across different hardware architectures, operating systems, runtime
+versions, and thread settings.}
+
+\reply{We thank the reviewer, and we agree the original blanket claim was
+unsupported. We removed it and replaced it with a measured, scoped result. We
+built a determinism-characterization harness and ran it across ONNX Runtime
+versions (1.17--1.22), intra-op thread counts $\{1,2,4\}$, both float32 and
+float64 export paths, and three real CPU architectures---x86\_64, the Jetson
+Orin Nano (aarch64), and the Raspberry Pi~4 (aarch64)---executing 40 inference
+runs per configuration and comparing SHA-256 digests. The revised claim is
+scoped to a pinned runtime configuration and states its exceptions explicitly.
+Empirically, determinism holds within a fixed configuration and, at a fixed
+thread count, across all tested ORT versions, across the NumPy
+1.26$\rightarrow$2.5 boundary, and across all three architectures for six of
+seven models; the two exceptions are characterized rather than hidden. The
+authors revised the manuscript by (a) deleting the unsupported IEEE-754
+sentence in Section~III-D and replacing it with the scoped claim; (b) adding
+the cross-architecture characterization to Section~V-F, with a new figure
+(Fig.~4) and a new table; and (c) correcting a related, misleading statement
+about the SVR export dtype.}
+
+\begin{quote}
+\textbf{(a) Section~III-D (revised; the flagged sentence is removed):} \\
+\textcolor{blue}{``ONNX inference via \texttt{onnxruntime} is
+bitwise-deterministic within a pinned runtime configuration---a fixed ONNX
+Runtime version and intra-op thread count---rather than universally across all
+platforms. PureProtX pins and anchors this configuration on-chain so that any
+verifier reproduces the exact conditions under which a result was produced.
+The extent of cross-version, cross-thread, and cross-architecture determinism
+is characterized empirically in Section~V-E.''} \\
+
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/fig1_cross_arch.png}
+\caption{\textcolor{blue}{Cross-architecture determinism
+matrix: per-model SHA-256 agreement across x86\_64, Jetson
+Orin Nano (aarch64), and Raspberry Pi~4 (aarch64) at intra-op
+thread counts $\{1,2,4\}$. Green: byte-identical to the x86
+reference; hatched: digest differs. Six of seven models are
+byte-identical across all three architectures; only the
+RBF-kernel SVR diverges. The pattern is identical across ONNX
+Runtime 1.17--1.22 (one representative version shown; full
+matrix in the repository).}}
+\label{fig:crossarch}
+\end{figure*}
+
+\textbf{(b) Section~V-F (new characterization):} \\
+\textcolor{blue}{Within a fixed configuration, all 7 models are
+bitwise-deterministic across 40 independent runs and concordant with sklearn
+outputs within characterised tolerances (Table~VIII). All ONNX model hashes
+are anchored on-chain, enabling any edge node to verify it is running the
+authorised model version by comparing its local ONNX binary hash against the
+immutable on-chain record. The extent to which this determinism holds across
+runtime versions, thread counts, and CPU architectures is characterized
+below.}
+
+\textcolor{blue}{To test the cross-platform claim directly, we
+ran an identical determinism harness across ONNX Runtime
+versions 1.17--1.22, intra-op thread counts $\{1,2,4\}$, both
+float32 and float64 export paths, and three real CPU
+architectures: x86\_64, the Jetson Orin Nano (aarch64), and
+the Raspberry Pi~4 (aarch64). For each configuration the
+harness executes 40 inference runs on a fixed seeded input
+and compares SHA-256 digests. Fig.~\ref{fig:crossarch}
+summarizes the cross-architecture result and
+Table~\ref{tab:determinism-detail} the per-model detail.}
+
+\begin{table}[!htbp]
+\centering
+\caption{\textcolor{blue}{Per-model determinism
+characterization: within-configuration (40 runs), across
+intra-op thread counts, across ONNX Runtime 1.17--1.22, and
+dtype residual versus the sklearn float64 reference.}}
+\label{tab:determinism-detail}
+\scalebox{0.78}{
+\textcolor{blue}{%
+\begin{tabular}{p{3.5cm} p{1.5cm} p{1.5cm} p{1.5cm} p{2cm}}
+\toprule
+Model & Within-config & Cross-thread & Cross-ORT & dtype residual \\
+      & (40 runs)     & \{1,2,4\}    & (1.17--1.22) & (vs sklearn) \\
+\midrule
+SVR (reg)          & identical & stable & stable & f32 $1.25{\times}10^{-4}$; f64 n/a$^\dagger$ \\
+RandomForest (reg) & identical & varies & stable & f64 n/a$^\dagger$ \\
+GradBoosting (reg)  & identical & varies & stable & f64 n/a$^\dagger$ \\
+SVC (clf)          & identical & stable & stable & -- \\
+RandomForest (clf) & identical & stable & stable & -- \\
+GradBoosting (clf)  & identical & stable & stable & -- \\
+StandardScaler     & identical & stable & stable & f32 $1.65{\times}10^{-5}$; f64 exact (0) \\
+\bottomrule
+\end{tabular}}}
+\\[2pt]
+{\footnotesize \textcolor{blue}{$^\dagger$ ONNX Runtime has no
+float64 \texttt{SVMRegressor} kernel (\texttt{NOT\_IMPLEMENTED});
+tree float32/float64 re-export failed under the pinned
+\texttt{onnx}~1.17 toolchain, so tree determinism is
+characterized via the thread axis.}}
+\end{table}
+
+\textcolor{blue}{Three findings result. First, within a fixed
+thread count every model is bitwise-identical across all 40
+runs and across ORT 1.17--1.22, and remains identical across
+the NumPy 1.26$\rightarrow$2.5 boundary---stability stronger
+than a single-runtime guarantee. Second, bitwise determinism
+does \emph{not} hold across differing intra-op thread counts
+for the tree-ensemble regressors (random forest and gradient
+boosting), whose threaded reduction order changes the output
+bytes; the scaler, SVR, and all classifiers are thread-stable.
+Third, across the three architectures at a fixed thread count,
+six of seven models are byte-identical; the sole exception is
+the RBF-kernel SVR, which differs between x86\_64 and aarch64
+because ONNX Runtime provides no double-precision SVR kernel
+and its float32 kernel is architecture-sensitive. The residual
+is $\sim$$10^{-4}$ in pIC$_{50}$, far below the $\sim$0.7 RMSE
+of the task, so it is scientifically negligible while remaining
+cryptographically visible.}
+
+\textcolor{blue}{Accordingly, PureProtX pins the intra-op thread
+count alongside the ORT version and model-artifact hash in the
+on-chain configuration record. Under this pinning, re-execution
+is byte-identical across all three heterogeneous devices for
+the thread-stable models; the SVR carries a per-architecture
+digest, which the anchored configuration makes explicit rather
+than silently violating.} \\
+
+
+\textbf{(c) Section~III-D (SVR export dtype, corrected):} \\
+\textcolor{blue}{``The SVR is exported via the float32 kernel path, as ONNX
+Runtime provides no double-precision \texttt{SVMRegressor} kernel; the
+resulting sklearn-to-ONNX concordance, and its architecture-dependence, are
+characterized in Section~V-F.''}
+\end{quote}
+
+
+\point{The edge deployment experiments seem to rely mainly on Docker resource
+limitation rather than real edge devices. It would be better to test the
+framework on real Raspberry Pi, Jetson Nano, and other heterogeneous IoT
+devices.}
+
+\reply{We agree, and we have replaced the Docker-simulated evaluation entirely.
+The edge evaluation now runs on real hardware: a Raspberry Pi~4 Model~B
+(quad-core Cortex-A72, 4~GB) and an NVIDIA Jetson Orin Nano (six-core
+Cortex-A78AE, aarch64), with an uncapped x86\_64 Linux host as the server
+reference. We report the measured throughput gradient across these
+heterogeneous devices, and---importantly---the real hardware did not reproduce
+the out-of-memory failure our earlier Docker-capped simulation had reported,
+which we now retract as a simulation artifact. We also correct a related claim:
+the earlier simulation suggested the pipeline was I/O-bound, whereas the
+real-device measurements show a genuine compute gradient. The authors revised
+the manuscript by (a) replacing the Docker-cap methodology text in
+Section~III-B; (b) replacing the simulated-tier table with a real-hardware
+table; (c) replacing the edge-throughput figure with the real-device
+measurement (Fig.~5); (d) rewriting the Section~V-A results, including the
+explicit OOM retraction and the compute-gradient correction; and (e) removing
+the orphaned simulated-tier hardware claim in Section~III-B.}
+
+\begin{quote}
+\textbf{(a) Section~III-B (methodology, revised):} \\
+\textcolor{blue}{``To characterize viability on real edge hardware,
+experiments were conducted on two physical ARM devices---a Raspberry Pi~4
+Model~B (quad-core Cortex-A72, 4~GB) and an NVIDIA Jetson Orin Nano (six-core
+Cortex-A78AE, aarch64)---with an uncapped x86\_64 Linux host as the server
+reference. Each device runs the complete PureProtX inference pipeline: RDKit
+featurization, sklearn consensus inference, canonical serialization, SHA-256
+hashing, and PureChain transaction submission. The x86\_64 reference is a
+real, uncapped host, not a resource-limited container.''} \\
+
+\textbf{(b) Real edge hardware table (Table~II, revised):} \\
+
+\textcolor{blue}{A new table replaces the simulated-tier table, listing the
+three real devices (x86\_64 host as server reference; Jetson Orin Nano,
+6$\times$Cortex-A78AE, 8~GB, as the GPU-class edge tier; Raspberry Pi~4,
+4$\times$Cortex-A72, 4~GB, as the CPU-only edge tier), with no resource caps.} 
+
+
+
+\label{tab:edge-tiers}
+\scalebox{0.82}{
+\textcolor{blue}{%
+\begin{tabular}{lllc}
+\toprule
+\textbf{Device} & \textbf{CPU} & \textbf{RAM} & \textbf{Role} \\
+\midrule
+x86\_64 host       & Multi-core x86\_64        & --       & Server reference \\
+Jetson Orin Nano   & 6$\times$ Cortex-A78AE     & 8~GB     & GPU-class edge \\
+Raspberry Pi~4     & 4$\times$ Cortex-A72       & 4~GB     & CPU-only edge \\
+\bottomrule
+\end{tabular}}}
+\\
+
+\textbf{(c) Edge throughput figure (Fig.~2, replaced):} \\
+\textcolor{blue}{The Docker-tier throughput figure is replaced with measured
+throughput on the three real devices across batch sizes $\{100,500,1000\}$;
+all runs achieved 100\% on-chain commit success.} 
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.50\columnwidth]{images/fig2_edge_throughput.png}
+\caption{\textcolor{blue}{Measured screening throughput on
+real hardware---x86\_64 server reference, Jetson Orin Nano, and
+Raspberry Pi~4---across batch sizes $\{100,500,1000\}$. The x86
+reference is an uncapped host, not a resource-limited container.
+Throughput is stable across batch size on each device; all runs
+achieved 100\% on-chain commit success.}}
+\label{fig:edge}
+\end{figure}
+\\
+
+\textbf{(d) Section~V-A (results, revised):} \\
+\textcolor{blue}{``Fig.~5 shows measured screening throughput on the three
+real devices across batch sizes $N \in \{100, 500, 1{,}000\}$. Throughput is
+stable across batch size on each device. Relative to the x86\_64 server
+reference, the Jetson Orin Nano sustains roughly two-thirds and the Raspberry
+Pi~4 roughly two-fifths of server throughput, giving a clear
+server$\rightarrow$Jetson$\rightarrow$Pi4 gradient. All runs achieved 100\%
+on-chain commit success. On real hardware, peak resident memory remained well
+within each device's capacity for all targets, including the largest (hERG);
+we observed no out-of-memory failures. This retracts our earlier
+simulation-based report of a constrained-tier OOM, which was an artifact of an
+imposed 512~MB Docker cap rather than a property of real edge hardware. The
+measured throughput gap across devices reflects a genuine compute
+difference---inference accounts for the majority of per-batch wall time on all
+three devices---rather than the I/O-bound behavior suggested by the earlier
+simulation. Both ARM devices comfortably sustain the full pipeline, confirming
+edge-deployment viability on real silicon.''} \\
+
+\textbf{(e) Section~III-B (network topology, orphaned claim revised):} \\
+\textcolor{blue}{``Hardware requirements are modest. On the real edge devices
+evaluated (Section~V-A), the full pipeline---including the largest target,
+hERG---runs within the memory of a Raspberry Pi~4 (4~GB), with peak resident
+memory well below capacity. Larger available memory and additional cores, as
+on the Jetson Orin Nano, improve throughput but are not required for
+correctness.''}
+\end{quote}
+
+
+\point{The authors claim that ONNX export extends bitwise determinism across
+platforms. However, the experiments do not sufficiently cover different CPU
+architectures, operating systems, ONNX Runtime versions, and thread
+configurations. The claim should be weakened or supported by more experiments.}
+
+\reply{We thank the reviewer, and we have done both: weakened the overstated
+claim and supported the scoped claim with new experiments covering exactly the
+axes named here. The empirical study is described in full in our response to
+the preceding comment (the determinism harness spanning ONNX Runtime
+1.17--1.22, intra-op thread counts $\{1,2,4\}$, float32/float64 export paths,
+and three CPU architectures---x86\_64, Jetson Orin Nano aarch64, and Raspberry
+Pi~4 aarch64), and is reported in Section~V-E with the new Fig.~1 and
+determinism table. To ensure the overstated wording did not survive elsewhere
+in the manuscript, the authors additionally revised (a) the Abstract; (b) the
+Conclusion; and (c) the design-rationale sentence in Section~III-D, each of
+which had restated the unconditional cross-platform claim.}
+
+\begin{quote}
+\textbf{(a) Abstract (revised):} \\
+\textcolor{blue}{``The pipeline runs on real ARM edge hardware (Jetson Orin
+Nano and Raspberry Pi~4); inference is bitwise-deterministic within a pinned
+runtime configuration, verified across ONNX Runtime 1.17--1.22, thread counts,
+and three CPU architectures, with two characterized exceptions, and all model
+and result hashes anchored on a permissioned PoA$^2$-governed ledger.''} \\
+
+\textbf{(b) Conclusion (revised):} \\
+\textcolor{blue}{``The pipeline runs on real ARM edge hardware, and inference
+is bitwise-deterministic within a pinned runtime configuration---empirically
+byte-identical across ONNX Runtime 1.17--1.22, the NumPy
+1.26$\rightarrow$2.5 boundary, and three CPU architectures for six of seven
+models, with the RBF-kernel SVR the sole architecture-dependent
+exception---while all model and result hashes are anchored on PureChain.''} \\
+
+\textbf{(c) Section~III-D (design rationale, revised):} \\
+``All seven models are trained with fixed random seeds
+(\texttt{random\_state=42}) and exported to ONNX format via \texttt{skl2onnx}.
+\textcolor{blue}{As characterized in Section~V-F, this yields bitwise
+determinism within a pinned runtime configuration across heterogeneous
+platforms, rather than an unconditional cross-platform guarantee.}''
+\end{quote}\\
+
+
+\point{The paper compares individual blockchain commits with Merkle batch
+anchoring. This comparison is too easy, because Merkle batching naturally
+changes O(N) transactions to O(1). Stronger baselines such as signed
+append-only logs, IPFS, Hyperledger Fabric, or other provenance systems should
+be included.}
+
+\reply{We thank the reviewer, and we agree the individual-versus-batch
+comparison was not a fair baseline. We have added a comparison against two
+legitimate provenance mechanisms from the class the reviewer names---an
+Ed25519 signed append-only log and IPFS-style content addressing---evaluated
+on both a cost axis and a trust axis. We report the outcome plainly: on cost,
+the on-chain approach is not competitive (a signed log is roughly four orders
+of magnitude faster per record, content addressing roughly five), and we do
+not claim otherwise; its advantage is confined to the trust model, where it
+removes the single-authoritative-key assumption that both alternatives require
+and supports independent verifiability. We also reframe Merkle batching
+correctly as an optimization \emph{within} the on-chain anchoring step rather
+than as a provenance baseline. The authors revised the manuscript by (a)
+adding a new provenance-baseline subsection in Section~V, with a cost figure
+(Fig.~6) and a trust-property table; (b) relabelling the Merkle-batching
+result in Section~V-D as an internal optimization; and (c) adding a brief
+pointer to this comparison in the Related Work discussion.}
+
+\begin{quote}
+\textbf{(a) New subsection ``Comparison with Alternative Provenance
+Mechanisms'' (Section~V):} \\
+\textcolor{blue}{\subsection{\textbf{Comparison with Alternative Provenance Mechanisms}}
+\label{sec:provenance-baselines}
+The Merkle-batching result in Section~V-D
+is an optimization within the on-chain anchoring step,
+not a provenance baseline. To assess the on-chain approach
+fairly, we compare it against two established alternatives that
+provide tamper-evidence without a blockchain: an Ed25519 signed
+append-only log (hash-chained entries, each signed) and
+IPFS-style content addressing (a CIDv1 content hash over the
+canonical payload). We compare on two axes---per-record cost and
+trust model---in Fig.~\ref{fig:provcost} and
+Table~\ref{tab:trustmatrix}.}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.55\columnwidth]{images/fig3_provenance_cost.png}
+\caption{\textcolor{blue}{Per-record write latency of
+provenance mechanisms (log scale): Merkle root build, IPFS CID,
+Ed25519 signed log, and on-chain anchoring (Merkle-batched and
+individual commit). Local mechanisms are microseconds; on-chain
+anchoring incurs a consensus round-trip. The on-chain approach
+is not competitive on cost; its advantage is the trust model
+(Table~\ref{tab:trustmatrix}).}}
+\label{fig:provcost}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\caption{\textcolor{blue}{Provenance mechanisms compared on
+trust properties and per-record write cost. The on-chain approach
+loses on cost and wins only on the trust axis.}}
+\label{tab:trustmatrix}
+\scalebox{0.72}{
+\textcolor{blue}{%
+\begin{tabular}{p{3.5cm}p{2.9cm}p{2.9cm}p{2.6cm}p{1.6cm}}
+\toprule
+Mechanism & Single point of compromise & Rewrite resistance & Public verification & Write cost (ms/rec) \\
+\midrule
+Ed25519 signed log & The private key & Key holder can re-sign history & Needs trusted public key & 0.0523 \\
+\addlinespace
+IPFS content addressing & The CID publisher & None alone (no ordering) & Needs trusted CID index & 0.0074 \\
+\addlinespace
+Merkle batch & The anchor & Needs external anchor & Needs the anchor & 0.0011 \\
+\addlinespace
+On-chain PoA$^2$ & None (distributed) & Requires signing-majority collusion & On-chain records & 1{,}880 (indiv.) / 20 (batch) \\
+\bottomrule
+\end{tabular}}}
+\end{table}
+
+\textcolor{blue}{On cost, the on-chain approach is not competitive,
+and we do not claim otherwise: a signed log is roughly four
+orders of magnitude faster per record and content addressing
+roughly five, since both are local operations while on-chain
+anchoring incurs a consensus round-trip. On trust, the
+distinction reverses. A signed log is only as trustworthy as
+its single signing key: whoever holds the key can silently
+re-sign an altered history. Content addressing detects
+modification but imposes no ordering and no protection against a
+publisher substituting the authoritative identifier. The
+permissioned ledger removes the single-key assumption---rewriting
+history requires collusion of a signing majority rather than
+compromise of one party---and exposes the record for independent
+verification. The on-chain approach is therefore the appropriate
+choice only when the trust model forbids a single authoritative
+key holder and requires independent verifiability; where a
+trusted operator is acceptable, a signed log is the cheaper and
+simpler option. This scoping is the honest basis for using a
+ledger, replacing the earlier individual-versus-batch
+comparison.} \\
+
+\textbf{(b) Section~V-D (Merkle result, relabelled):} \\
+``The crossover $N^{*}{=}10$ is reached at the smallest tested batch size,
+making Merkle batching the preferred anchoring strategy for any IoT screening
+campaign. \textcolor{blue}{Both strategies are variants of the same on-chain
+anchoring step; a fair comparison against non-blockchain provenance mechanisms
+is given in the following subsection.}'' \\
+
+\textbf{(c) Related Work (Section~II, added pointer):} \\
+\textcolor{blue}{``Lighter-weight provenance mechanisms such as signed
+append-only logs and content-addressed storage (e.g.\ IPFS) provide
+tamper-evidence at far lower cost but under a single-party trust assumption; we
+compare against these directly in Section~V.''}
+\end{quote}
+\vspace{1cm}
+\textbf{Overall, the authors wish to thank the editor and all the reviewers for their insightful review comments and constructive criticisms, which have helped the authors improve the quality of the revised manuscript in terms of content and clarity.}
+
+
+\end{document}
+
+
+
