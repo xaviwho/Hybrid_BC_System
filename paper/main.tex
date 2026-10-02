@@ -190,14 +190,14 @@ lifecycle information management~\cite{kanu2024blockchain}.
 flow from physical assets through edge processing and hybrid-ledger governance to the digital
 twin, while verified decisions and lifecycle updates flow back to the physical system.}
 
-\begin{figure*}[!htbp]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.80\textwidth]{images/system_intro.jpg}
+\includegraphics[width=0.46\textwidth]{images/Fig 1.png}
 \caption{\textcolor{blue}{Conceptual relationship between physical entities and the digital
 twin, illustrating IoT-driven data acquisition, edge-level processing, and hybrid
 blockchain integration for secure, verifiable lifecycle synchronization.}}
 \label{fig:dt_concept}
-\end{figure*}
+\end{figure}
 Advancements in artificial intelligence (AI), machine learning (ML), and IoT technologies
 have further expanded the capabilities of DT systems. AI- and ML-enhanced DTs have been
 applied to optimize energy performance, improve predictive analytics, and strengthen
@@ -329,7 +329,7 @@ The proposed OrBIT architecture, illustrated in Figure~\ref{fig:system}, integra
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{images/system_arch.png}
+\includegraphics[width=0.8\textwidth]{images/Fig 2.png}
 \caption{Functional architecture of the OrBIT framework. The pipeline processes IoT
 telemetry through three stages: (1)~a deterministic privacy policy engine that assigns each
 field a sensitivity level from name- and value-based rules grounded in
@@ -577,7 +577,7 @@ which serves as a global idempotency key and uniquely identifies the request acr
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.90\textwidth]{images/orchestra_v2.png}
+\includegraphics[width=0.65\textwidth]{images/Fig 3.png}
 \caption{Detailed orchestration sequence and consistency protocol. Exactly-once delivery is ensured by an idempotency check (Steps 1a--2) before processing. Latency is bounded by acknowledging the client with \texttt{202 Accepted} (Step 7) immediately after the private Fabric commit (Step 5), decoupling the slower public anchoring (Steps 8--13) into an asynchronous background process via the transactional-outbox pattern. Routing is determined by the deterministic policy engine (Steps 3--4), which returns each field's sensitivity level and legal basis rather than a probabilistic classification.}
 \label{fig:orbit_sequence}
 \end{figure*}
