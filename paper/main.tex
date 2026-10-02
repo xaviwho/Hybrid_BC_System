@@ -190,14 +190,14 @@ lifecycle information management~\cite{kanu2024blockchain}.
 flow from physical assets through edge processing and hybrid-ledger governance to the digital
 twin, while verified decisions and lifecycle updates flow back to the physical system.}
 
-\begin{figure}[!htbp]
+\begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.46\textwidth]{images/Fig 1.png}
+\includegraphics[width=0.80\textwidth]{images/Fig 1.png}
 \caption{\textcolor{blue}{Conceptual relationship between physical entities and the digital
 twin, illustrating IoT-driven data acquisition, edge-level processing, and hybrid
 blockchain integration for secure, verifiable lifecycle synchronization.}}
 \label{fig:dt_concept}
-\end{figure}
+\end{figure*}
 Advancements in artificial intelligence (AI), machine learning (ML), and IoT technologies
 have further expanded the capabilities of DT systems. AI- and ML-enhanced DTs have been
 applied to optimize energy performance, improve predictive analytics, and strengthen
@@ -612,6 +612,7 @@ Upon successful validation and commit, the orchestrator returns a \texttt{202~Ac
 
 \begin{algorithm}[!htbp]
 \scriptsize
+\color{blue}
 \caption{\textcolor{blue}{Pseudocode for lease-coordinated relay delivery and reconciliation}}
 \label{alg:relay}
 \KwData{\textcolor{blue}{Durable outbox $\mathcal{O}$; relay identifier $r$; lease duration $\ell$; Fabric records $\mathcal{F}$; Ethereum registry $\mathcal{M}$}}
@@ -675,6 +676,7 @@ and all downstream effects (the Fabric state update, the outbox emission, and th
 
 \begin{algorithm}[!htbp]
 \scriptsize
+\color{blue}
 \caption{\textcolor{blue}{Pseudocode for deterministic policy-driven routing and commit}}
 \label{alg:routing}
 \KwData{$\mathtt{Incoming\ Payload:}$ $\mathbf{x}=\{(k_j,v_j)\}$; $\mathtt{Arrival\ Time:}$ $t_0$; $\mathtt{Name\ Rules:}$ $\mathcal{R}_{\mathrm{name}}$; $\mathtt{Value\ Rules:}$ $\mathcal{R}_{\mathrm{val}}$; $\mathtt{Publication\ Threshold:}$ $\theta$}
@@ -822,6 +824,7 @@ independently of history depth, and $q$ is the design parameter trading checkpoi
 
 \begin{algorithm}[!htbp]
 \scriptsize
+\color{blue}
 \caption{\textcolor{blue}{Pseudocode for digital-twin version commit and rollback}}
 \label{alg:twin}
 \KwData{$\mathtt{Digital\ Twin:}$ $T$; $\mathtt{Proposed\ Delta:}$ $\Delta$; $\mathtt{Rollback\ Target:}$ $k$ (optional); $\mathtt{Current\ Version:}$ $n$; $\mathtt{Checkpoint\ Interval:}$ $q$}
@@ -1125,6 +1128,13 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \textcolor{blue}{Figure~\ref{fig:fault_v2}(a) reports end-to-end recovery time, including 95\% confidence intervals, for the four crash points and both $k=2,3$ relay configurations. Recovery means span 16.56--29.27\,s; the wide interval for the $k=3$ race \texttt{SIGKILL} case is retained rather than hidden. Across all 16 configurations, contract event logs show anchors equal to records and zero duplicate anchors. Figure~\ref{fig:fault_v2}(b) exposes the efficiency difference that the former crowded plot obscured: lease coordination produces zero reverted transactions at every crash point, whereas race mode produces 13--27 reverts for $k=2$ and 180--244 for $k=3$. The independent auditor additionally detected 100\% of commitment-tampering and withholding trials, and all withheld records were repaired. A separate crash-window sweep created 150 private-ledger orphans; reconciliation detected and repaired all 150, after which all 150 anchors passed audit. These results establish crash-fault tolerance and detectable end-to-end integrity without assuming that a particular relay remains alive.}
 
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{images/fig_fault_injection.pdf}
+\caption{\textcolor{blue}{Relay fault injection over five repetitions per configuration: (a) mean end-to-end recovery time with 95\% confidence intervals and (b) reverted transactions in uncoordinated race mode. Contract event logs confirmed anchors equal to records and zero duplicate anchors in all 16 configurations; lease mode incurred zero reverts throughout.}}
+\label{fig:fault_v2}
+\end{figure*}
+
 
 
 \begin{figure*}[!htbp]
@@ -1376,13 +1386,6 @@ unknown\_field        & sensitive & sensitive & mysteryReading (fail-closed) \\
 \label{sec:res_gas}
 
 \textcolor{blue}{Figure~\ref{fig:gas_panel}(a) plots amortised gas per record against batch size on logarithmic axes and marks the direct single-record baseline; the two curves are effectively equal at $N=1$ and diverge from $N=2$ onward. Figure~\ref{fig:gas_panel}(b) expresses the same crossover as percentage reduction, rising from 0.0\% at $N=1$ to 99.9\% at $N=1000$. Together, the panels show the approximately $1/N$ cost reduction while the corresponding proof length grows only logarithmically.}
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.80\textwidth]{images/fig_fault_injection.pdf}
-\caption{\textcolor{blue}{Relay fault injection over five repetitions per configuration: (a) mean end-to-end recovery time with 95\% confidence intervals and (b) reverted transactions in uncoordinated race mode. Contract event logs confirmed anchors equal to records and zero duplicate anchors in all 16 configurations; lease mode incurred zero reverts throughout.}}
-\label{fig:fault_v2}
-\end{figure*}
 
 \textcolor{blue}{Table~\ref{tab:gas} reports receipt-derived public-anchoring cost for the revised contract. A direct single-record anchor costs 298{,}464.6 gas on average. The Merkle-root path costs 298{,}476.6--298{,}479.0 gas across $N=1$--1000 and is therefore flat in batch size for practical purposes. Only the root is written on chain, so transaction size does not grow with the number of leaves.}
 
