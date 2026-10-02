@@ -75,7 +75,7 @@ Thank you for the careful and constructive assessment of manuscript IOT-D-26-031
         Number of Figures                      & 7 &  10 \T\B\\\hline
         Number of Tables                            & 7 & 4     \T\B\\\hline
 
-        Number of References                               & 17 &   24 \T\B\\ \hline\hline
+        Number of References                               & 17 &   28 \T\B\\ \hline\hline
     \multicolumn{2}{l}{\parbox{3.3in}{}}
     \end{tabular}
     \vspace{-4mm}
@@ -314,7 +314,7 @@ The three suggested papers are now cited and discussed individually. They addres
 federated predictive digital twins, privacy-preserving medical-image learning,
 and neural-cryptographic health-data exchange. They are relevant neighbouring
 systems, but they do not expose the same dependent variables as OrBIT's
-permissioned-to-public commit protocol; using their prediction accuracy or model
+Fabric-to-Ethereum commit protocol; using their prediction accuracy or model
 cost as a throughput baseline would therefore be methodologically invalid.
 
 To make an experimentally controlled comparison, we added three protocol modes
@@ -329,7 +329,7 @@ consensus and avoids presenting the relay as a decentralised bridge.}
 \medskip
 \noindent\textbf{Revised material reproduced in full (Related Works and Baseline Comparisons):}
 
-\textcolor{blue}{The three additional works suggested during review occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care; FedLiverNet protects collaborative liver-image learning; and NeuroShield-Diabetes applies neural cryptography to health-data exchange. They provide application- or model-level privacy mechanisms but do not specify a permissioned-to-public cross-chain commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
+\textcolor{blue}{The three additional works suggested during review occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care; FedLiverNet protects collaborative liver-image learning; and NeuroShield-Diabetes applies neural cryptography to health-data exchange. They provide application- or model-level privacy mechanisms but do not specify a Fabric-to-Ethereum commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
 
 \textcolor{blue}{OrBIT does not claim to replace a decentralised oracle or trustless bridge. Its relay workers are permissioned operational agents: leases prevent redundant submissions, while the Fabric record, Ethereum identifier uniqueness, and an independent auditor make omission or alteration detectable. A decentralised oracle network could consume the same outbox and commitment protocol, but would introduce a different validator and incentive model that is outside the present evaluation.}
 
@@ -514,7 +514,10 @@ Works section. They are used to strengthen the manuscript's treatment of
 blockchain security and privacy, blockchain--IoT integration, heterogeneous
 application domains, and latency- and privacy-sensitive multimedia streams.
 We also added the three recent papers suggested by Reviewer~1, for seven new
-review-suggested references in total.}
+review-suggested references in total. Finally, we now position four closely
+related publications by the authors and state explicitly how OrBIT differs from
+that prior work. This additional disclosure strengthens, rather than substitutes
+for, the independent literature requested by the reviewers.}
 
 \medskip
 \noindent\textbf{Revised material reproduced in full (Related Works):}
@@ -523,9 +526,30 @@ review-suggested references in total.}
 
 \textcolor{blue}{Beyond baseline security, digital-twin research has progressed toward behaviour-aware protection. Suhail et al. introduce TRIPLE, a digital-twin-centric architecture combining blockchain provenance, threat intelligence, and hybrid modelling for continuous situational awareness. The approach remains primarily conceptual and does not define comprehensive lifecycle-governance semantics. Li et al. identify interoperability, data trustworthiness, and architectural immaturity as barriers to robust blockchain-integrated digital-twin deployment. Together, these studies motivate structured lifecycle management and multi-layer coordination.}
 
-\textcolor{blue}{Recent surveys sharpen the security and deployment context of this problem. Laghari et al. catalogue blockchain--IoT applications and identify interoperability, scalability, and multi-organisation security as persistent constraints; Jumani et al. similarly organise blockchain threats, privacy mechanisms, and quality-of-service trade-offs. IoT reviews in gaming and multimedia environments show that heterogeneous sensors generate latency-sensitive and privacy-sensitive streams beyond conventional industrial telemetry. These application domains motivate a routing and provenance layer whose safety properties do not depend on a learned classifier or a single workload distribution.}
+\textcolor{blue}{Recent surveys sharpen the security and deployment context of this problem. Laghari et al. catalogue blockchain--IoT applications and identify interoperability, scalability, and multi-organisation security as persistent constraints; Laghari et al. similarly organise blockchain threats, privacy mechanisms, and quality-of-service trade-offs. IoT reviews in gaming and multimedia environments show that heterogeneous sensors generate latency-sensitive and privacy-sensitive streams beyond conventional industrial telemetry. These application domains motivate a routing and provenance layer whose safety properties do not depend on a learned classifier or a single workload distribution.}
 
-\textcolor{blue}{The three additional works suggested by Reviewer~1 occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care; FedLiverNet protects collaborative liver-image learning; and NeuroShield-Diabetes applies neural cryptography to health-data exchange. They provide application- or model-level privacy mechanisms but do not specify a permissioned-to-public cross-chain commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
+\textcolor{blue}{The three additional works suggested by Reviewer~1 occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care; FedLiverNet protects collaborative liver-image learning; and NeuroShield-Diabetes applies neural cryptography to health-data exchange. They provide application- or model-level privacy mechanisms but do not specify a Fabric-to-Ethereum commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
+
+\textcolor{blue}{Hybrid-blockchain architectures for security-critical digital-twin exchange are especially close to OrBIT. Amadi et al. synthesise 116 studies into a layered reference architecture spanning physical operations, permissioned consensus, and public anchoring, while identifying governance, post-quantum resilience, standardised inter-chain protocols, and real-world deployment validation as open challenges. In complementary implementation work, Amadi et al. combine Hyperledger Fabric and Ethereum with lattice-based protection and CNN--LSTM-driven device revocation for quantum-resilient IoT data sharing. OrBIT addresses a different systems question: deterministic field-level publication, crash-safe exactly-once cross-ledger effects, reconciliation, integrity-verified twin-state rollback, and multi-region commit-path measurement. OrBIT does not claim post-quantum confidentiality or machine-learning-based anomaly detection.}
+
+\textcolor{blue}{At the resource-constrained endpoint layer, Amadi et al. combine lightweight federated intrusion detection with a resource-efficient blockchain mechanism. This work is complementary to OrBIT: it protects and classifies device behaviour before ingestion, whereas OrBIT assumes that submitted telemetry has reached the orchestrator and focuses on privacy routing, cross-ledger consistency, provenance, and lifecycle recovery. More broadly, Amadi and Jun analyse the security--scalability--decentralisation trilemma in autonomous intelligent vehicles. Although OrBIT does not evaluate vehicular workloads, that analysis motivates its explicit reporting of latency, relay capacity, and trust boundaries rather than presenting hybridisation as eliminating the underlying trade-offs.}
+
+\begin{table}[!htbp]
+\centering
+\caption{\textcolor{blue}{New and revised rows in the technical comparison table.}}
+\label{tab:author_prior_work}
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllll}
+\toprule
+\textbf{Work} & \textbf{Focus / Scope} & \textbf{Lifecycle Modeling} & \textbf{Blockchain Architecture} & \textbf{Intelligence / Risk} & \textbf{Verification / Provenance} \\
+\midrule
+\textcolor{blue}{Amadi et al. (ICT Express, 2026)} & \textcolor{blue}{Security-critical DT exchange review} & \textcolor{blue}{Lifecycle--layer--security taxonomy} & \textcolor{blue}{Hybrid private/public reference architecture} & \textcolor{blue}{Defence-gap and trade-off analysis} & \textcolor{blue}{Public anchoring and traceability} \\
+\textcolor{blue}{Amadi et al. (Symmetry, 2026)} & \textcolor{blue}{Quantum-resilient IoT sharing} & \textcolor{blue}{Registration, trust, revocation} & \textcolor{blue}{Fabric + Ethereum} & \textcolor{blue}{Lattice cryptography + CNN--LSTM} & \textcolor{blue}{Encrypted telemetry and revocation proofs} \\
+\textbf{OrBIT} & \textbf{Lifecycle-governed DTs with deterministic routing} & \textbf{Formal versioning, rollback, and genealogy; versioning/rollback evaluated} & \textbf{Hybrid orchestration with multi-layer anchoring} & \textbf{Deterministic rules mapped to HIPAA/GDPR/PCI categories} & \textbf{Chain anchoring + integrity-checked rollback} \\
+\bottomrule
+\end{tabular}}
+\end{table}
 \medskip
 
 \section*{Closing Statement}
