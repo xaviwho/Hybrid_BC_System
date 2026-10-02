@@ -190,14 +190,14 @@ lifecycle information management~\cite{kanu2024blockchain}.
 flow from physical assets through edge processing and hybrid-ledger governance to the digital
 twin, while verified decisions and lifecycle updates flow back to the physical system.}
 
-\begin{figure*}[!htbp]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.80\textwidth]{images/Fig 1.png}
+\includegraphics[width=0.45\textwidth]{images/Fig 1.png}
 \caption{\textcolor{blue}{Conceptual relationship between physical entities and the digital
 twin, illustrating IoT-driven data acquisition, edge-level processing, and hybrid
 blockchain integration for secure, verifiable lifecycle synchronization.}}
 \label{fig:dt_concept}
-\end{figure*}
+\end{figure}
 Advancements in artificial intelligence (AI), machine learning (ML), and IoT technologies
 have further expanded the capabilities of DT systems. AI- and ML-enhanced DTs have been
 applied to optimize energy performance, improve predictive analytics, and strengthen
@@ -226,10 +226,8 @@ cross-domain verification~\cite{zhang2025blockchain, waheed2020security}.
 \cite{du2025blockchain}          & Blockchain + DT state prediction for caching                                          & None                                                                & Permissioned blockchain + reputation                                 & DRL based optimization (domain specific)                                      & Signed caching records                                                     \\ \hline
 \cite{swathi2025secure}          & Risk adaptive federated learning                                                      & None                                                                & Private blockchain (risk logs)                                       & Strong (risk adaptive FL + zk SNARKs)                                         & Model provenance + ZK verification                                         \\ \hline
 \cite{akremi2025forensictwin}    & ForensicTwin evidence governance                                                      & Partial (forensic states)                                           & None                                                                 & None                                                                          & Forensic chain of custody + ontology checks                                \\ \hline
-\textcolor{blue}{\cite{amadi2026security}} & \textcolor{blue}{Security-critical DT data-exchange review} & \textcolor{blue}{Lifecycle--layer--security taxonomy} & \textcolor{blue}{Hybrid private/public reference architecture} & \textcolor{blue}{Defence-gap and design-trade-off analysis} & \textcolor{blue}{Public anchoring and traceability} \\ \hline
-\textcolor{blue}{\cite{amadi2026symmetric}} & \textcolor{blue}{Quantum-resilient IoT data sharing} & \textcolor{blue}{Device registration, trust, and revocation} & \textcolor{blue}{Hyperledger Fabric + Ethereum} & \textcolor{blue}{Lattice cryptography + CNN--LSTM} & \textcolor{blue}{Encrypted telemetry and revocation proofs} \\ \hline
 \textbf{OrBIT (Proposed)} & \textbf{Lifecycle-governed, blockchain-orchestrated DTs with deterministic
-privacy routing} & \textbf{Formal versioning, rollback, and genealogy model; versioning/rollback evaluated} & \textbf{Hybrid chain orchestration with multi-layer trust anchoring} & \textbf{Deterministic privacy rules mapped to HIPAA/GDPR/PCI categories} & \textbf{Chain-anchored lifecycle verification + integrity-checked rollback} \\ \hline\toprule
+privacy routing} & \textbf{Full formal lifecycle with state transitions \& governance} & \textbf{Hybrid chain orchestration with multi layer trust anchoring} & \textbf{Deterministic policy-based privacy routing (HIPAA/GDPR/PCI)} & \textbf{Chain-anchored lifecycle verification + integrity-checked rollback} \\ \hline\toprule
 \end{tabular}}
 \end{table*}
 
@@ -288,11 +286,7 @@ The rest of the paper is organised as follows: Section~\ref{sec:review} explores
 
 \textcolor{blue}{Recent surveys sharpen the security and deployment context of this problem. Authors~\cite{laghari2023blockchainiot} catalogue blockchain--IoT applications and identify interoperability, scalability, and multi-organisation security as persistent constraints; Authors~\cite{laghari2026blockchainsecurity} similarly organise blockchain threats, privacy mechanisms, and quality-of-service trade-offs. IoT reviews in gaming and multimedia environments~\cite{laghari2025gaming,laghari2025iomt} show that heterogeneous sensors generate latency-sensitive and privacy-sensitive streams beyond conventional industrial telemetry. These application domains motivate a routing and provenance layer whose safety properties do not depend on a learned classifier or a single workload distribution.}
 
-\textcolor{blue}{The three additional works suggested during review occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care~\cite{yang2026cardiotwin}; FedLiverNet protects collaborative liver-image learning~\cite{lou2026fedlivernet}; and NeuroShield-Diabetes applies neural cryptography to health-data exchange~\cite{yang2026neuroshield}. They provide application- or model-level privacy mechanisms but do not specify a Fabric-to-Ethereum commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
-
-\textcolor{blue}{Hybrid-blockchain architectures for security-critical digital-twin exchange are especially close to OrBIT. Amadi et al.~\cite{amadi2026security} synthesise 116 studies into a layered reference architecture spanning physical operations, permissioned consensus, and public anchoring, while identifying governance, post-quantum resilience, standardised inter-chain protocols, and real-world deployment validation as open challenges. In complementary implementation work, Amadi et al.~\cite{amadi2026symmetric} combine Hyperledger Fabric and Ethereum with lattice-based protection and CNN--LSTM-driven device revocation for quantum-resilient IoT data sharing. OrBIT addresses a different systems question: deterministic field-level publication, crash-safe exactly-once cross-ledger effects, reconciliation, integrity-verified twin-state rollback, and multi-region commit-path measurement. OrBIT does not claim post-quantum confidentiality or machine-learning-based anomaly detection.}
-
-\textcolor{blue}{At the resource-constrained endpoint layer, Amadi et al.~\cite{amadi2026lightweight} combine lightweight federated intrusion detection with a resource-efficient blockchain mechanism. This work is complementary to OrBIT: it protects and classifies device behaviour before ingestion, whereas OrBIT assumes that submitted telemetry has reached the orchestrator and focuses on privacy routing, cross-ledger consistency, provenance, and lifecycle recovery. More broadly, Amadi and Jun~\cite{amadi2026blockchain} analyse the security--scalability--decentralisation trilemma in autonomous intelligent vehicles. Although OrBIT does not evaluate vehicular workloads, that analysis motivates its explicit reporting of latency, relay capacity, and trust boundaries rather than presenting hybridisation as eliminating the underlying trade-offs.}
+\textcolor{blue}{The three additional works suggested during review occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care~\cite{yang2026cardiotwin}; FedLiverNet protects collaborative liver-image learning~\cite{lou2026fedlivernet}; and NeuroShield-Diabetes applies neural cryptography to health-data exchange~\cite{yang2026neuroshield}. They provide application- or model-level privacy mechanisms but do not specify a permissioned-to-public cross-chain commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
 
 Access control and data governance are significant areas of focus in the DT security literature. Authors~\cite{dai2024blockchain} developed a CP ABE  and IPFS-enabled DT access control framework that provides fine-grained authorisation and efficient distributed storage. Although technically rigorous, this model prioritises cryptographic enforcement and does not address lifecycle-aware behavioural verification. Authors~\cite{samaniego2023digital}, through their digital twin as proxy architecture, positioned twins as intermediaries to prevent direct sensor access and maintain auditability using Ethereum-backed trust registries. While this model enhances IoT device privacy, it remains domain-restrictive and lacks orchestration logic for multi-twin governance. These studies reinforce the necessity for secure access governance that integrates DT semantics, evolving states, and operational context.
 
@@ -1088,6 +1082,14 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 \textcolor{blue}{\textbf{Production serving.} On the controlled single host, replacing Werkzeug with Gunicorn did not remove the two-regime response. Below the block-cut threshold, the paired production/development TPS ratios were 0.985 (all-public), 0.994 (all-sensitive), 0.994 (mixed), and 1.001 (Fabric-only). No per-level 95\% confidence interval excluded one. Above the threshold the ratios were noisier (0.883--1.040), but the same non-significance result held. The application server is therefore not the measured bottleneck; subsequent results use Gunicorn while retaining the Fabric commit path.}
 
 
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/fig_blockcut_sweep.pdf}
+\caption{\textcolor{blue}{Controlled ordering-policy sweep on the multi-region deployment. Reducing \texttt{MaxMessageCount} from 10 to 5 moves the detected transition from $c=10$ to $c=5$ for both mixed and Fabric-only traffic. No detector-confirmed transition is claimed for every configuration outside the sampled concurrency range.}}
+\label{fig:blockcut_v2}
+\end{figure*}
+
 \begin{figure*}[!htbp]
 \centering
 \includegraphics[width=0.85\textwidth]{images/fig_delay_sweep.pdf}
@@ -1097,22 +1099,17 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{images/fig_blockcut_sweep.pdf}
-\caption{\textcolor{blue}{Controlled ordering-policy sweep on the multi-region deployment. Reducing \texttt{MaxMessageCount} from 10 to 5 moves the detected transition from $c=10$ to $c=5$ for both mixed and Fabric-only traffic. No detector-confirmed transition is claimed for every configuration outside the sampled concurrency range.}}
-\label{fig:blockcut_v2}
+\includegraphics[width=0.80\textwidth]{images/fig_sync_vs_async.pdf}
+\caption{\textcolor{blue}{Synchronous anchor, asynchronous outbox, and Fabric-only baselines on the same distributed topology. Decoupling reduces acknowledgement latency and avoids the public call becoming the ingestion throughput ceiling.}}
+\label{fig:sync_async_v2}
 \end{figure*}
+
 
 \textcolor{blue}{\textbf{Geographically distributed baseline.} Figure~\ref{fig:c1_panel}(a) reports throughput and Figure~\ref{fig:c1_panel}(b) reports acknowledgement latency for the same four routing fixtures. In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. Both panels show a common regime transition at $c=10$, matching $B_{\max}=10$: throughput rises to 9.09--9.32\,TPS while acknowledgement latency falls sharply as requests begin filling blocks before the timeout. Because the transition occurs for both anchoring and non-anchoring fixtures, the evidence attributes it to Fabric block cutting rather than to the public-ledger path. The stage probe further attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation, directly measuring the cross-organisation overhead that the original single-host evaluation could not expose.}
 
 
 \textcolor{blue}{\textbf{Block cutting and network delay.} Figure~\ref{fig:blockcut_v2}(a) tests whether the latency transition follows the configured message-count policy. With $B_{\max}=5$, the transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ sweep did not yield a detector-confirmed transition at every sampled level, so its floor and peak are reported without extrapolating a threshold. Figure~\ref{fig:blockcut_v2}(b) isolates the timeout term: reducing $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s lowers the Fabric-only $c=1$ floor from 2653.8 to 1647.5 and 1132.2\,ms. Figure~\ref{fig:delay_v2}(a) then shows the full concurrency curves under 0--100\,ms added round-trip delay, while Figure~\ref{fig:delay_v2}(b) fits the $c=1$ floors. The least-squares slopes are 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
 
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.80\textwidth]{images/fig_sync_vs_async.pdf}
-\caption{\textcolor{blue}{Synchronous anchor, asynchronous outbox, and Fabric-only baselines on the same distributed topology. Decoupling reduces acknowledgement latency and avoids the public call becoming the ingestion throughput ceiling.}}
-\label{fig:sync_async_v2}
-\end{figure*}
 
 \begin{figure*}[!htbp]
 \centering
