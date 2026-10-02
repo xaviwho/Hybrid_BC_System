@@ -1103,6 +1103,13 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 \label{fig:delay_v2}
 \end{figure*}
 
+
+
+\textcolor{blue}{\textbf{Geographically distributed baseline.} Figure~\ref{fig:c1_panel}(a) reports throughput and Figure~\ref{fig:c1_panel}(b) reports acknowledgement latency for the same four routing fixtures. In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. Both panels show a common regime transition at $c=10$, matching $B_{\max}=10$: throughput rises to 9.09--9.32\,TPS while acknowledgement latency falls sharply as requests begin filling blocks before the timeout. Because the transition occurs for both anchoring and non-anchoring fixtures, the evidence attributes it to Fabric block cutting rather than to the public-ledger path. The stage probe further attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation, directly measuring the cross-organisation overhead that the original single-host evaluation could not expose.}
+
+
+\textcolor{blue}{\textbf{Block cutting and network delay.} Figure~\ref{fig:blockcut_v2}(a) tests whether the latency transition follows the configured message-count policy. With $B_{\max}=5$, the transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ sweep did not yield a detector-confirmed transition at every sampled level, so its floor and peak are reported without extrapolating a threshold. Figure~\ref{fig:blockcut_v2}(b) isolates the timeout term: reducing $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s lowers the Fabric-only $c=1$ floor from 2653.8 to 1647.5 and 1132.2\,ms. Figure~\ref{fig:delay_v2}(a) then shows the full concurrency curves under 0--100\,ms added round-trip delay, while Figure~\ref{fig:delay_v2}(b) fits the $c=1$ floors. The least-squares slopes are 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
+
 \begin{figure*}[!htbp]
 \centering
 \includegraphics[width=0.80\textwidth]{images/fig_sync_vs_async.pdf}
@@ -1110,11 +1117,22 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 \label{fig:sync_async_v2}
 \end{figure*}
 
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{images/fig_fault_injection.pdf}
+\caption{\textcolor{blue}{Relay fault injection over five repetitions per configuration: (a) mean end-to-end recovery time with 95\% confidence intervals and (b) reverted transactions in uncoordinated race mode. Contract event logs confirmed anchors equal to records and zero duplicate anchors in all 16 configurations; lease mode incurred zero reverts throughout.}}
+\label{fig:fault_v2}
+\end{figure*}
 
-\textcolor{blue}{\textbf{Geographically distributed baseline.} Figure~\ref{fig:c1_panel}(a) reports throughput and Figure~\ref{fig:c1_panel}(b) reports acknowledgement latency for the same four routing fixtures. In the base Azure configuration, the acknowledgement floors were 2637.5, 2664.9, 2654.2, and 2653.8\,ms for all-public, all-sensitive, mixed, and Fabric-only records, respectively. Both panels show a common regime transition at $c=10$, matching $B_{\max}=10$: throughput rises to 9.09--9.32\,TPS while acknowledgement latency falls sharply as requests begin filling blocks before the timeout. Because the transition occurs for both anchoring and non-anchoring fixtures, the evidence attributes it to Fabric block cutting rather than to the public-ledger path. The stage probe further attributes 319.58\,ms to endorsement/submission and 1742.67\,ms to ordering/commit within the 2062.25\,ms full Fabric operation, directly measuring the cross-organisation overhead that the original single-host evaluation could not expose.}
 
 
-\textcolor{blue}{\textbf{Block cutting and network delay.} Figure~\ref{fig:blockcut_v2}(a) tests whether the latency transition follows the configured message-count policy. With $B_{\max}=5$, the transition moved to $c=5$ for both tested fixtures, again matching~\eqref{eq:block_cut}; the base $B_{\max}=10$ cases transitioned at ten. The $B_{\max}=20$ sweep did not yield a detector-confirmed transition at every sampled level, so its floor and peak are reported without extrapolating a threshold. Figure~\ref{fig:blockcut_v2}(b) isolates the timeout term: reducing $\Delta_{\mathrm{to}}$ from 2 to 1 and 0.5\,s lowers the Fabric-only $c=1$ floor from 2653.8 to 1647.5 and 1132.2\,ms. Figure~\ref{fig:delay_v2}(a) then shows the full concurrency curves under 0--100\,ms added round-trip delay, while Figure~\ref{fig:delay_v2}(b) fits the $c=1$ floors. The least-squares slopes are 24.29 and 24.58\,ms of acknowledgement latency per added millisecond of round-trip delay for Fabric-only and mixed traffic. This amplification is consistent with roughly 24 sequential network-dependent exchanges in the CLI-mediated Fabric path and identifies a concrete optimisation target: a persistent gateway that avoids repeated process and protocol setup.}
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{images/fig7_batching_v2.pdf}
+\caption{\textcolor{blue}{Merkle-batched anchoring efficiency from the v2 contract. The direct single-record baseline is 298{,}464.6 gas; root cost remains approximately 298{,}479 gas across $N$, so amortised per-record cost falls as $1/N$ while proof size grows logarithmically.}}
+\label{fig:gas_panel}
+\end{figure*}
+
 
 
 \begin{figure*}[!htbp]
@@ -1137,21 +1155,7 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \textcolor{blue}{Figure~\ref{fig:fault_v2}(a) reports end-to-end recovery time, including 95\% confidence intervals, for the four crash points and both $k=2,3$ relay configurations. Recovery means span 16.56--29.27\,s; the wide interval for the $k=3$ race \texttt{SIGKILL} case is retained rather than hidden. Across all 16 configurations, contract event logs show anchors equal to records and zero duplicate anchors. Figure~\ref{fig:fault_v2}(b) exposes the efficiency difference that the former crowded plot obscured: lease coordination produces zero reverted transactions at every crash point, whereas race mode produces 13--27 reverts for $k=2$ and 180--244 for $k=3$. The independent auditor additionally detected 100\% of commitment-tampering and withholding trials, and all withheld records were repaired. A separate crash-window sweep created 150 private-ledger orphans; reconciliation detected and repaired all 150, after which all 150 anchors passed audit. These results establish crash-fault tolerance and detectable end-to-end integrity without assuming that a particular relay remains alive.}
 
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.80\textwidth]{images/fig_fault_injection.pdf}
-\caption{\textcolor{blue}{Relay fault injection over five repetitions per configuration: (a) mean end-to-end recovery time with 95\% confidence intervals and (b) reverted transactions in uncoordinated race mode. Contract event logs confirmed anchors equal to records and zero duplicate anchors in all 16 configurations; lease mode incurred zero reverts throughout.}}
-\label{fig:fault_v2}
-\end{figure*}
 
-
-
-\begin{figure*}[!htbp]
-\centering
-\includegraphics[width=0.80\textwidth]{images/fig7_batching_v2.pdf}
-\caption{\textcolor{blue}{Merkle-batched anchoring efficiency from the v2 contract. The direct single-record baseline is 298{,}464.6 gas; root cost remains approximately 298{,}479 gas across $N$, so amortised per-record cost falls as $1/N$ while proof size grows logarithmically.}}
-\label{fig:gas_panel}
-\end{figure*}
 
 \textcolor{blue}{\textbf{Scope boundary.} The deployed ordering service has one Raft consenter and therefore tolerates no orderer failure. Fabric~3 Byzantine ordering would require a full network migration and at least four suitably provisioned orderers; it was not run under the available quota. The evidence above supports crash-fault-tolerant relay coordination, not Byzantine consensus or a trustless cross-chain bridge.}
 
