@@ -127,6 +127,13 @@ production-server portions of the request are fully addressed; Byzantine
 ordering is transparently reported as not run.}
 
 \medskip
+\noindent\textbf{Location in the revised manuscript:} pp.~12--19; Sections~3.7
+(Experimental Setup), 3.9 (Ledger and Network Configuration), 3.10
+(Experimental Metrics), 4.1 (Hybrid-Blockchain Orchestration Efficiency), 4.5
+(Summary of Findings), and 5 (Conclusion); Table~II; and
+Figures~4--6.
+
+\medskip
 \noindent\textbf{Revised material reproduced in full (Experimental Setup, Ledger and
 Network Configuration, and Results and Discussion):}
 
@@ -233,6 +240,14 @@ decentralised oracle or light-client bridge can consume the same commitment and
 outbox interface and is identified as future comparative work.}
 
 \medskip
+\noindent\textbf{Location in the revised manuscript:} pp.~2--4, 8--12, and
+14--19; Section~2 (Related
+Works), Sections~3.5--3.6 (Orchestrator Integration Layer and Digital Twin
+Lifecycle Manager), Sections~4.1, 4.4, and 4.5 (orchestration efficiency,
+lifecycle recovery, and summary of findings), and Section~5 (Conclusion);
+Algorithm~1; and Figures~3, 7, 8, and 10.
+
+\medskip
 \noindent\textbf{Revised material reproduced in full (Orchestrator Integration Layer,
 Algorithm~1, Fault-Tolerance Evaluation, Limitations, and Conclusion):}
 
@@ -327,6 +342,13 @@ permissioned, auditable delivery mechanism from oracle or trustless-bridge
 consensus and avoids presenting the relay as a decentralised bridge.}
 
 \medskip
+\noindent\textbf{Location in the revised manuscript:} pp.~2--4, 14--17, and
+19; Section~2 (Related
+Works), Section~3.11 (Baseline Comparisons), Sections~4.1 and 4.5
+(Hybrid-Blockchain Orchestration Efficiency and Summary of Findings), and
+Section~5 (Conclusion); Figures~7, 8, and 10.
+
+\medskip
 \noindent\textbf{Revised material reproduced in full (Related Works and Baseline Comparisons):}
 
 \textcolor{blue}{The three additional works suggested during review occupy adjacent rather than directly competing layers. CardioTwin-XAI builds a federated predictive digital twin for cardiovascular care; FedLiverNet protects collaborative liver-image learning; and NeuroShield-Diabetes applies neural cryptography to health-data exchange. They provide application- or model-level privacy mechanisms but do not specify a Fabric-to-Ethereum commit protocol, relay coordination rule, or comparable end-to-end ledger workload. Treating their predictive accuracy or cryptographic cost as an OrBIT throughput baseline would therefore compare different dependent variables. We instead use three protocol-level baselines: Fabric-only ingestion, synchronous public anchoring, and uncoordinated race relays, with identical payloads and ledger topology.}
@@ -361,6 +383,12 @@ rewrote the contribution list so that every contribution identifies both a
 mechanism and a verifiable outcome.}
 
 \medskip
+\noindent\textbf{Location in the revised manuscript:} p.~1, Section~1
+(Introduction), specifically the opening problem statement, research
+questions, and contribution list; Figure~1 provides the corresponding system
+context.
+
+\medskip
 \noindent\textbf{Revised material reproduced in full (Introduction and Contributions):}
 
 \textcolor{blue}{Mission-critical Internet of Things (IoT) systems, including aerospace control networks, medical infrastructure, and industrial automation, require continuous data exchange between physical assets and their digital counterparts that is verifiable, private, and fault-resilient. The central problem is not merely where to store digital-twin records, but how to coordinate one private and one public ledger without (i) disclosing regulated fields, (ii) producing duplicate or missing cross-ledger effects after retries and crashes, or (iii) placing public-chain delay on the ingestion critical path. Digital twins facilitate real-time monitoring, enhanced collaboration, and analytics-driven decision support throughout asset lifecycles. However, their deployment is often hindered by fragmented data flows, limited interoperability, and inadequate traceability.}
@@ -384,6 +412,11 @@ procedures: (1) lease-coordinated relay delivery and reconciliation,
 (2) deterministic policy-driven routing and commit, and (3) digital-twin
 version commit and rollback. The surrounding text now refers to each algorithm
 at the point where its inputs, safety condition, and output are introduced.}
+
+\medskip
+\noindent\textbf{Location in the revised manuscript:} pp.~8--12; Section~3.5
+(Orchestrator Integration Layer), Algorithms~1--2; and Section~3.6 (Digital
+Twin Lifecycle Manager), Algorithm~3.
 
 \medskip
 \noindent\textbf{Revised material reproduced in full (Algorithms~1--3):}
@@ -469,12 +502,17 @@ Create and log the audit record\;
 \point{Figure 1 colors are light and not clear so add increase size or enlarge
 for clear view.}
 
-\reply{Figure~1 is now a two-column \texttt{figure*} rendered at
-0.80\,\texttt{textwidth}, rather than a single-column figure. We also moved its
-in-text introduction before the figure and expanded the caption so that the
-data and control directions remain interpretable at print scale. During the
-same figure audit, we introduced and interpreted every experimental figure in
-the body text before its corresponding float.}
+\reply{Figure~1 has been resized to fit clearly within the journal's two-column
+layout, with enlarged graphical elements and stronger visual contrast. We also
+moved its in-text introduction before the figure and expanded the caption so
+that the data and control directions remain interpretable at print scale.
+During the same figure audit, we introduced and interpreted every experimental
+figure in the body text before its corresponding float.}
+
+\medskip
+\noindent\textbf{Location in the revised manuscript:} p.~1, Section~1
+(Introduction), Figure~1 and the paragraph immediately preceding it. The
+remaining experimental figures are introduced in Sections~3.10 and 4.1--4.4.
 
 \medskip
 \noindent\textbf{Revised material reproduced in full (Introduction and Figure~1):}
@@ -488,7 +526,7 @@ the body text before its corresponding float.}
 \label{fig:dt_concept}
 \end{figure}
 
-\textcolor{blue}{In the revised manuscript this figure is set as a two-column float at 0.80\,\texttt{textwidth}. The higher-resolution artwork, stronger contrast, enlarged typography, and expanded caption preserve legibility at journal print scale.}
+\textcolor{blue}{In the revised manuscript this figure is sized for the journal's two-column layout. The higher-resolution artwork, stronger contrast, enlarged typography, and expanded caption preserve legibility at journal print scale.}
 \medskip
 
 \point{Paper contains few grammar mistakes which will be cooperated in final
@@ -500,6 +538,11 @@ hyphenation such as ``cross-ledger'' and ``multi-region'', symbol definitions,
 and the distinction between acknowledgement latency and completion latency.
 Captions were revised to state what is measured and how each panel should be
 interpreted.}
+
+\medskip
+\noindent\textbf{Location in the revised manuscript:} pp.~1--19, throughout Sections~1--5,
+including all figure and table captions; terminology-sensitive revisions are
+concentrated in Sections~3.5--3.12 and 4.1--4.5.
 
 \point{Only few references are added in paper, but more than 40 references so
 to attract readers add few latest references related to this paper, which is
@@ -518,6 +561,12 @@ review-suggested references in total. Finally, we now position four closely
 related publications by the authors and state explicitly how OrBIT differs from
 that prior work. This additional disclosure strengthens, rather than substitutes
 for, the independent literature requested by the reviewers.}
+
+\medskip
+\noindent\textbf{Location in the revised manuscript:} pp.~2--4 and 20;
+Section~2 (Related
+Works), including the comparative synthesis in Table~I, and the References
+section.
 
 \medskip
 \noindent\textbf{Revised material reproduced in full (Related Works):}
