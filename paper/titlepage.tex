@@ -1,0 +1,57 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+\journal{ICT Express}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{OrBIT: Orchestrated Hybrid-Blockchain Twins for Verifiable Privacy-Preserving Provenance}
+
+\author[first]{Chimeremma Sandra Amadi}
+\author[first]{Victor Ikenna Kanu}
+\author[second]{Simeon Okechukwu Ajakwe}
+\author[first]{Taesoo Jun}
+
+\affiliation[first]{
+    organization={Department of IT Convergence Engineering, Kumoh National Institute of Technology},
+    city={Gumi},
+    country={South Korea}
+}
+
+\affiliation[second]{
+    organization={Smart Computing Department, Kyungdong University, Global Campus},
+    country={South Korea}
+}
+
+\begin{abstract}
+Digital twin infrastructures require verifiable coordination without exposing private state or coupling ingestion availability to a public ledger. This paper introduces Orchestrated Hybrid-Blockchain Twins (OrBIT), which combines Hyperledger Fabric for private state, Ethereum commitments for public accountability, deterministic fail-closed privacy routing, a transactional outbox, and integrity-verified lifecycle recovery. We evaluate OrBIT on a four-VM deployment spanning Azure Korea Central and Japan East, with two-region \texttt{AND(Org1,Org2)} endorsement, production Gunicorn services, and controlled network delay. Across five repetitions per configuration, the baseline acknowledgement floor is 2.638--2.665\,s and the block-cut transition occurs at ten clients, exactly matching \texttt{MaxMessageCount}=10; changing that limit to five moves the transition to five. A synchronous-anchor baseline increases one-client acknowledgement latency from 2.628 to 3.082\,s. Lease-coordinated relays sustain 1.999--3.961 anchors/s across the measured configurations, recover from injected crashes with zero duplicate anchors, and detect both commitment tampering and withholding in every trial. The evaluation also confirms zero sensitive-field leakage, exactly-once effects under duplicate submission, a 99.5\% per-record gas reduction at a Merkle batch of 200, a 4.01$\times$ storage reduction under sparse updates, and sub-millisecond rollback. Byzantine orderer faults are explicitly outside the evaluated scope because the deployed single-consenter Raft orderer provides no orderer-failure tolerance.
+\end{abstract}
+
+\begin{keyword}
+Blockchain orchestration
+\sep Deterministic privacy routing
+\sep Digital twin
+\sep Hybrid ledgers
+\sep Lifecycle provenance
+\sep Internet of Things (IoT)
+\end{keyword}
+
+\end{frontmatter}
+
+\section*{Acknowledgements}
+
+This work was partly supported by the Institute of Information and Communications Technology Planning and Evaluation (IITP) Innovative Human Resource Development for Local Intellectualization program grant funded by the Korea government (MSIT) (IITP-2026-RS-2020-II201612, 33\%), by the ITRC (Information Technology Research Center) grant funded by the Korea government (MSIT) (IITP-2026-RS-2024-00438430, 33\%), and by the Basic Science Research Program through the National Research Foundation of Korea (NRF) funded by the Ministry of Education (2018R1A6A1A03024003, 34\%).
+
+\end{document}
