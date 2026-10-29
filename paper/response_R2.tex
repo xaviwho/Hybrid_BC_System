@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{cite}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage[article]{ragged2e}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+% initialize counters for reviewer number and comment number
+\newcounter{reviewer}
+\setcounter{reviewer}{0}
+\newcounter{point}[reviewer]
+\setcounter{point}{0}
+\renewcommand{\thetable}{\Roman{table}}
+\setcounter{table}{0}
+\captionsetup[table]{skip=8pt}
+% Set the format of reviewer comment numbers and responses.
+\renewcommand{\thepoint}{Review\,\thereviewer.\arabic{point}} 
+\newcommand{\point}[1]{\refstepcounter{point}  \bigskip \hrule \medskip \noindent \textit{{\fontseries{b}\selectfont \thepoint } #1}\par}
+\newcommand{\reply}{\medskip \noindent \textbf{Reply}:\ }   
+
+% Set the format for reviewer headings
+\newcommand{\reviewersection}{\stepcounter{reviewer}
+                  \section*{To Reviewer \#\thereviewer}}
+                  
+% Set the format for reviewer headings
+\newcommand{\editorsection}{\section*{To Associate Editor}}
+
+%Table Space
+\newcommand\T{\rule{0pt}{2.5ex}}       % Top strut
+\newcommand\B{\rule[-1.3ex]{0pt}{0pt}} % Bottom strut
+
+
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!80!black},
+    citecolor={blue!80!black},
+    urlcolor={blue!80!black}
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{OrBIT: Orchestrated Hybrid-Blockchain Twins for Verifiable Privacy-Preserving Provenance \\ (Paper Number: IOT-D-26-03176R1)}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\vspace{10 pt}
+
+\newpage
+\editorsection
+\justifying
+Thank you for handling the second round of review of manuscript IOT-D-26-03176R1. The reviewer raised two focused points: how an orderer crash affects the transactional outbox's forward progress, and how relay throughput scales under public gas-price spikes or Ethereum block congestion. We answered both with new measurements on the same four-VM Azure deployment, the same Fabric channel and chaincode, and the same Ethereum registry used for every other result in the paper, and we added the corresponding analysis to the manuscript. Each comment is reproduced verbatim below, followed by our reply and the revised manuscript text in full. All material added in this round is shown in \textcolor{red}{red}; material revised in the first round is now shown in black. Table~\ref{edited} summarises the changes.
+
+\begin{table}[!thbp]
+\caption{Changes made in the second revision.}
+\label{edited}
+\centering
+\begin{tabular}{p{0.3\textwidth}|p{0.6\textwidth}}
+\hline\hline
+Manuscript location & Change\T\B\\ \hline\hline
+Section~4.1, page~15 & New paragraph: \emph{Gas-price spikes and public-chain congestion} (Comment~1.2)\T\B\\ \hline
+Section~4.1, Table~3, page~17 & New table: measured relay drain rate under emulated congestion (Comment~1.2)\T\B\\ \hline
+Section~4.1, page~17 & New paragraph: \emph{Orderer crash and outbox forward progress} (Comment~1.1)\T\B\\ \hline
+Section~4.5, Summary of Findings & One added sentence in the limitations paragraph (Comments~1.1 and~1.2)\T\B\\ \hline\hline
+\end{tabular}
+\end{table}
+
+\newpage
+\reviewersection
+
+We thank the reviewer for accepting our scoping of Byzantine ordering and for the two remaining requests. Both concern the behaviour of the anchoring pipeline when one of the two ledgers degrades, so we measured each condition directly rather than arguing from the design alone.
+
+\point{The exclusion of Byzantine ordered faults is acceptable given the Raft consenter model, but the authors must explicitly discuss how an ordered crash affects the transactional outbox's forward progress.}
+
+\reply{We agree that this needed an explicit treatment, and we have added it to the manuscript together with a new measurement.
+
+\textbf{Mechanism.} The outbox decouples the two halves of the pipeline. A row is written to the outbox only after the record has been committed on Fabric and read back. An orderer crash therefore stops the creation of new rows: ingestion fails closed, and the client receives an explicit error, with nothing stored or anchored. The relay, however, needs nothing from Fabric to deliver rows that already exist, because each row carries its commitment $\sigma$ and $c$. Public anchoring of the existing backlog therefore continues through the outage. The one ambiguous case, in which the orderer accepts a transaction but the client never sees the result, is closed by the idempotency key, which makes a retry return the record already stored, and by the reconciliation sweep, which anchors any committed record that has no outbox row.
+
+\textbf{Measurement.} On the Azure deployment we killed the orderer container with \texttt{SIGKILL} for 60\,s while ten concurrent clients submitted HYBRID records and one lease relay drained the outbox. The run was repeated five times. Across the five repetitions:
+\begin{itemize}
+\item Before the crash, ingestion ran at $6.39\pm0.11$ acknowledgements/s and the outbox held a backlog of $273\pm6$ rows.
+\item Once the orderer was down, every request failed with an explicit error (348--488 per repetition). A ledger query made before any retry found none of these records committed on Fabric, so no failure was ambiguous.
+\item The relay continued to deliver anchors at $1.98\pm0.12$ anchors/s, its normal single-relay rate, delivering $125\pm9$ anchors during the outage and reducing the backlog to $163\pm12$ rows.
+\item After the orderer restarted, the first acknowledgement returned 7.8--21.6\,s later (mean 16.0\,s).
+\item All 2{,}528 failed requests were retried with the same payload and accepted. Contract event logs show 7{,}848 anchors for 7{,}848 HYBRID records, with zero duplicates, and the reconciliation sweep found no orphans.
+\end{itemize}
+An orderer crash therefore suspends ingestion for the outage plus the restart time, but it does not stop public anchoring, and it neither duplicates nor omits anchors. We also note that a multi-consenter Raft cluster would mask the crash of a minority of orderers; we state that this configuration was not deployed.}
+
+\medskip
+\noindent\textbf{Revised manuscript text (Section~4.1, page~17):}
+
+\textcolor{red}{\textbf{Orderer crash and outbox forward progress.} An orderer crash halts the private-commit stage but not the outbox. Because a row is enqueued only after Fabric has committed and the record has been read back (Algorithm~2 of the manuscript), no new rows can be created while the orderer is down, and ingestion fails closed: the orchestrator returns an error and neither stores nor anchors the record. Rows already in the outbox carry everything the relay needs ($\sigma$ and $c$), so the relay continues to anchor them without contacting Fabric. We measured this on the Azure deployment by killing the orderer container (\texttt{SIGKILL}) for 60\,s under ten concurrent clients with one lease relay, in five repetitions. Before the crash, ingestion ran at $6.39\pm0.11$ acknowledgements/s and an anchor backlog of $273\pm6$ rows had formed. Once the orderer was down, every ingest request failed with an explicit error (348--488 per repetition), and a ledger query made before any retry found none of them committed on Fabric, so no failure was ambiguous. Meanwhile, the relay delivered $125\pm9$ queued anchors at $1.98\pm0.12$ anchors/s, essentially its normal single-relay rate, reducing the backlog to $163\pm12$ rows by the time the orderer restarted. After the orderer restarted from its own write-ahead log, the first acknowledgement returned 7.8--21.6\,s later (mean 16.0\,s across repetitions). Every failed request was retried with the same payload. All 2{,}528 retries were accepted, and contract event logs showed 7{,}848 anchors for 7{,}848 HYBRID records with zero duplicates; the reconciliation sweep found no orphan to repair. If the orderer instead fails after ordering a transaction but before the client sees the result, a retry carries the same idempotency key, which the idempotent chaincode resolves, and the reconciliation sweep anchors any committed record that has no outbox row. An orderer crash therefore suspends ingestion for the outage plus restart time, while public anchoring continues and never duplicates or omits anchors. A multi-consenter Raft cluster would mask the crash of a minority of orderers; that configuration was not deployed.}
+
+\medskip
+\noindent\textbf{Added to the limitations paragraph (Section~4.5):}
+
+\textcolor{red}{An orderer crash suspends ingestion until restart but not the relay, which keeps draining queued anchors; public-chain congestion bounds relay throughput by $k/\bar{T}_{\mathrm{incl}}$ rather than ingestion, and gas-price spikes raise anchoring cost linearly, which Merkle batching amortises.}
+
+\point{While the lease-coordinated relays sustain up to $\sim$4 anchors/s, the paper should briefly address how this scales if public gas costs spike or if Ethereum blocks experience congestion.}
+
+\reply{We have added a paragraph on both conditions and measured the congestion case. The two conditions act on different quantities.
+
+\textbf{Gas-price spikes change cost, not throughput.} The gas consumed by an anchor is fixed by the contract (298{,}464.6 gas for a direct anchor), so anchoring cost scales linearly with the gas price, and the relay's pace does not change. At 10 and 100\,gwei a direct anchor costs about 0.0030 and 0.030\,ETH. Merkle batching with $N=200$ reduces this to about 1{,}492 gas per record ($1.5\times10^{-5}$ and $1.5\times10^{-4}$\,ETH). A sender-side fee cap lets an operator defer anchoring during a spike, and the deferred rows wait in the outbox rather than being lost.
+
+\textbf{Block congestion bounds relay throughput.} Each lease relay keeps one transaction in flight until its receipt arrives, so its rate is bounded by $\mu_{\mathrm{relay}}\lesssim k/\bar{T}_{\mathrm{incl}}$, where $\bar{T}_{\mathrm{incl}}$ is the mean inclusion delay. The $\sim$4 anchors/s reported earlier reflects the sub-second inclusion of the testbed chain. To measure the effect of slower inclusion, we restarted the same Ganache chain and registry with fixed block intervals $B=2$, 6, and 12\,s, the last equal to Ethereum's slot time. In each run, $k=1$--3 lease relays drained a burst of 20 outbox rows; every configuration was repeated five times (Table~\ref{tab:r2congestion}). The measured rate followed $k/B$ in every configuration, at 90--99\% of the prediction. At 12\,s, one relay delivers 0.081 anchors/s and three deliver 0.224 anchors/s, and the p95 queue wait for the 20-row burst rises to 210.6\,s with one relay. All 900 anchors were delivered exactly once.
+
+\textbf{Effect on the rest of the system.} Ingestion acknowledges after the private commit, so congestion does not reduce ingestion throughput. It lengthens completion latency and queue age, and once the arrival rate exceeds $k/\bar{T}_{\mathrm{incl}}$ the backlog grows, as the stability condition in the paper predicts. Throughput can be restored by batching, since one inclusion then covers $N$ records ($\mu_{\mathrm{relay}}\lesssim kN/\bar{T}_{\mathrm{incl}}$), by adding relays with distinct sending accounts, or by pipelining several nonces per relay.
+
+\textbf{A configuration constraint we found.} With 12\,s blocks, three relays, and the 10\,s lease used in the experiment harness, a lease expired while its transaction was still waiting for inclusion, and a second relay re-claimed the row. Usually the second relay found the anchor already on chain, but once per repetition it submitted a duplicate. The registry's uniqueness check reverted that duplicate at a cost of 29{,}841 gas, so no record was anchored twice. The lease must therefore exceed the expected inclusion delay; the deployed default is 30\,s. The manuscript now states this explicitly.}
+
+\begin{table}[!htbp]
+\centering
+\caption{\textcolor{red}{Relay drain rate $\mu_{\mathrm{relay}}$ (anchors/s, mean $\pm$ 95\% CI over five repetitions) under emulated public-chain congestion, with the prediction $k/B$ in parentheses. $B$ is the fixed block interval; each run drains 20 outbox rows with $k$ lease relays.}}
+\label{tab:r2congestion}
+\setlength{\tabcolsep}{3pt}
+\resizebox{0.8\textwidth}{!}{\textcolor{red}{%
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$B$ (s) & $k=1$ & $k=2$ & $k=3$ \\
+\midrule
+2  & $0.485\pm0.004$ (0.500) & $0.918\pm0.064$ (1.000) & $1.365\pm0.001$ (1.500) \\
+6  & $0.164\pm0.003$ (0.167) & $0.329\pm0.002$ (0.333) & $0.480\pm0.001$ (0.500) \\
+12 & $0.081\pm0.001$ (0.083) & $0.157\pm0.001$ (0.167) & $0.224\pm0.000$ (0.250) \\
+\bottomrule
+\end{tabular}}}
+\end{table}
+
+\medskip
+\noindent\textbf{Revised manuscript text (Section~4.1, page~15):}
+
+\textcolor{red}{\textbf{Gas-price spikes and public-chain congestion.} The two conditions affect the relay differently. A gas-price spike changes what an anchor costs, not how fast anchors drain: the gas consumed per anchor is fixed by the contract (298{,}464.6 gas for a direct anchor, Table~5 of the manuscript), so cost scales linearly with the gas price $p$ as $G_{\mathrm{tx}}\,p$. At $p=10$ and 100\,gwei a direct anchor costs about 0.0030 and 0.030\,ETH, while a Merkle batch of $N=200$ divides the root cost to about 1{,}492 gas per record, or $1.5\times10^{-5}$ and $1.5\times10^{-4}$\,ETH. Batching is therefore the primary defence against fee spikes, and a sender-side fee cap (EIP-1559 \texttt{maxFeePerGas}) lets an operator defer anchoring during a spike: deferred rows wait in the outbox rather than being lost. Block congestion instead lengthens the time an anchor waits for inclusion. Each lease relay holds one transaction in flight until its receipt, so with mean inclusion delay $\bar{T}_{\mathrm{incl}}$ the drain rate is bounded by $\mu_{\mathrm{relay}}\lesssim k/\bar{T}_{\mathrm{incl}}$; the 1.999--3.961 anchors/s above reflect the sub-second inclusion of the testbed chain. To measure the effect of congestion, we restarted the same Ganache chain and registry with fixed block intervals $B=2$, 6, and 12\,s and drained a burst of 20 outbox rows with $k=1$--3 lease relays, five repetitions each (Table~3 of the manuscript; Table~\ref{tab:r2congestion} below). Observed block intervals matched the setting within 0.2\,s, and the measured drain rate followed $k/B$ in every cell, reaching 90--99\% of the prediction; the shortfall is the relay's own claim, signing, and receipt-polling time. At Ethereum's 12\,s slot time, one relay delivers 0.081 anchors/s and three deliver 0.224 anchors/s, so a burst that one relay clears in seconds on the testbed takes minutes: p95 queue wait for 20 rows rose to 210.6\,s at $k=1$. All 900 anchors were delivered exactly once. The run also exposed a configuration constraint: with $B=12$\,s, $k=3$, and a 10\,s experimental lease, a lease expired while its transaction was still awaiting inclusion, and another relay re-claimed the row. The re-claiming relay usually found the anchor already on chain, but once per repetition it submitted a duplicate, which the registry's uniqueness check reverted at 29{,}841 gas. The lease must therefore exceed the expected inclusion delay; the deployed default is 30\,s. Because ingestion acknowledges after the private commit, congestion does not reduce ingestion throughput: it lengthens $T_{\mathrm{cmp}}$ and queue age and, once $\lambda>k/\bar{T}_{\mathrm{incl}}$, grows the backlog as~(28b) of the manuscript predicts. Throughput is restored by batching (one inclusion covers $N$ records, giving $\mu_{\mathrm{relay}}\lesssim kN/\bar{T}_{\mathrm{incl}}$), by adding relays with distinct sending accounts, or by pipelining several nonces per relay.}
+
+\section*{Closing Statement}
+
+We thank the reviewer again for these two comments. They led to measurements that make the paper's availability and scaling claims more precise: an orderer crash suspends ingestion but not public anchoring, and public-chain congestion limits anchoring throughput but not ingestion.
+
+\end{document}
