@@ -103,12 +103,21 @@ def main():
     samples = []
 
     def sampler():
+        # indexed queries only (a LIKE scan of the outbox takes seconds): pending
+        # rows overall (nothing else runs on this outbox) and delivered rows among
+        # the ids acknowledged so far, by primary key
         mine = Outbox(ob.db_path)
         while not stop.is_set() or len(samples) < 2:
-            q = mine._conn().execute(
-                "SELECT SUM(state='pending'), SUM(state='delivered') FROM outbox WHERE twin_key LIKE ?",
-                (tag + "-%",)).fetchone()
-            samples.append([round(time.monotonic(), 3), q[0] or 0, q[1] or 0])
+            with lock:
+                acked = [r["outbox_id"] for r in rows if r.get("outbox_id")]
+            pend = mine._conn().execute("SELECT COUNT(*) FROM outbox WHERE state='pending'").fetchone()[0]
+            dlv = 0
+            for j in range(0, len(acked), 500):
+                chunk = acked[j:j + 500]
+                dlv += mine._conn().execute(
+                    "SELECT COUNT(*) FROM outbox WHERE state='delivered' AND id IN (%s)" % ",".join("?" * len(chunk)),
+                    chunk).fetchone()[0]
+            samples.append([round(time.monotonic(), 3), pend, dlv])
             time.sleep(0.5)
 
     threads = [threading.Thread(target=worker, daemon=True) for _ in range(a.c)]
