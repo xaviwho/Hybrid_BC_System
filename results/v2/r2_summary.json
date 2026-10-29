@@ -1,0 +1,491 @@
+{
+ "orderer_crash": {
+  "reps": 5,
+  "c": 10,
+  "relays": "k=1 lease",
+  "outage_s": 60.0,
+  "ok_per_s": {
+   "pre": {
+    "mean": 6.392,
+    "ci95_half": 0.114,
+    "min": 6.325,
+    "max": 6.492,
+    "n": 5
+   },
+   "outage": {
+    "mean": 0.032,
+    "ci95_half": 0.088,
+    "min": 0.0,
+    "max": 0.159,
+    "n": 5
+   },
+   "post": {
+    "mean": 5.597,
+    "ci95_half": 0.529,
+    "min": 5.215,
+    "max": 6.095,
+    "n": 5
+   }
+  },
+  "failed": {
+   "pre": {
+    "mean": 0.8,
+    "ci95_half": 2.221,
+    "min": 0,
+    "max": 4,
+    "n": 5
+   },
+   "outage": {
+    "mean": 453.2,
+    "ci95_half": 73.275,
+    "min": 348,
+    "max": 488,
+    "n": 5
+   },
+   "post": {
+    "mean": 51.6,
+    "ci95_half": 15.986,
+    "min": 35,
+    "max": 65,
+    "n": 5
+   }
+  },
+  "errors_outage": [
+   {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 478
+   },
+   {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 475
+   },
+   {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 477
+   },
+   {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 348
+   },
+   {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 488
+   }
+  ],
+  "time_to_first_ack_after_restart_s": {
+   "mean": 16.022,
+   "ci95_half": 9.117,
+   "min": 7.834,
+   "max": 21.63,
+   "n": 5
+  },
+  "queue_depth_at_kill": {
+   "mean": 273.4,
+   "ci95_half": 6.244,
+   "min": 266,
+   "max": 279,
+   "n": 5
+  },
+  "queue_depth_at_restart": {
+   "mean": 163.0,
+   "ci95_half": 12.132,
+   "min": 150,
+   "max": 175,
+   "n": 5
+  },
+  "anchors_delivered_during_outage": {
+   "mean": 125.0,
+   "ci95_half": 8.778,
+   "min": 119,
+   "max": 137,
+   "n": 5
+  },
+  "relay_rate_during_outage_per_s": {
+   "mean": 1.981,
+   "ci95_half": 0.121,
+   "min": 1.893,
+   "max": 2.145,
+   "n": 5
+  },
+  "ambiguous_failed_but_committed": 0,
+  "retries": 2528,
+  "retry_status": [
+   {
+    "202": 536
+   },
+   {
+    "202": 516
+   },
+   {
+    "202": 512
+   },
+   {
+    "202": 417
+   },
+   {
+    "202": 547
+   }
+  ],
+  "sweep_counts": [
+   {
+    "ok": 1556
+   },
+   {
+    "ok": 1626
+   },
+   {
+    "ok": 1642
+   },
+   {
+    "ok": 1437
+   },
+   {
+    "ok": 1587
+   }
+  ],
+  "repaired_orphans": 0,
+  "all_delivered": true,
+  "hybrid_records": 7848,
+  "anchors_on_chain": 7848,
+  "anchors_equal_records_all_reps": true,
+  "duplicate_anchors": 0
+ },
+ "congestion": {
+  "cells": {
+   "B12": {
+    "k1": {
+     "mu_relay_backlogged": {
+      "mean": 0.081,
+      "ci95_half": 0.001,
+      "min": 0.081,
+      "max": 0.082,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.085,
+      "ci95_half": 0.001,
+      "min": 0.085,
+      "max": 0.086,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.083,
+     "observed_block_interval_s": {
+      "mean": 12.042,
+      "ci95_half": 0.029,
+      "min": 12.0,
+      "max": 12.053,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 210595.41,
+      "ci95_half": 1729.15,
+      "min": 208104.8067060001,
+      "max": 211285.16214199952,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    },
+    "k2": {
+     "mu_relay_backlogged": {
+      "mean": 0.157,
+      "ci95_half": 0.001,
+      "min": 0.156,
+      "max": 0.157,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.173,
+      "ci95_half": 0.0,
+      "min": 0.173,
+      "max": 0.173,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.167,
+     "observed_block_interval_s": {
+      "mean": 12.089,
+      "ci95_half": 0.062,
+      "min": 12.0,
+      "max": 12.111,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 102639.445,
+      "ci95_half": 164.498,
+      "min": 102432.81869100065,
+      "max": 102761.4772550005,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    },
+    "k3": {
+     "mu_relay_backlogged": {
+      "mean": 0.224,
+      "ci95_half": 0.0,
+      "min": 0.224,
+      "max": 0.224,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.25,
+      "ci95_half": 0.0,
+      "min": 0.25,
+      "max": 0.25,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.25,
+     "observed_block_interval_s": {
+      "mean": 12.1,
+      "ci95_half": 0.114,
+      "min": 12.0,
+      "max": 12.167,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 67076.767,
+      "ci95_half": 77.526,
+      "min": 66982.641564,
+      "max": 67128.67695299974,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 5
+    }
+   },
+   "B2": {
+    "k1": {
+     "mu_relay_backlogged": {
+      "mean": 0.485,
+      "ci95_half": 0.004,
+      "min": 0.479,
+      "max": 0.487,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.5,
+      "ci95_half": 0.004,
+      "min": 0.497,
+      "max": 0.505,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.5,
+     "observed_block_interval_s": {
+      "mean": 2.029,
+      "ci95_half": 0.033,
+      "min": 2.0,
+      "max": 2.048,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 35037.665,
+      "ci95_half": 304.045,
+      "min": 34629.32210300096,
+      "max": 35258.2153680014,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    },
+    "k2": {
+     "mu_relay_backlogged": {
+      "mean": 0.918,
+      "ci95_half": 0.064,
+      "min": 0.865,
+      "max": 0.974,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.978,
+      "ci95_half": 0.052,
+      "min": 0.943,
+      "max": 1.024,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 1.0,
+     "observed_block_interval_s": {
+      "mean": 2.058,
+      "ci95_half": 0.066,
+      "min": 2.0,
+      "max": 2.1,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 17051.459,
+      "ci95_half": 1139.603,
+      "min": 16216.451262000191,
+      "max": 18176.766263999525,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    },
+    "k3": {
+     "mu_relay_backlogged": {
+      "mean": 1.365,
+      "ci95_half": 0.001,
+      "min": 1.364,
+      "max": 1.365,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 1.427,
+      "ci95_half": 0.012,
+      "min": 1.415,
+      "max": 1.441,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 1.5,
+     "observed_block_interval_s": {
+      "mean": 2.1,
+      "ci95_half": 0.069,
+      "min": 2.0,
+      "max": 2.125,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 11001.679,
+      "ci95_half": 129.231,
+      "min": 10854.366226998536,
+      "max": 11112.912015998518,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    }
+   },
+   "B6": {
+    "k1": {
+     "mu_relay_backlogged": {
+      "mean": 0.164,
+      "ci95_half": 0.003,
+      "min": 0.16,
+      "max": 0.165,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.171,
+      "ci95_half": 0.003,
+      "min": 0.167,
+      "max": 0.173,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.167,
+     "observed_block_interval_s": {
+      "mean": 6.01,
+      "ci95_half": 0.028,
+      "min": 6.0,
+      "max": 6.05,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 103726.188,
+      "ci95_half": 1881.004,
+      "min": 102962.57759199943,
+      "max": 106434.95682600042,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    },
+    "k2": {
+     "mu_relay_backlogged": {
+      "mean": 0.329,
+      "ci95_half": 0.002,
+      "min": 0.328,
+      "max": 0.331,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.361,
+      "ci95_half": 0.002,
+      "min": 0.359,
+      "max": 0.362,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.333,
+     "observed_block_interval_s": {
+      "mean": 6.111,
+      "ci95_half": 0.0,
+      "min": 6.111,
+      "max": 6.111,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 48462.113,
+      "ci95_half": 247.234,
+      "min": 48226.519363999614,
+      "max": 48674.83028599963,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    },
+    "k3": {
+     "mu_relay_backlogged": {
+      "mean": 0.48,
+      "ci95_half": 0.001,
+      "min": 0.48,
+      "max": 0.481,
+      "n": 5
+     },
+     "delivered_rate_overall": {
+      "mean": 0.525,
+      "ci95_half": 0.003,
+      "min": 0.522,
+      "max": 0.528,
+      "n": 5
+     },
+     "predicted_mu_k_over_B": 0.5,
+     "observed_block_interval_s": {
+      "mean": 6.134,
+      "ci95_half": 0.093,
+      "min": 6.0,
+      "max": 6.167,
+      "n": 5
+     },
+     "t_queue_p95_ms": {
+      "mean": 31058.079,
+      "ci95_half": 175.672,
+      "min": 30893.841113000235,
+      "max": 31213.94975399926,
+      "n": 5
+     },
+     "all_delivered": true,
+     "duplicates": 0,
+     "reverted_txs": 0
+    }
+   }
+  },
+  "fees": {
+   "gas_per_anchor_measured": 276084.2,
+   "gas_price_gwei_scenarios": [
+    1,
+    10,
+    50,
+    100,
+    500
+   ],
+   "eth_per_record": {
+    "N=1": {
+     "1": 0.000276084,
+     "10": 0.002760842,
+     "50": 0.013804212,
+     "100": 0.027608424,
+     "500": 0.13804212
+    },
+    "N=200": {
+     "1": 1.38e-06,
+     "10": 1.3804e-05,
+     "50": 6.9021e-05,
+     "100": 0.000138042,
+     "500": 0.000690211
+    }
+   },
+   "note": "gas measured from receipts; gas prices are scenario inputs; Merkle root gas ~= direct gas (Table gas), so the N=200 row divides the root cost by N"
+  }
+ }
+}

@@ -1,0 +1,68 @@
+{
+ "rep": 2,
+ "tag": "r2ord-r2-1793270103",
+ "c": 10,
+ "relays": "k=1 lease",
+ "timeline_s": {
+  "pre": 60.0,
+  "outage_requested": 60.0,
+  "post": 120.0,
+  "kill_cmd_s": 1.572,
+  "start_cmd_s": 1.171
+ },
+ "ingest_by_phase": {
+  "pre": {
+   "requests": 380,
+   "ok": 380,
+   "failed": 0,
+   "ok_per_s": 6.325,
+   "errors": {}
+  },
+  "outage": {
+   "requests": 475,
+   "ok": 0,
+   "failed": 475,
+   "ok_per_s": 0.0,
+   "errors": {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 475
+   }
+  },
+  "post": {
+   "requests": 771,
+   "ok": 730,
+   "failed": 41,
+   "ok_per_s": 6.023,
+   "errors": {
+    "502: Private commit to Fabric failed; record not persisted, nothi": 41
+   }
+  }
+ },
+ "time_to_first_ack_after_restart_s": 8.13,
+ "outbox": {
+  "queue_depth_at_kill": 266,
+  "queue_depth_at_restart": 161,
+  "anchors_delivered_during_outage": 123,
+  "relay_rate_during_outage_per_s": 1.959
+ },
+ "ambiguous_failed_but_committed": 0,
+ "retries": {
+  "n": 516,
+  "status": {
+   "202": 516
+  },
+  "replays": 0
+ },
+ "sweep": {
+  "counts": {
+   "ok": 1626
+  },
+  "repaired": 0,
+  "sweep_s": 593.78,
+  "error": null
+ },
+ "all_delivered": true,
+ "hybrid_records_on_fabric": 1626,
+ "anchors_on_chain": 1626,
+ "anchors_equal_hybrid_records": true,
+ "duplicate_anchors": 0
+}
