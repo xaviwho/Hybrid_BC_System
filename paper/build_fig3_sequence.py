@@ -29,9 +29,9 @@ LANES = [  # name, subtitle, fill, edge, icon crop box in orchestra_v2.png
 ]
 X = [8.6 + 16.56 * i for i in range(6)]
 DEV, ORC, POL, FAB, REL, ETH = range(6)
-BOX_W, HEAD_H = 15.4, 15.0
-YMAX = 120.5
-TOP, BOTTOM_HEAD = 0.5, 105.0
+BOX_W, HEAD_H = 15.4, 18.0
+YMAX = 142.5
+TOP, BOTTOM_HEAD = 0.5, 124.0
 LW = 2.0
 
 src = Image.open(SRC).convert("RGBA")
@@ -43,7 +43,7 @@ def icon(box):
     return im
 
 
-fig = plt.figure(figsize=(7.6, 8.4))
+fig = plt.figure(figsize=(8.6, 6.6))
 ax = fig.add_axes([0, 0, 1, 1])
 ax.set_xlim(0, 100)
 ax.set_ylim(YMAX, 0)
@@ -55,12 +55,12 @@ def header(y0):
         ax.add_patch(FancyBboxPatch((x - BOX_W / 2, y0), BOX_W, HEAD_H,
                                     boxstyle="round,pad=0,rounding_size=1.0",
                                     fc=fill, ec=edge, lw=2.0, zorder=3))
-        ax.add_artist(AnnotationBbox(OffsetImage(icon(crop), zoom=0.40), (x, y0 + 3.6),
+        ax.add_artist(AnnotationBbox(OffsetImage(icon(crop), zoom=0.34), (x, y0 + 4.0),
                                      frameon=False, zorder=4))
-        ax.text(x, y0 + 7.0, name, ha="center", va="top", fontsize=8.6, color=INK,
+        ax.text(x, y0 + 7.6, name, ha="center", va="top", fontsize=8.6, color=INK,
                 linespacing=1.05, zorder=4)
         if sub:
-            ax.text(x, y0 + 7.0 + 2.25 * (name.count("\n") + 1) + 0.4, sub, ha="center", va="top",
+            ax.text(x, y0 + 7.6 + 2.75 * (name.count("\n") + 1) + 0.4, sub, ha="center", va="top",
                     fontsize=7.0, color="#222222", linespacing=1.05, zorder=4)
 
 
@@ -98,37 +98,37 @@ def frame(x0, y0, x1, y1, tag, guard, fill, edge):
 
 
 # ---- messages, top to bottom (as in Fig 3.png) -------------------------------------
-msg(21.5, DEV, ORC, "(1) POST /telemetry (payload x, t0)")
+msg(24.0, DEV, ORC, "(1) POST /telemetry (payload x, t0)")
 xo = X[ORC]
-ax.plot([xo, xo + 3.0, xo + 3.0], [24.2, 24.2, 28.0], color=INK, lw=LW, zorder=5)
-arrow(xo + 3.0, 28.0, xo, 28.0)
-ax.text(xo + 4.2, 26.1, "(1a) Id = H(x || t0)\nValidate schema", ha="left", va="center",
+ax.plot([xo, xo + 3.0, xo + 3.0], [26.6, 26.6, 31.4], color=INK, lw=LW, zorder=5)
+arrow(xo + 3.0, 31.4, xo, 31.4)
+ax.text(xo + 4.2, 29.0, "(1a) Id = H(x || t0)\nValidate schema", ha="left", va="center",
         fontsize=8.6, color=INK, linespacing=1.1, zorder=6, bbox=dict(fc="white", ec="none", pad=0.6))
-msg(32.5, ORC, FAB, "(1b) Check dedupId", both=True)
+msg(36.6, ORC, FAB, "(1b) Check dedupId", both=True)
 
-frame(1.0, 35.0, 99.0, 103.0, "alt", "[Id already committed]", "#e6f3fd", "#2b8ae0")
+frame(1.0, 38.6, 99.0, 122.4, "alt", "[Id already committed]", "#e6f3fd", "#2b8ae0")
 BG = "#e6f3fd"
-msg(41.0, FAB, ORC, "prior_result (txid_fab_anchor_id/h)", dashed=True)
-msg(45.5, ORC, DEV, "(2) 202 Accepted (cached result)")
-ax.plot([1.0, 99.0], [48.0, 48.0], color="#2b8ae0", lw=1.5, ls=(0, (5, 3)), zorder=0.7)
-ax.text(2.0, 50.3, "[new request]", ha="left", va="center", fontsize=8.6, color=INK, zorder=6)
+msg(45.6, FAB, ORC, "prior_result (txid_fab_anchor_id/h)", dashed=True)
+msg(50.4, ORC, DEV, "(2) 202 Accepted (cached result)")
+ax.plot([1.0, 99.0], [52.6, 52.6], color="#2b8ae0", lw=1.5, ls=(0, (5, 3)), zorder=0.7)
+ax.text(2.0, 55.0, "[new request]", ha="left", va="center", fontsize=8.6, color=INK, zorder=6)
 
-msg(54.5, ORC, POL, "(3) Evaluate policy(x)")
-msg(59.0, POL, ORC, "(4) per-field sensitivity + basis")
-msg(68.0, ORC, FAB, "(5) Commit private state\nAND append outbox event\n(atomic txn)")
-msg(72.5, FAB, ORC, "(6) FabricTxID + commitment h")
-msg(77.0, ORC, DEV, "(7) 202 Accepted (ack after Fabric commit)")
+msg(60.0, ORC, POL, "(3) Evaluate policy(x)")
+msg(64.8, POL, ORC, "(4) per-field sensitivity + basis")
+msg(75.4, ORC, FAB, "(5) Commit private state\nAND append outbox event\n(atomic txn)")
+msg(80.2, FAB, ORC, "(6) FabricTxID + commitment h")
+msg(85.0, ORC, DEV, "(7) 202 Accepted (ack after Fabric commit)")
 
-frame(X[FAB] - 4.0, 74.5, 98.0, 93.0, "par", "[Async anchoring]", "#e9e9fd", "#6c6cdc")
+frame(X[FAB] - 4.0, 82.6, 98.0, 106.0, "par", "[Async anchoring]", "#e9e9fd", "#6c6cdc")
 BG = "#e9e9fd"
-msg(80.5, REL, FAB, "(8) Read outbox event")
-msg(84.0, REL, ETH, "(9) registerData(id, h, metadata)", right=True)
-msg(87.5, ETH, REL, "(10) tx_hash", dashed=True, right=True)
-msg(91.0, REL, FAB, "(11) Mark outbox delivered")
+msg(90.0, REL, FAB, "(8) Read outbox event")
+msg(94.6, REL, ETH, "(9) registerData(id, h, metadata)", right=True)
+msg(99.2, ETH, REL, "(10) tx_hash", dashed=True, right=True)
+msg(103.8, REL, FAB, "(11) Mark outbox delivered")
 BG = "#e6f3fd"
-msg(96.0, REL, ETH, "(12) Observe confirmations", right=True)
-msg(99.0, ETH, REL, "(13) confirmed(z blocks)", dashed=True, right=True)
-msg(102.0, REL, ORC, "(14) Optional notify: anchor confirmed")
+msg(110.6, REL, ETH, "(12) Observe confirmations", right=True)
+msg(115.2, ETH, REL, "(13) confirmed(z blocks)", dashed=True, right=True)
+msg(119.8, REL, ORC, "(14) Optional notify: anchor confirmed")
 
 fig.savefig(OUT + ".pdf")
 fig.savefig(OUT + ".png", dpi=220)
