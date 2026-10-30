@@ -1012,7 +1012,7 @@ Performance, scalability, and correctness were assessed using the following metr
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{images/fig5_orchestration_v2.pdf}
+\includegraphics[width=0.85\textwidth]{images/fig5_orchestration_v2_bold.pdf}
 \caption{\textcolor{black}{Multi-region orchestration performance over five repetitions per point. The figure reports acknowledgement latency and throughput for all four routing fixtures on the Azure deployment; the base block-cut boundary is $c=10$. Error bars show between-repetition variation.}}
 \label{fig:c1_panel}
 \end{figure*}
@@ -1098,7 +1098,7 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{images/fig_delay_sweep.pdf}
+\includegraphics[width=0.85\textwidth]{images/fig_delay_sweep_bold.pdf}
 \caption{\textcolor{black}{Acknowledgement floor under 0, 20, 50, and 100\,ms added round-trip delay. Both routing paths show approximately linear amplification because one logical Fabric commit traverses multiple sequential network exchanges.}}
 \label{fig:delay_v2}
 \end{figure*}
@@ -1112,7 +1112,7 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.80\textwidth]{images/fig_sync_vs_async.pdf}
+\includegraphics[width=0.80\textwidth]{images/fig_sync_vs_async_bold.pdf}
 \caption{\textcolor{black}{Synchronous anchor, asynchronous outbox, and Fabric-only baselines on the same distributed topology. Decoupling reduces acknowledgement latency and avoids the public call becoming the ingestion throughput ceiling.}}
 \label{fig:sync_async_v2}
 \end{figure*}
@@ -1120,14 +1120,14 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{images/fig_mu_relay.pdf}
+\includegraphics[width=0.75\textwidth]{images/fig_mu_relay_bold.pdf}
 \caption{\textcolor{black}{Measured relay drain rate by worker count and offered load: (a) lease coordination and (b) uncoordinated race mode. Error bars are 95\% confidence intervals over five repetitions. Race mode was sampled only at offered rates of 8 and 16 rows/s.}}
 \label{fig:relay_v2}
 \end{figure*}
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.80\textwidth]{images/fig_fault_injection.pdf}
+\includegraphics[width=0.80\textwidth]{images/fig_fault_injection_bold.pdf}
 \caption{\textcolor{black}{Relay fault injection over five repetitions per configuration: (a) mean end-to-end recovery time with 95\% confidence intervals and (b) reverted transactions in uncoordinated race mode. Contract event logs confirmed anchors equal to records and zero duplicate anchors in all 16 configurations; lease mode incurred zero reverts throughout.}}
 \label{fig:fault_v2}
 \end{figure*}
@@ -1136,7 +1136,7 @@ The experimental evaluation aims to demonstrate that OrBIT achieves: (i) determi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.80\textwidth]{images/fig7_batching_v2.pdf}
+\includegraphics[width=0.80\textwidth]{images/fig7_batching_v2_bold.pdf}
 \caption{\textcolor{black}{Merkle-batched anchoring efficiency from the v2 contract. The direct single-record baseline is 298{,}464.6 gas; root cost remains approximately 298{,}479 gas across $N$, so amortised per-record cost falls as $1/N$ while proof size grows logarithmically.}}
 \label{fig:gas_panel}
 \end{figure*}
@@ -1348,7 +1348,7 @@ not quote a single peak throughput figure for those fixtures.
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{images/fig7_batching_v2.pdf}
+\includegraphics[width=0.95\textwidth]{images/fig7_batching_v2_bold.pdf}
 \caption{\textcolor{blue}{Merkle-batched anchoring efficiency from the v2 contract. The direct single-record baseline is 298{,}464.6 gas; root cost remains approximately 298{,}479 gas across $N$, so amortised per-record cost falls as $1/N$ while proof size grows logarithmically.}}
 \label{fig:gas_panel}
 \end{figure*}
